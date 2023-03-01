@@ -1,6 +1,6 @@
 # README
 
-## autumo ifaceX - Additional Interface Processor Readers & Writers, Version: 1.0
+## autumo ifaceX - Additional Interface Processor Readers & Writers
 
 ### &copy; 2023 autumo GmbH - Date: 28.02.2023
 
@@ -17,9 +17,19 @@ in your own project and IDE.
 
 ### Install:
 
-1.	Import the project in eclipse or in any other development IDE.
+1.	You can Import the project in eclipse or in any other development IDE.
 
-2.	Execute 'maven-install.sh|bat' so the referenced libraries are installed
-	into your local Maven repository (Only available with autumo ifaceX; see
-	https://products.autumo.ch).
+2.	Copy the following libraries from the ifaceX Installation directory'
+	into the 'lib/'-directory of this project:
+	
+	- lib/autumo-commons-x.y.z.jar
+	- lib/autumo-ifacex-x.y.z.jar
+	- lib/autumo-beetroot-x.y.z.jar
+	
+3.	Execute 'maven-install.sh|bat' so above libraries are installed into 
+	your local Maven repository; only available with autumo ifaceX, see
+	https://products.autumo.ch.
+	
+4.	Execute 'make.sh' to create a package that can be deployed into an
+	ifaceX installation directory. 
 

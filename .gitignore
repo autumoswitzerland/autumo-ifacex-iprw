@@ -1,4 +1,4 @@
-/lib/
+/lib/*.jar
 /target/
 /product/
 **/.DS_Store
