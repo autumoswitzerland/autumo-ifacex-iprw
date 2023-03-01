@@ -1,0 +1,41 @@
+###############################################################################
+# Amazon AWS file writer configuration
+###############################################################################
+
+
+#
+# AWS access key (can be encrypted, use encoder.sh)
+#
+aws_file_out_access_key=access
+
+#
+# AWS secret key (can be encrypted, use encoder.sh)
+#
+aws_file_out_secret_key=secret
+
+#
+# Key prefix for whole key, will be completed with
+# a '/' in any case and supplemented with the file
+# name of the read file from the reader-side; usually
+# per 'file_in' reader.
+#
+aws_file_out_key_prefix=myFiles/
+
+#
+# File bucket name (only lower-case allowed)
+#
+aws_file_out_bucket_name=filebucket
+
+#
+# URL end-point - can be empty; provide for faster access.
+#
+aws_file_out_url_endpoint=http://localhost:8001
+
+#
+# Region - can be empty; provide for faster access.
+#
+# See here:
+#   https://github.com/aws/aws-sdk-java/blob/master/aws-java-sdk-core/src/main/java/com/amazonaws/regions/Regions.java
+#
+aws_file_out_region=eu-central-2
+

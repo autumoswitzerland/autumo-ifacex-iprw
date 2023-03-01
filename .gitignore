@@ -2,3 +2,6 @@
 /target/
 /product/
 **/.DS_Store
+/lic/
+/data/
+/log/
