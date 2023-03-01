@@ -25,7 +25,7 @@ import io.findify.s3mock.S3Mock;
 /**
  * Amazon AWS S3 Mock Server.
  */
-public class AmazonS3MockServer {
+public class AWSS3MockServer {
     
 	public static final int PORT = 8001;
 	public static final String DEFAULT_S3_FILE_PATH = "/Volumes/Fastdrive/tmp/s3";

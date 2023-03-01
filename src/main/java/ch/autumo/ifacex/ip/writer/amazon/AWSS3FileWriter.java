@@ -41,7 +41,7 @@ import ch.autumo.ifacex.writer.Writer;
 
 
 /**
- * Amazon AWS file out - writer prefix 'aws_file_out'.
+ * Amazon AWS S3 file out - writer prefix 'aws_file_out'.
  * 
  * Writes files into a bucket and creates the bucket first, if it
  * doesn't exist.
@@ -51,9 +51,9 @@ import ch.autumo.ifacex.writer.Writer;
  * URL end-point and region should be provided for faster access!
  *  
  */
-public class AmazonS3FileWriter implements Writer {
+public class AWSS3FileWriter implements Writer {
 
-	private final static Logger LOG = LoggerFactory.getLogger(AmazonS3FileWriter.class.getName());
+	private final static Logger LOG = LoggerFactory.getLogger(AWSS3FileWriter.class.getName());
 	
 	private AmazonS3 s3client = null;
 	private AWSCredentials credentials = null;
