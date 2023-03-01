@@ -108,7 +108,7 @@ public class AWSS3FileReader extends AbstractAWSS3File implements Reader {
 			LOG.info("Processing (bucket: '"+getBucketName()+"'): " + key);
 			
 			String fileName = key;
-			String keyPrefix = key;
+			String keyPrefix = null;
 			if (key.indexOf("/") != -1)
 				keyPrefix = key.split("/") [0];
 			
@@ -129,7 +129,11 @@ public class AWSS3FileReader extends AbstractAWSS3File implements Reader {
 					file.getAbsolutePath()
 				};
 			
-			final SourceEntity filesSourceEntity = new SourceEntity(config, getBucketName() + "/" + keyPrefix , SourceEntity.FILES_SOURCE_FIELDS);
+			String entityName = "";
+			if (keyPrefix != null)
+				entityName = "/" + keyPrefix;
+			
+			final SourceEntity filesSourceEntity = new SourceEntity(config, getBucketName() + entityName , SourceEntity.FILES_SOURCE_FIELDS);
 			if (exFilter == null)
 				currBatch.addRecordValues(values);
 			else if (exFilter.addRecord(SourceEntity.FILES_SOURCE_FIELDS, values))
