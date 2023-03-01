@@ -23,20 +23,12 @@ import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-
-import ch.autumo.commons.utils.UtilsException;
 import ch.autumo.ifacex.IPC;
 import ch.autumo.ifacex.IfaceXException;
-import ch.autumo.ifacex.Processor;
 import ch.autumo.ifacex.SourceEntity;
 import ch.autumo.ifacex.batch.BatchData;
+import ch.autumo.ifacex.ip.generic.AbstractAWSS3File;
+import ch.autumo.ifacex.ip.reader.amazon.AWSS3FileReader;
 import ch.autumo.ifacex.writer.Writer;
 
 
@@ -51,68 +43,10 @@ import ch.autumo.ifacex.writer.Writer;
  * URL end-point and region should be provided for faster access!
  *  
  */
-public class AWSS3FileWriter implements Writer {
+public class AWSS3FileWriter extends AbstractAWSS3File implements Writer {
 
-	private final static Logger LOG = LoggerFactory.getLogger(AWSS3FileWriter.class.getName());
+	private final static Logger LOG = LoggerFactory.getLogger(AWSS3FileReader.class.getName());
 	
-	private AmazonS3 s3client = null;
-	private AWSCredentials credentials = null;
-	private EndpointConfiguration endpoint = null;
-	private String urlEndpoint = null;
-	private String region = null;
-	private String bucketName = null;
-	private String keyPrefix = null;
-
-	@Override
-	public void initialize(String rwName, IPC config, Processor processor) throws IfaceXException {
-		
-		String accessKey = null;
-		String secretKey = null;
-		try {
-			accessKey = config.getWriterConfig(rwName).getConfigDecodedIfNecessary("_access_key");
-			secretKey = config.getWriterConfig(rwName).getConfigDecodedIfNecessary("_secret_key");
-		} catch (UtilsException e) {
-			throw new IfaceXException("Couldn't read credentials!", e);
-		}
-		credentials = new BasicAWSCredentials(accessKey, secretKey);
-		
-		keyPrefix = config.getWriterConfig(rwName).getConfig("_key_prefix");
-		if (!keyPrefix.endsWith("/"))
-			keyPrefix += "/";
-		
-		bucketName = config.getWriterConfig(rwName).getConfig("_bucket_name");
-		
-		urlEndpoint = config.getWriterConfig(rwName).getConfig("_url_endpoint");
-		region = config.getWriterConfig(rwName).getConfig("_region");
-		
-		if (urlEndpoint != null && urlEndpoint.length() > 0) {
-			if (region != null && region.length() > 0)
-				endpoint = new EndpointConfiguration(urlEndpoint, region); // "http://localhost:8001", e.g., "eu-central-2"
-			else
-				endpoint = new EndpointConfiguration(urlEndpoint, Regions.getCurrentRegion().getName()); // "http://localhost:8001", "?"
-		}
-	    
-	    if (endpoint != null)
-			s3client = AmazonS3ClientBuilder
-			  .standard()
-		      .withPathStyleAccessEnabled(true)  
-		      .withEndpointConfiguration(endpoint)
-			  .withCredentials(new AWSStaticCredentialsProvider(credentials))
-			  .build();	
-	    else
-			s3client = AmazonS3ClientBuilder
-			  .standard()
-		      .withPathStyleAccessEnabled(true)  
-			  .withCredentials(new AWSStaticCredentialsProvider(credentials))
-			  .withRegion(Regions.EU_CENTRAL_2)
-			  .build();	
-
-		if (!s3client.doesBucketExistV2(bucketName)) {
-			s3client.createBucket(bucketName);
-			LOG.info("AWS bucket '"+bucketName+"' created!");
-		}
-	}
-
 	@Override
 	public void writeHeader(String writerName, IPC config, SourceEntity entity) throws IfaceXException {
 	}
@@ -128,14 +62,10 @@ public class AWSS3FileWriter implements Writer {
 			
 			final String vals[] = batch.next();
 			final File curr = new File(vals[0]); // absolute file path when reader 'FilePathReader/file_in' is used!
-			s3client.putObject(bucketName, keyPrefix + curr.getName(), curr);
-		}
-	}
-
-	@Override
-	public void close(String rwName) throws IfaceXException {
-		if (s3client != null) {
-			s3client.shutdown();
+			
+			LOG.info("Processing (bucket: '"+getBucketName()+"'): " + getKeyPrefix() + curr.getName());
+			
+			client().putObject(getBucketName(), getKeyPrefix() + curr.getName(), curr);
 		}
 	}
 	

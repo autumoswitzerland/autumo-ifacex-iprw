@@ -1,3 +1,18 @@
+
+###############################################################################
+# General configuration
+###############################################################################
+
+
+source_interface=file_in
+destination_interfaces=aws_file_out
+# In this case, you define one pseudo entity, that defines in which
+# directory files should be read and processed as source entities
+# for the 'file_in'-reader
+process_source_entities=files:/Volumes/Documents/all
+
+
+
 ###############################################################################
 # Amazon AWS file writer configuration
 ###############################################################################
@@ -18,6 +33,9 @@ aws_file_out_secret_key=secret
 # a '/' in any case and supplemented with the file
 # name of the read file from the reader-side; usually
 # per 'file_in' reader.
+#
+# AWS creates a directory with this key within the
+# bucket id specified.
 #
 aws_file_out_key_prefix=myFiles/
 
