@@ -9,15 +9,7 @@ destination_interfaces=aws_file_out
 # In this case, you define one pseudo entity, that defines in which
 # directory files should be read and processed as source entities
 # for the 'file_in'-reader
-process_source_entities=files:/Users/Mike/Development/autumo/docs/ALL
-
-
-
-###############################################################################
-# File reader configuration
-###############################################################################
-
-# No parameters necessary 
+process_source_entities=files:/Volumes/Documents/all
 
 
 
@@ -25,13 +17,14 @@ process_source_entities=files:/Users/Mike/Development/autumo/docs/ALL
 # Amazon AWS file writer configuration
 ###############################################################################
 
+
 #
-# AWS access key (can be encrypted, use encoder.sh)
+# AWS access key (can be encrypted, use encoder.sh).
 #
 aws_file_out_access_key=access
 
 #
-# AWS secret key (can be encrypted, use encoder.sh)
+# AWS secret key (can be encrypted, use encoder.sh).
 #
 aws_file_out_secret_key=secret
 
@@ -47,7 +40,7 @@ aws_file_out_secret_key=secret
 aws_file_out_key_prefix=myFiles/
 
 #
-# File bucket name (only lower-case allowed)
+# File bucket name (only lower-case allowed).
 #
 aws_file_out_bucket_name=filebucket
 

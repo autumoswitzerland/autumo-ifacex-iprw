@@ -57,19 +57,16 @@ public class AWSS3FileReader extends AbstractAWSS3File implements Reader {
 
 	private final static Logger LOG = LoggerFactory.getLogger(AWSS3FileReader.class.getName());
 	
-	// used for reader config
-	private static final SourceEntity WILDCARD_SOURCE_ENTITY = new SourceEntity(null, "*", null);
-	
 	private String tempOutputPath = null;
 	
 	private ObjectListing objectListing = null;
 	private int amount = 0;
-	
-	private int batchSize = 0;
+	private int fileCounter = 0;
+
 	private ExclusionFilter exFilter = null;
 	
+	private int batchSize = 0;
 	private BatchData currBatch = null;
-	private int fileCounter = 0;
 
 	
 	@Override
@@ -81,21 +78,27 @@ public class AWSS3FileReader extends AbstractAWSS3File implements Reader {
 		
 		super.initialize(rwName, config, processor);
 		
-		objectListing = client().listObjects(getBucketName());
-		amount = objectListing.getObjectSummaries().size();
-		
-		batchSize = config.getReaderConfig().getFetchSize(WILDCARD_SOURCE_ENTITY);
-		exFilter = config.getReaderConfig().getExclusionFilter(WILDCARD_SOURCE_ENTITY);
+		batchSize = config.getReaderConfig().getFetchSize(SourceEntity.WILDCARD_SOURCE_ENTITY);
+		exFilter = config.getReaderConfig().getExclusionFilter(SourceEntity.WILDCARD_SOURCE_ENTITY);
 	}
 
 	@Override
 	public void initializeEntity(String readerName, IPC config, SourceEntity entity)
 			throws ReaderException, IfaceXException {
+
+		// Source entity names are bucket names here!
+		objectListing = client().listObjects(entity.getEntity());
+
+		amount = objectListing.getObjectSummaries().size();
+		fileCounter = 0;
 	}
 
 	@Override
 	public void read(String readerName, BatchProcessor batchProcessor, IPC config, SourceEntity entity,
 			boolean hasMoreEntities) throws IfaceXException {
+		
+		// No matter what is defined, we use standard fields for files here
+		entity.overwriteSourceFields(SourceEntity.FILES_SOURCE_FIELDS);
 		
 		int batchCounter = 0;
 		
@@ -105,14 +108,11 @@ public class AWSS3FileReader extends AbstractAWSS3File implements Reader {
 				currBatch = new BatchData(config);
 			
 			final String key = os.getKey();
-			LOG.info("Processing (bucket: '"+getBucketName()+"'): " + key);
+			LOG.info("Processing (bucket: '" + entity.getEntity() + "'): " + key);
 			
 			String fileName = key;
-			String keyPrefix = null;
-			if (key.indexOf("/") != -1)
-				keyPrefix = key.split("/") [0];
 			
-			final S3Object s3object = client().getObject(getBucketName(), key);
+			final S3Object s3object = client().getObject(entity.getEntity(), key);
 			final S3ObjectInputStream inputStream = s3object.getObjectContent();
 			File file = null;
 			try {
@@ -129,11 +129,6 @@ public class AWSS3FileReader extends AbstractAWSS3File implements Reader {
 					file.getAbsolutePath()
 				};
 			
-			String entityName = "";
-			if (keyPrefix != null)
-				entityName = "/" + keyPrefix;
-			
-			final SourceEntity filesSourceEntity = new SourceEntity(config, getBucketName() + entityName , SourceEntity.FILES_SOURCE_FIELDS);
 			if (exFilter == null)
 				currBatch.addRecordValues(values);
 			else if (exFilter.addRecord(SourceEntity.FILES_SOURCE_FIELDS, values))
@@ -141,13 +136,12 @@ public class AWSS3FileReader extends AbstractAWSS3File implements Reader {
 			
 			batchCounter++;
 			fileCounter++;
-			
-			// overwrite, because we only have files and only one NULL entity
-			hasMoreEntities = fileCounter < amount;
-			
-			if (batchCounter == batchSize || !hasMoreEntities /* no more data following */ ) {
+
+			// More data?
+			final boolean moreData = fileCounter < amount || hasMoreEntities;
+			if (batchCounter == batchSize || !moreData) {
 				// process batch
-				batchProcessor.processBatchData(currBatch, filesSourceEntity, hasMoreEntities);
+				batchProcessor.processBatchData(currBatch, entity, moreData);
 				batchCounter = 0;
 			}
 		}

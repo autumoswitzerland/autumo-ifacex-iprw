@@ -5,8 +5,8 @@
 
 source_interface=aws_file_in
 destination_interfaces=file_out
-# In this case, you define the NULL entity for the 'aws_file_in' reader.
-process_source_entities=NULL
+# For the 'aws_file_in' reader, define a bucket-list as source entities!
+process_source_entities=filebucket
 
 
 
@@ -16,19 +16,14 @@ process_source_entities=NULL
 
 
 #
-# AWS access key (can be encrypted, use encoder.sh)
+# AWS access key (can be encrypted, use encoder.sh).
 #
 aws_file_in_access_key=access
 
 #
-# AWS secret key (can be encrypted, use encoder.sh)
+# AWS secret key (can be encrypted, use encoder.sh).
 #
 aws_file_in_secret_key=secret
-
-#
-# File bucket name (only lower-case allowed)
-#
-aws_file_in_bucket_name=filebucket
 
 #
 # URL end-point - can be empty; provide for faster access.
@@ -47,4 +42,22 @@ aws_file_in_region=eu-central-2
 # Temporary directory for files read from the AWS. 
 #
 aws_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex
+
+
+
+###############################################################################
+# File writer configuration
+###############################################################################
+
+
+#
+# Output directory. 
+#
+file_out_path=/Volumes/Fastdrive/tmp/fromaws
+
+#
+# Delete source files after copying?
+# Values: yes|no
+#
+file_out_delete_files_after_processing=no
 

@@ -1,0 +1,92 @@
+
+###############################################################################
+# General configuration
+###############################################################################
+
+source_interface=gdrive_file_in
+destination_interfaces=file_out
+# For the 'gdrive_file_in' reader, define a spaces-list as source entities or
+# use 'NULL' if you want to access the default google drive space.
+process_source_entities=NULL
+
+
+
+###############################################################################
+# Amazon AWS file reader configuration
+###############################################################################
+
+
+#
+# Temporary directory for files read from the AWS.
+#
+gdrive_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex
+
+
+#
+# Application name that is connected through OAuth 2.0.
+#
+gdrive_file_in_application_name=ifacex-test
+
+
+#
+# Client ID (can be encrypted, use encoder.sh).
+#
+# The subsequent parameters can be take out of
+# 'credentials.json' from Google.
+#
+gdrive_file_in_client_id=<YOUR_CLIENT_ID>
+
+
+#
+# Project ID.
+#
+gdrive_file_in_project_id=ifacex
+
+
+#
+# Authentication URI.
+#
+gdrive_file_in_auth_uri=https://accounts.google.com/o/oauth2/auth
+
+
+#
+# Token URI.
+#
+gdrive_file_in_token_uri=https://oauth2.googleapis.com/token
+
+
+#
+# Certification URL.
+#
+gdrive_file_in_auth_provider_x509_cert_url=https://www.googleapis.com/oauth2/v1/certs
+
+
+#
+# Your client secret (can be encrypted, use encoder.sh).
+#
+gdrive_file_in_client_secret=<YOUR_CLIENT_SECRET>
+
+
+#
+# Redirect URIs, comma-separated list or leave empty.
+#
+gdrive_file_in_redirect_uris=
+
+
+
+###############################################################################
+# File writer configuration
+###############################################################################
+
+
+#
+# Output directory. 
+#
+file_out_path=/Volumes/Fastdrive/tmp/fromgoogle
+
+#
+# Delete source files after copying?
+# Values: yes|no
+#
+file_out_delete_files_after_processing=yes
+

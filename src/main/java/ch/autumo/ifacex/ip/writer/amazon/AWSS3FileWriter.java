@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import ch.autumo.ifacex.IPC;
 import ch.autumo.ifacex.IfaceXException;
+import ch.autumo.ifacex.Processor;
 import ch.autumo.ifacex.SourceEntity;
 import ch.autumo.ifacex.batch.BatchData;
 import ch.autumo.ifacex.ip.generic.AbstractAWSS3File;
@@ -46,7 +47,24 @@ import ch.autumo.ifacex.writer.Writer;
 public class AWSS3FileWriter extends AbstractAWSS3File implements Writer {
 
 	private final static Logger LOG = LoggerFactory.getLogger(AWSS3FileReader.class.getName());
+
+	private String bucketName = null;
+
 	
+	@Override
+	public void initialize(String rwName, IPC config, Processor processor) throws IfaceXException {
+		
+		bucketName = config.getWriterConfig(rwName).getConfig("_bucket_name");
+
+		super.initialize(rwName, config, processor);
+		
+	    // Only create bucket when writing!
+		if (this instanceof Writer && !client().doesBucketExistV2(bucketName)) {
+			client().createBucket(bucketName);
+			LOG.info("AWS bucket '"+bucketName+"' created!");
+		}
+	}
+
 	@Override
 	public void writeHeader(String writerName, IPC config, SourceEntity entity) throws IfaceXException {
 	}
@@ -63,9 +81,9 @@ public class AWSS3FileWriter extends AbstractAWSS3File implements Writer {
 			final String vals[] = batch.next();
 			final File curr = new File(vals[0]); // absolute file path when reader 'FilePathReader/file_in' is used!
 			
-			LOG.info("Processing (bucket: '"+getBucketName()+"'): " + getKeyPrefix() + curr.getName());
+			LOG.info("Processing (bucket: '" + bucketName + "'): " + getKeyPrefix() + curr.getName());
 			
-			client().putObject(getBucketName(), getKeyPrefix() + curr.getName(), curr);
+			client().putObject(bucketName, getKeyPrefix() + curr.getName(), curr);
 		}
 	}
 	

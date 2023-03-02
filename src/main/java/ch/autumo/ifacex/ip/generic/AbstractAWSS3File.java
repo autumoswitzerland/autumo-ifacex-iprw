@@ -18,9 +18,6 @@
  */
 package ch.autumo.ifacex.ip.generic;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -40,15 +37,12 @@ import ch.autumo.ifacex.writer.Writer;
  * Abstract Amazon AWS S3 file.
  */
 public class AbstractAWSS3File implements Generic {
-
-	private final static Logger LOG = LoggerFactory.getLogger(AbstractAWSS3File.class.getName());
 	
 	private AmazonS3 s3client = null;
 	private AWSCredentials credentials = null;
 	private EndpointConfiguration endpoint = null;
 	private String urlEndpoint = null;
 	private String region = null;
-	private String bucketName = null;
 	private String keyPrefix = null;
 	
 	@Override
@@ -72,11 +66,9 @@ public class AbstractAWSS3File implements Generic {
 		
 		if (this instanceof Writer) {
 			keyPrefix = config.getWriterConfig(rwName).getConfig("_key_prefix");
-			bucketName = config.getWriterConfig(rwName).getConfig("_bucket_name");
 			urlEndpoint = config.getWriterConfig(rwName).getConfig("_url_endpoint");
 			region = config.getWriterConfig(rwName).getConfig("_region");
 		} else {
-			bucketName = config.getReaderConfig().getConfig("_bucket_name");
 			urlEndpoint = config.getReaderConfig().getConfig("_url_endpoint");
 			region = config.getReaderConfig().getConfig("_region");
 		}
@@ -111,11 +103,6 @@ public class AbstractAWSS3File implements Generic {
 			  .withRegion(Regions.EU_CENTRAL_2)
 			  .build();	
 
-	    // Only create bucket when writing!
-		if (this instanceof Writer && !s3client.doesBucketExistV2(bucketName)) {
-			s3client.createBucket(bucketName);
-			LOG.info("AWS bucket '"+bucketName+"' created!");
-		}
 	}
 
 	@Override
@@ -131,14 +118,6 @@ public class AbstractAWSS3File implements Generic {
 	 */
 	protected AmazonS3 client() {
 		return s3client;
-	}
-
-	/**
-	 * Get bucket name.
-	 * @return bucket name
-	 */
-	protected String getBucketName() {
-		return bucketName;
 	}
 
 	/**
