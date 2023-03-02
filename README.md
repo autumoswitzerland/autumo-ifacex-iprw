@@ -2,8 +2,6 @@
 
 ## autumo ifaceX - Additional Interface Processor Readers & Writers
 
-### &copy; 2023 autumo GmbH - Date: 28.02.2023
-
 This is a maven eclipse project and serves consist of additional autumo ifaceX 
 Interface Processor (IP) Readers and Writers and is extending the core reader
 and writer library of the autumo ifaceX platform.
