@@ -51,7 +51,9 @@ import ch.autumo.ifacex.writer.Writer;
 /**
  * Abstract Google Drive.
  * 
- * See: https://developers.google.com/drive/api/quickstart/java.
+ * See: {@link https://developers.google.com/drive/api/quickstart/java}.
+ * See: {@link https://developers.google.com/drive/api/v3/reference/files}.
+ * See: {@link https://developers.google.com/drive/api/v3/reference/files/list}.
  */
 public class AbstractGoogleDrive implements Generic {
 	
@@ -69,7 +71,7 @@ public class AbstractGoogleDrive implements Generic {
 	 * Global instance of the scopes required by this quickstart. If modifying these
 	 * scopes, delete your previously saved tokens/ folder.
 	 */
-	private static final List<String> SCOPES = Collections.singletonList(DriveScopes.DRIVE_READONLY);
+	private static final List<String> SCOPES = Collections.singletonList(DriveScopes.DRIVE);
 
 	private LocalServerReceiver receiver = null;
 	private Drive service = null;

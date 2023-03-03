@@ -124,11 +124,20 @@
 		<!-- Amazon AWS S3 -->
 
 		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-bundle</artifactId>
+		    <version>1.12.418</version>
+		    <scope>provided</scope>
+		</dependency>
+
+		<!--
+		<dependency>
 		    <groupId>com.amazonaws</groupId>
 		    <artifactId>aws-java-sdk</artifactId>
 		    <version>1.12.416</version>
 		    <scope>provided</scope>
 		</dependency>
+		-->
 		
 
 		<!-- Google Drive -->
@@ -170,6 +179,7 @@
 			<version>3.8.1</version>
 			<scope>test</scope>
 		</dependency>
+
 		
 	</dependencies>
 	

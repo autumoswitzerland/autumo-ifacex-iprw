@@ -93,21 +93,3 @@ gdrive_file_in_client_secret=<YOUR_CLIENT_SECRET>
 #
 gdrive_file_in_redirect_uris=
 
-
-
-###############################################################################
-# File writer configuration
-###############################################################################
-
-
-#
-# Output directory. 
-#
-file_out_path=/Volumes/Fastdrive/tmp/fromgoogle
-
-#
-# Delete source files after copying?
-# Values: yes|no
-#
-file_out_delete_files_after_processing=yes
-

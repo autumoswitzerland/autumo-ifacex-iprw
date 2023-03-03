@@ -21,12 +21,12 @@ process_source_entities=files:/Volumes/Documents/all
 #
 # AWS access key (can be encrypted, use encoder.sh).
 #
-aws_file_out_access_key=access
+aws_file_out_access_key=<YOUR_ACCESS_KEY>
 
 #
 # AWS secret key (can be encrypted, use encoder.sh).
 #
-aws_file_out_secret_key=secret
+aws_file_out_secret_key=<YOUR_SECRET>
 
 #
 # Key prefix for whole key, will be completed with

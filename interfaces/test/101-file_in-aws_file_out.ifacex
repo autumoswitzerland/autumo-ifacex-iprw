@@ -9,7 +9,7 @@ destination_interfaces=aws_file_out
 # In this case, you define one pseudo entity, that defines in which
 # directory files should be read and processed as source entities
 # for the 'file_in'-reader
-process_source_entities=files:/Users/Mike/Development/autumo/docs/ALL
+process_source_entities=files:/Volumes/Fastdrive/autump/docs/ALL
 
 
 
@@ -28,12 +28,12 @@ process_source_entities=files:/Users/Mike/Development/autumo/docs/ALL
 #
 # AWS access key (can be encrypted, use encoder.sh).
 #
-aws_file_out_access_key=access
+aws_file_out_access_key=<YOUR_ACCESS_KEY>
 
 #
 # AWS secret key (can be encrypted, use encoder.sh).
 #
-aws_file_out_secret_key=secret
+aws_file_out_secret_key=<YOUR_SECRET>
 
 #
 # Key prefix for whole key, will be completed with

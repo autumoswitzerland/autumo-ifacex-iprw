@@ -18,12 +18,12 @@ process_source_entities=filebucket
 #
 # AWS access key (can be encrypted, use encoder.sh).
 #
-aws_file_in_access_key=access
+aws_file_in_access_key=<YOUR_ACCESS_KEY>
 
 #
 # AWS secret key (can be encrypted, use encoder.sh).
 #
-aws_file_in_secret_key=secret
+aws_file_in_secret_key=<YOUR_SECRET>
 
 #
 # URL end-point - can be empty; provide for faster access.

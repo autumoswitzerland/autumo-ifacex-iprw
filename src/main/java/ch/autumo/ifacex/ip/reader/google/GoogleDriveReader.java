@@ -58,6 +58,9 @@ public class GoogleDriveReader extends AbstractGoogleDrive implements Reader {
 	
 	private String tempOutputPath = null;
 	
+	private String corpora = null;
+	private String driveId = null;
+	
 	private int batchSize = 0;
 	private ExclusionFilter exFilter = null;
 	
@@ -69,6 +72,9 @@ public class GoogleDriveReader extends AbstractGoogleDrive implements Reader {
 		tempOutputPath = config.getReaderConfig().getConfig("_temp_out_path");
 		if (!tempOutputPath.endsWith(OSUtils.FILE_SEPARATOR)) 
 			tempOutputPath += OSUtils.FILE_SEPARATOR;
+
+		corpora = config.getReaderConfig().getConfig("_corpora");
+		driveId = config.getReaderConfig().getConfig("_drive_id");
 		
 		super.initialize(rwName, config, processor);
 		
@@ -103,13 +109,20 @@ public class GoogleDriveReader extends AbstractGoogleDrive implements Reader {
 		    	else
 		    		workingSet = service().files().list();
 
+		    	// Corpora and drive ID if any.
+		    	if (corpora != null && corpora.length() > 0) {
+		    		workingSet = workingSet.setCorpora(corpora);
+		    		if (driveId != null && driveId.length() > 0)
+			    		workingSet = workingSet.setDriveId(driveId);
+		    	}
+		    	
 		    	// source entities are Google drive spaces here !
 		    	final boolean nullEntity = entity.getEntity().toUpperCase().equals(SourceEntity.NULL_ENTITY_NAME);
 		    	if (!nullEntity)
 		    		workingSet = workingSet.setSpaces(entity.getEntity());
 		    	
 		    	workingSet = workingSet.setPageSize(batchSize).setFields(DRIVE_FIELDS);
-	
+		    			    	
 		    	// Get result file set
 		    	result = workingSet.execute();
 		    	
@@ -118,6 +131,7 @@ public class GoogleDriveReader extends AbstractGoogleDrive implements Reader {
 				if (files == null || files.isEmpty()) {
 					
 					LOG.error("No files found! Stop reading from Google drive!");
+					batchProcessor.noDataIsComing();
 					break LOOP;
 					
 				} else {
