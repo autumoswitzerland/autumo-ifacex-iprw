@@ -18,6 +18,9 @@
  */
 package ch.autumo.ifacex.ip.generic;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -36,7 +39,9 @@ import ch.autumo.ifacex.writer.Writer;
 /**
  * Abstract Amazon AWS S3 file.
  */
-public class AbstractAWSS3File implements Generic {
+public abstract class AbstractAWSS3File implements Generic {
+	
+	private final static Logger LOG = LoggerFactory.getLogger(AbstractAWSS3File.class.getName());
 	
 	private AmazonS3 s3client = null;
 	private AWSCredentials credentials = null;
@@ -103,6 +108,7 @@ public class AbstractAWSS3File implements Generic {
 			  .withRegion(Regions.EU_CENTRAL_2)
 			  .build();	
 
+	    LOG.info("Connected to endpoint '" + urlEndpoint + "' and region '" + region + "'.");
 	}
 
 	@Override

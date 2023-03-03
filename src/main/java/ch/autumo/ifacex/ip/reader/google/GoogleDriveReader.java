@@ -67,7 +67,7 @@ public class GoogleDriveReader extends AbstractGoogleDrive implements Reader {
 	private BatchData currBatch = null;
 
 	@Override
-	public void initialize(String rwName, IPC config, Processor processor) throws IfaceXException {
+	public void initialize(String readerName, IPC config, Processor processor) throws IfaceXException {
 
 		tempOutputPath = config.getReaderConfig().getConfig("_temp_out_path");
 		if (!tempOutputPath.endsWith(OSUtils.FILE_SEPARATOR)) 
@@ -76,7 +76,7 @@ public class GoogleDriveReader extends AbstractGoogleDrive implements Reader {
 		corpora = config.getReaderConfig().getConfig("_corpora");
 		driveId = config.getReaderConfig().getConfig("_drive_id");
 		
-		super.initialize(rwName, config, processor);
+		super.initialize(readerName, config, processor);
 		
 		batchSize = config.getReaderConfig().getFetchSize(SourceEntity.WILDCARD_SOURCE_ENTITY);
 		exFilter = config.getReaderConfig().getExclusionFilter(SourceEntity.WILDCARD_SOURCE_ENTITY);
@@ -157,16 +157,23 @@ public class GoogleDriveReader extends AbstractGoogleDrive implements Reader {
 						final String filePath = tempOutputPath + file.getName();
 						final java.io.File f = new java.io.File(filePath);
 						
-						if (!isFolder)
+						if (!isFolder) {
+							
 							service().files().get(file.getId()).executeMediaAndDownloadTo(new FileOutputStream(f));
-						else
-							f.mkdirs();
+	
+							final String values[] = new String[] {filePath};
+							if (exFilter == null)
+								currBatch.addRecordValues(values);
+							else if (exFilter.addRecord(SourceEntity.FILES_SOURCE_FIELDS, values))
+								currBatch.addRecordValues(values);
 						
-						final String values[] = new String[] {filePath};
-						if (exFilter == null)
-							currBatch.addRecordValues(values);
-						else if (exFilter.addRecord(SourceEntity.FILES_SOURCE_FIELDS, values))
-							currBatch.addRecordValues(values);
+						} else {
+							
+							// Nope, we don't take folders; this makes the
+							// batch smaller than the batch size
+							
+							//f.mkdirs();
+						}
 					}
 				}	
 				

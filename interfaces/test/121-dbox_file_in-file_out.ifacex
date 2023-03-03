@@ -1,0 +1,68 @@
+
+###############################################################################
+# General configuration
+###############################################################################
+
+source_interface=dbox_file_in
+destination_interfaces=file_out
+# For the 'gdrive_file_in' reader, define a spaces-list as source entities or
+# use 'NULL' if you want to access the default google drive space.
+process_source_entities=NULL
+
+
+
+###############################################################################
+# Dropbox file reader configuration
+###############################################################################
+
+
+#
+# Temporary directory for files read from Dropbox.
+#
+dbox_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex
+
+
+#
+# From what path should be read?
+# '/' is the root directory, but it is unsupported!
+#
+dbox_file_in_path=/test
+
+
+#
+# Dropbox OAuth 2.0 access token.
+#
+dbox_file_in_oauth_access_token=<YOUR_ACCESS_TOKEN>
+
+
+#
+# App name you could provide.
+# Can be left empty.
+#
+dbox_file_in_app_name=
+
+
+#
+# App version you could provide.
+# Can be left empty.
+#
+dbox_file_in_app_version=
+
+
+
+###############################################################################
+# File writer configuration
+###############################################################################
+
+
+#
+# Output directory. 
+#
+file_out_path=/Volumes/Fastdrive/tmp/fromdb
+
+#
+# Delete source files after copying?
+# Values: yes|no
+#
+file_out_delete_files_after_processing=no
+

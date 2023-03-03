@@ -52,11 +52,11 @@ public class AWSS3FileWriter extends AbstractAWSS3File implements Writer {
 
 	
 	@Override
-	public void initialize(String rwName, IPC config, Processor processor) throws IfaceXException {
+	public void initialize(String writerName, IPC config, Processor processor) throws IfaceXException {
 		
-		bucketName = config.getWriterConfig(rwName).getConfig("_bucket_name");
+		bucketName = config.getWriterConfig(writerName).getConfig("_bucket_name");
 
-		super.initialize(rwName, config, processor);
+		super.initialize(writerName, config, processor);
 		
 	    // Only create bucket when writing!
 		if (this instanceof Writer && !client().doesBucketExistV2(bucketName)) {

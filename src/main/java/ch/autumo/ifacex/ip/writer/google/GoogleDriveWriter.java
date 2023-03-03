@@ -57,14 +57,14 @@ public class GoogleDriveWriter extends AbstractGoogleDrive implements Writer {
 	private String folderIdParent = null;
 	
 	@Override
-	public void initialize(String rwName, IPC config, Processor processor) throws IfaceXException {
+	public void initialize(String writerName, IPC config, Processor processor) throws IfaceXException {
 
-		super.initialize(rwName, config, processor);
+		super.initialize(writerName, config, processor);
 		
-		folder = config.getWriterConfig(rwName).getConfig("_folder");
-		folderIdParent = config.getWriterConfig(rwName).getConfig("_folder_id_parent");
+		folder = config.getWriterConfig(writerName).getConfig("_folder");
+		folderIdParent = config.getWriterConfig(writerName).getConfig("_folder_id_parent");
 		
-		if (folder != null && folder.length() > 0) {
+		if (folder != null && folder.trim().length() > 0) {
 	        
 			try {
 				

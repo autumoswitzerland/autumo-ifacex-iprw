@@ -70,13 +70,13 @@ public class AWSS3FileReader extends AbstractAWSS3File implements Reader {
 
 	
 	@Override
-	public void initialize(String rwName, IPC config, Processor processor) throws IfaceXException {
+	public void initialize(String readerName, IPC config, Processor processor) throws IfaceXException {
 		
 		tempOutputPath = config.getReaderConfig().getConfig("_temp_out_path");
 		if (!tempOutputPath.endsWith(OSUtils.FILE_SEPARATOR)) 
 			tempOutputPath += OSUtils.FILE_SEPARATOR;
 		
-		super.initialize(rwName, config, processor);
+		super.initialize(readerName, config, processor);
 		
 		batchSize = config.getReaderConfig().getFetchSize(SourceEntity.WILDCARD_SOURCE_ENTITY);
 		exFilter = config.getReaderConfig().getExclusionFilter(SourceEntity.WILDCARD_SOURCE_ENTITY);

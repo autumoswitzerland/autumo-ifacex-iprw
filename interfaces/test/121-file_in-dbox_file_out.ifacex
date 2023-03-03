@@ -1,0 +1,53 @@
+
+###############################################################################
+# General configuration
+###############################################################################
+
+source_interface=file_in
+destination_interfaces=dbox_file_out
+# In this case, you define one pseudo entity, that defines in which
+# directory files should be read and processed as source entities
+# for the 'file_in'-reader
+process_source_entities=files:/Volumes/Fastdrive/autump/docs/DROPBOX
+
+
+
+###############################################################################
+# File reader configuration
+###############################################################################
+
+# No parameters necessary 
+
+
+
+###############################################################################
+# Dropbox file writer configuration
+###############################################################################
+
+
+#
+# To what path should be written?
+# '/' is the root directory, but it is unsupported!
+#
+dbox_file_out_path=/test/test3
+
+
+#
+# Dropbox OAuth 2.0 access token.
+#
+dbox_file_out_oauth_access_token=<YOUR_ACCESS_TOKEN>
+
+
+#
+# App name you could provide.
+# Can be left empty.
+#
+dbox_file_out_app_name=
+
+
+#
+# App version you could provide.
+# Can be left empty.
+#
+dbox_file_out_app_version=
+

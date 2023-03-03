@@ -121,6 +121,16 @@
 		</dependency>
 
 
+		<!-- Dropbox -->
+
+		<dependency>
+    		<groupId>com.dropbox.core</groupId>
+    		<artifactId>dropbox-core-sdk</artifactId>
+    		<version>5.4.4</version>
+		    <scope>provided</scope>
+		</dependency>
+
+
 		<!-- Amazon AWS S3 -->
 
 		<dependency>

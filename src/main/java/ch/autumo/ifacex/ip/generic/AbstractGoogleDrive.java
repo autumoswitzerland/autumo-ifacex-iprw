@@ -26,6 +26,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
@@ -55,7 +57,9 @@ import ch.autumo.ifacex.writer.Writer;
  * See: {@link https://developers.google.com/drive/api/v3/reference/files}.
  * See: {@link https://developers.google.com/drive/api/v3/reference/files/list}.
  */
-public class AbstractGoogleDrive implements Generic {
+public abstract class AbstractGoogleDrive implements Generic {
+	
+	private final static Logger LOG = LoggerFactory.getLogger(AbstractGoogleDrive.class.getName());
 	
 	/**
 	 * Global instance of the JSON factory.
@@ -113,11 +117,13 @@ public class AbstractGoogleDrive implements Generic {
 			}
 		
 			// Build a new authorized API client service.
-		    final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-		    service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, this.getCredentials(HTTP_TRANSPORT))
+		    final NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+		    service = new Drive.Builder(httpTransport, JSON_FACTORY, this.getCredentials(httpTransport))
 		    		.setApplicationName(appName)
 		    		.build();
 	
+		    LOG.info("Connected to app '" + appName + "' and project '" + project_id + "'.");
+		    
 	    } catch (Exception e) {
 	    	throw new IfaceXException("Cannot create google drive service!", e);
 	    }
