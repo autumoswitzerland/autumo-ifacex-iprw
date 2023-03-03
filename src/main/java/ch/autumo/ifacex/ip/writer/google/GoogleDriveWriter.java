@@ -68,6 +68,9 @@ public class GoogleDriveWriter extends AbstractGoogleDrive implements Writer {
 	            final List<String> parents = Arrays.asList(folderIdParent);
 	            fileMetadata.setParents(parents);
 	        }
+			
+			//TODO: check if folder with same name already exists!
+			
 			try {
 				final File fld = service().files().create(fileMetadata).setFields("id,name").execute();
 				folderId = fld.getId();
