@@ -1,0 +1,52 @@
+
+###############################################################################
+# General configuration
+###############################################################################
+
+source_interface=gstorage_file_in
+destination_interfaces=file_out
+# For the 'gstorage_file_in' reader, define a bucket-list as source entities!
+process_source_entities=ifacex_bucket
+
+
+
+###############################################################################
+# Google Storage file reader configuration
+###############################################################################
+
+
+#
+# Temporary directory for files read from the AWS.
+#
+gstorage_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex
+
+
+#
+# Project ID.
+#
+gstorage_file_in_project_id=ifacex
+
+
+#
+# Google storage credentials file, refers to a specific project.
+#
+gstorage_file_in_credentials_file=<YOUR_PATH_TO_GOOGLE_JSON_CREDENTIALS>
+
+
+
+###############################################################################
+# File writer configuration
+###############################################################################
+
+
+#
+# Output directory. 
+#
+file_out_path=/Volumes/Fastdrive/tmp/fromgoogle
+
+#
+# Delete source files after copying?
+# Values: yes|no
+#
+file_out_delete_files_after_processing=yes
+

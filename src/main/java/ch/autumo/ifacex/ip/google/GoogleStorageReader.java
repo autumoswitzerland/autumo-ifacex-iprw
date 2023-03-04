@@ -22,6 +22,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.Iterator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.api.gax.paging.Page;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.Blob.BlobSourceOption;
@@ -40,16 +43,16 @@ import ch.autumo.ifacex.reader.ReaderException;
 
 
 /**
- * @UNTESTED
- * 
- * Google Cloud Storage file in - reader prefix 'gcloud_file_in'.
+ * Google Cloud Storage file in - reader prefix 'gstorage_file_in'.
  * 
  * Reads files from a google cloud storage buckets as entities and creates them 
- * in the directory specified by 'gcloud_file_in_temp_out_path'; you have to delete
+ * in the directory specified by 'gstorage_file_in_temp_out_path'; you have to delete
  * them yourself if necessary and if they are not deleted by a file writer for example.
  */
 public class GoogleStorageReader extends AbstractGoogleStorage implements Reader {
 
+	private final static Logger LOG = LoggerFactory.getLogger(GoogleStorageReader.class.getName());
+	
 	private String tempOutputPath = null;
 	
 	private int batchSize = 0;
@@ -92,14 +95,25 @@ public class GoogleStorageReader extends AbstractGoogleStorage implements Reader
 			
 			final Iterable<Blob> iterable = page.iterateAll();
 			for (Iterator<Blob> iterator = iterable.iterator(); iterator.hasNext();) {
-				
+
 				final Blob blob = iterator.next();
 				//final BlobId blobId = blob.getBlobId();
+
+				LOG.info("Processing (bucket: '" + entity.getEntity() + "'): " + blob.getName());
 				
 				String filePath = null;
 				try {
+					
+					/* Using bucket name as directory: Only creates problems when deleting temporary directories
 					filePath = tempOutputPath + entity.getEntity() + OSUtils.FILE_SEPARATOR + blob.getName();
+					final File file = new File(filePath);
+					if (!file.getParentFile().exists())
+						file.getParentFile().mkdirs();
+						*/
+
+					filePath = tempOutputPath + blob.getName();
 					blob.downloadTo(new FileOutputStream(filePath), BlobSourceOption.userProject(super.getProjectId()));
+					
 				} catch (FileNotFoundException e) {
 					throw new IfaceXException("Cannot store blob locally to '" + filePath + "'!", e);
 				}

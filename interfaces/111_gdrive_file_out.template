@@ -8,7 +8,7 @@ destination_interfaces=gdrive_file_out
 # In this case, you define one pseudo entity, that defines in which
 # directory files should be read and processed as source entities
 # for the 'file_in'-reader
-process_source_entities=files:/Volumes/Fastdrive/autump/docs/GOOGLE
+process_source_entities=files:/Volumes/Fastdrive/autumo/docs/GOOGLE
 
 
 

@@ -109,17 +109,28 @@ public class AWSS3FileReader extends AbstractAWSS3File implements Reader {
 			final String key = os.getKey();
 			LOG.info("Processing (bucket: '" + entity.getEntity() + "'): " + key);
 			
-			String fileName = key;
+			/* Using key as directory: Only creates problems when deleting temporary directories */
+			String fileName = null;
+			if (key.indexOf("/") == -1) {
+				fileName = key;
+			} else {
+				final String parts[] = key.split("/");
+				fileName = parts[parts.length - 1];
+			}
 			
 			final S3Object s3object = client().getObject(entity.getEntity(), key);
 			final S3ObjectInputStream inputStream = s3object.getObjectContent();
 			File file = null;
 			try {
+				
 				file = new File(tempOutputPath + fileName);
-				// make directories from AWS key-prefix
-				file.mkdirs();
+
+				// NOPE: make directories from AWS key-prefix
+				//file.mkdirs();
+				
 				final Path path = file.toPath();
 				Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING);
+				
 			} catch (IOException e) {
 				throw new IfaceXException("Couldn't create file from '"+fileName+"'!", e);
 			}
