@@ -56,8 +56,8 @@ public class AWSS3FileWriter extends AbstractAWSS3File implements Writer {
 
 		super.initialize(writerName, config, processor);
 		
-	    // Only create bucket when writing!
-		if (this instanceof Writer && !client().doesBucketExistV2(bucketName)) {
+	    // Only create bucket if it doesn't exists
+		if (!client().doesBucketExistV2(bucketName)) {
 			client().createBucket(bucketName);
 			LOG.info("AWS bucket '"+bucketName+"' created!");
 		}

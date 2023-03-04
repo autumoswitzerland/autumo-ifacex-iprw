@@ -1,0 +1,66 @@
+
+###############################################################################
+# General configuration
+###############################################################################
+
+source_interface=file_in
+destination_interfaces=gstorage_file_out
+# In this case, you define one pseudo entity, that defines in which
+# directory files should be read and processed as source entities
+# for the 'file_in'-reader
+process_source_entities=files:/Volumes/Fastdrive/autumo/docs/GOOGLE
+
+
+
+###############################################################################
+# File reader configuration
+###############################################################################
+
+# No parameters necessary 
+
+
+
+###############################################################################
+# Google Storage file writer configuration
+###############################################################################
+
+
+#
+# Google storage credentials file, refers to a specific project.
+#
+gstorage_file_out_credentials_file=<YOUR_PATH_TO_GOOGLE_JSON_CREDENTIALS>
+
+
+#
+# Region/location, you can use multi-regions too.
+#
+# See: https://cloud.google.com/storage/docs/bucket-locations
+#
+gstorage_file_out_region=EU
+
+
+#
+# Project ID.
+#
+gstorage_file_out_project_id=ifacex
+
+
+#
+# Bucket name.
+#
+gstorage_file_out_bucket_name=ifacex_bucket
+
+
+#
+# Used when new buckets must be created.
+#
+# Possible values:
+#
+# - 'STANDARD' : https://cloud.google.com/storage/docs/storage-classes#standard">https://cloud.google.com/storage/docs/storage-classes#standard
+# - 'NEARLINE' : https://cloud.google.com/storage/docs/storage-classes#nearline">https://cloud.google.com/storage/docs/storage-classes#nearline
+# - 'COLDLINE' : https://cloud.google.com/storage/docs/storage-classes#nearline">https://cloud.google.com/storage/docs/storage-classes#coldline
+# - 'ARCHIVE'  : https://cloud.google.com/storage/docs/storage-classes#nearline">https://cloud.google.com/storage/docs/storage-classes#archive
+# - 'REGIONAL' : https://cloud.google.com/storage/docs/storage-classes#nearline">https://cloud.google.com/storage/docs/storage-classes#legacy
+#
+gstorage_file_out_storage_class=STANDARD
+
