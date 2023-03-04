@@ -16,7 +16,7 @@
  * code@autumo.ch
  * 
  */
-package ch.autumo.ifacex.ip.generic;
+package ch.autumo.ifacex.ip.dropbox;
 
 import java.nio.file.InvalidPathException;
 import java.nio.file.Paths;

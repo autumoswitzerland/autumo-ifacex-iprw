@@ -16,7 +16,7 @@
  * code@autumo.ch
  * 
  */
-package ch.autumo.ifacex.ip.writer.dropbox;
+package ch.autumo.ifacex.ip.dropbox;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,7 +34,6 @@ import ch.autumo.ifacex.IfaceXException;
 import ch.autumo.ifacex.Processor;
 import ch.autumo.ifacex.SourceEntity;
 import ch.autumo.ifacex.batch.BatchData;
-import ch.autumo.ifacex.ip.generic.AbstractDropbox;
 import ch.autumo.ifacex.writer.Writer;
 
 

@@ -16,7 +16,7 @@
  * code@autumo.ch
  * 
  */
-package ch.autumo.ifacex.ip.generic;
+package ch.autumo.ifacex.ip.google;
 
 import java.io.IOException;
 import java.io.InputStream;

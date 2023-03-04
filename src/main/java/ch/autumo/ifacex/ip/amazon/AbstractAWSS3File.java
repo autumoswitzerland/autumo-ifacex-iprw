@@ -16,7 +16,7 @@
  * code@autumo.ch
  * 
  */
-package ch.autumo.ifacex.ip.generic;
+package ch.autumo.ifacex.ip.amazon;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

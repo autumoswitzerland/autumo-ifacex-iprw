@@ -16,7 +16,7 @@
  * code@autumo.ch
  * 
  */
-package ch.autumo.ifacex.ip.reader.google;
+package ch.autumo.ifacex.ip.google;
 
 import java.io.FileOutputStream;
 import java.util.List;
@@ -36,7 +36,6 @@ import ch.autumo.ifacex.Processor;
 import ch.autumo.ifacex.SourceEntity;
 import ch.autumo.ifacex.batch.BatchData;
 import ch.autumo.ifacex.batch.BatchProcessor;
-import ch.autumo.ifacex.ip.generic.AbstractGoogleDrive;
 import ch.autumo.ifacex.reader.Reader;
 import ch.autumo.ifacex.reader.ReaderException;
 

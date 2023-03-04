@@ -16,7 +16,7 @@
  * code@autumo.ch
  * 
  */
-package ch.autumo.ifacex.ip.reader.amazon;
+package ch.autumo.ifacex.ip.amazon;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,7 +40,6 @@ import ch.autumo.ifacex.Processor;
 import ch.autumo.ifacex.SourceEntity;
 import ch.autumo.ifacex.batch.BatchData;
 import ch.autumo.ifacex.batch.BatchProcessor;
-import ch.autumo.ifacex.ip.generic.AbstractAWSS3File;
 import ch.autumo.ifacex.reader.Reader;
 import ch.autumo.ifacex.reader.ReaderException;
 

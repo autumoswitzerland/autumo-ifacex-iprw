@@ -16,7 +16,7 @@
  * code@autumo.ch
  * 
  */
-package ch.autumo.ifacex.ip.reader.dropbox;
+package ch.autumo.ifacex.ip.dropbox;
 
 import java.io.FileOutputStream;
 
@@ -37,8 +37,7 @@ import ch.autumo.ifacex.Processor;
 import ch.autumo.ifacex.SourceEntity;
 import ch.autumo.ifacex.batch.BatchData;
 import ch.autumo.ifacex.batch.BatchProcessor;
-import ch.autumo.ifacex.ip.generic.AbstractDropbox;
-import ch.autumo.ifacex.ip.reader.google.GoogleDriveReader;
+import ch.autumo.ifacex.ip.google.GoogleDriveReader;
 import ch.autumo.ifacex.reader.Reader;
 import ch.autumo.ifacex.reader.ReaderException;
 
