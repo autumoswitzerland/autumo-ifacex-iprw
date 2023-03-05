@@ -38,6 +38,7 @@ in your own project and IDE.
 - Google Cloud Storage
 - Google Drive
 - WebDAV (with SSL)
+- FTP (with SSL)
 
 #### ifaceX Core Readers | Writers
 

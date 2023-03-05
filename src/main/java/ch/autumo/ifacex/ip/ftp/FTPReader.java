@@ -16,18 +16,14 @@
  * code@autumo.ch
  * 
  */
-package ch.autumo.ifacex.ip.webdav;
+package ch.autumo.ifacex.ip.ftp;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.util.List;
 
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.net.ftp.FTPFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.github.sardine.DavResource;
 
 import ch.autumo.commons.utils.OSUtils;
 import ch.autumo.ifacex.ExclusionFilter;
@@ -42,20 +38,19 @@ import ch.autumo.ifacex.reader.ReaderException;
 
 
 /**
- * WebDAV file in - reader prefix 'webdav_file_in'.
+ * FTP file in - reader prefix 'ftp_file_in'.
  * 
- * Reads files from a web-dav server and folder URI paths (directories) as entities 
- * and creates/overwrites them in the directory specified by 'webdav_file_in_temp_out_path';
+ * Reads files from a FTP server and folders (directories) as entities 
+ * and creates/overwrites them in the directory specified by 'ftp_file_in_temp_out_path';
  * you have to delete them yourself if necessary and if they are not deleted by a 
  * file writer for example.
  */
-public class WebDAVReader extends AbstractWebDAV implements Reader {
+public class FTPReader extends AbstractFTP implements Reader {
 
-	private final static Logger LOG = LoggerFactory.getLogger(WebDAVReader.class.getName());
+	private final static Logger LOG = LoggerFactory.getLogger(FTPReader.class.getName());
 	
 	private String tempOutputPath = null;
-	private String entityUrl = null;
-
+	
 	private ExclusionFilter exFilter = null;
 	
 	private BatchData currBatch = null;
@@ -71,65 +66,58 @@ public class WebDAVReader extends AbstractWebDAV implements Reader {
 		super.initialize(readerName, config, processor);
 		
 		exFilter = config.getReaderConfig().getExclusionFilter(SourceEntity.WILDCARD_SOURCE_ENTITY);
-	}
-
+	}	
+	
 	@Override
 	public void initializeEntity(String readerName, IPC config, SourceEntity entity)
 			throws ReaderException, IfaceXException {
-		
-		String entityStr = entity.getEntity();
-		entityStr = entityStr.replace(" ", "%20");
-		
-		if (!entityStr.startsWith("/"))
-			entityStr = "/" + entityStr;
-		
-		this.entityUrl = baseUrl() + entityStr;
-		if (!this.entityUrl.endsWith("/"))
-			this.entityUrl += "/";
 	}
 
 	@Override
 	public void read(String readerName, BatchProcessor batchProcessor, IPC config, SourceEntity entity,
 			boolean hasMoreEntities) throws IfaceXException {
-		
+
 		// No matter what is defined, we use standard fields for files here
 		entity.overwriteSourceFields(SourceEntity.FILES_SOURCE_FIELDS);
 		
-		List<DavResource> resources;
+		final String directory = entity.getEntity().trim();
+
+		FTPFile files[] = null;
 		try {
-			resources = webDAV().list(entityUrl, 1); // -> 1: directory listing with parent resource/folder
+			 files = client().listFiles(directory);
 		} catch (IOException e) {
-			throw new IfaceXException("Couldn't read file list from '"+this.entityUrl+"'!", e);
+			throw new IfaceXException("Couldn't list files in remote directory '"+directory+"'!", e);
 		}
 		
-		// One directory listing = 1 batch, no sizes here
+		// One batch per (entity) directory path
 		currBatch = new BatchData(config);
 		
-		FILES: for (DavResource res : resources) {
+		FILES: for (int i = 0; i < files.length; i++) {
 			
-			if (res.isDirectory())
+			final FTPFile remoteFile = files[i];
+			if (remoteFile.isDirectory())
+				continue FILES;
+			if (!remoteFile.isFile())
 				continue FILES;
 			
+			LOG.info("Processing (entity: '"+directory+"'): " + remoteFile.getName());
+			
+			final String fileOutPath = tempOutputPath + remoteFile.getName();
 			try {
 				
-				LOG.info("Processing (entity: '"+entity.getEntity()+"'): " + res.getPath());
+				final FileOutputStream fos = new FileOutputStream(fileOutPath);
+				client().retrieveFile(remoteFile.getName(), fos);
+				fos.close();
 				
-				String name = res.getName();
-				name = URLEncoder.encode(name, "UTF-8").replace("+", "%20");
-				String fullUrlPath = this.entityUrl + name;
-				
-				final String fileOutPath = tempOutputPath + res.getName();
-				IOUtils.copy(webDAV().get(fullUrlPath), new FileOutputStream(fileOutPath));
-				
-				final String values[] = new String[] {fileOutPath};
-				if (exFilter == null)
-					currBatch.addRecordValues(values);
-				else if (exFilter.addRecord(SourceEntity.FILES_SOURCE_FIELDS, values))
-					currBatch.addRecordValues(values);			
-				
-			} catch (IOException e) {
-				throw new IfaceXException("Couldn't read file from '"+res.getPath()+"'!", e);
+			} catch (Exception e) {
+				throw new IfaceXException("Couldn't retriev file '"+remoteFile.getName()+"' from remote directory '"+directory+"'!", e);
 			}
+			
+			final String values[] = new String[] {fileOutPath};
+			if (exFilter == null)
+				currBatch.addRecordValues(values);
+			else if (exFilter.addRecord(SourceEntity.FILES_SOURCE_FIELDS, values))
+				currBatch.addRecordValues(values);			
 		}
 		
 		// In this case, more entities = more data

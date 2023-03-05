@@ -18,9 +18,6 @@
  */
 package ch.autumo.ifacex.ip.amazon;
 
-import java.nio.charset.Charset;
-import java.util.concurrent.TimeUnit;
-
 import org.apache.commons.net.ftp.FTPClient;
 import org.mockftpserver.fake.FakeFtpServer;
 import org.mockftpserver.fake.UserAccount;
@@ -29,8 +26,6 @@ import org.mockftpserver.fake.filesystem.FileEntry;
 import org.mockftpserver.fake.filesystem.FileSystem;
 import org.mockftpserver.fake.filesystem.UnixFakeFileSystem;
 //import org.junit.runners.model.Statement;
-
-import com.github.stefanbirkner.fakesftpserver.rule.FakeSftpServerRule;
 
 
 /**
@@ -53,42 +48,6 @@ public class FTPMockServer {
 			filePath = args[0].trim();
 		else 
 			filePath = "/Volumes/Fastdrive/tmp/ftp";
-    	
-		/*
-		// SFTP (https://github.com/stefanbirkner/fake-sftp-server-rule)
-		final int sport = 9322;
-		final FakeSftpServerRule sftpServer = new FakeSftpServerRule();
-		sftpServer.addUser("autumo", "autumo");
-		sftpServer.setPort(sport);
-		
-		Statement stmt = sftpServer.apply(new Statement() {
-			@Override
-			public void evaluate() throws Throwable {
-				try {
-					Thread.sleep(3000);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}, null);
-		
-		final Thread t = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					stmt.evaluate();
-				} catch (Throwable e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		t.start();
-		
-		TimeUnit.SECONDS.sleep(3);
-		
-		sftpServer.putFile(filePath, "content of file", Charset.defaultCharset());
-		*/
-
 		
 		// FTP
 		final FakeFtpServer fakeFtpServer = new FakeFtpServer();
@@ -100,18 +59,21 @@ public class FTPMockServer {
         fileSystem.add(new FileEntry(filePath + "/foobar.txt", "abcdef 1234567890"));
                 
         fakeFtpServer.setFileSystem(fileSystem);
-        fakeFtpServer.setServerControlPort(9321);
+        fakeFtpServer.setServerControlPort(21);
         fakeFtpServer.start();
 
         final int port = fakeFtpServer.getServerControlPort();
         
+        
+        // Test
+        //final FTPSClient sftpClient = new FTPSClient();
         final FTPClient ftpClient = new FTPClient();
         ftpClient.connect("localhost", port);
         ftpClient.login("autumo", "autumo");
         ftpClient.disconnect();
         
+        
         System.out.println("");
-        //System.out.println("SFTP mock server running on port " + sport + ".");
         System.out.println("FTP mock server running on port " + port + ".");
 	    
         waitForEnter();

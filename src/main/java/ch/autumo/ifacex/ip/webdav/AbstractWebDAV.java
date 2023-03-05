@@ -44,7 +44,7 @@ import ch.autumo.ifacex.generic.Generic;
 import ch.autumo.ifacex.writer.Writer;
 
 /**
- * Abstract Web DAV.
+ * Abstract Web DAV (with SSL if configured).
  */
 public class AbstractWebDAV implements Generic {
 
@@ -67,13 +67,13 @@ public class AbstractWebDAV implements Generic {
 		try {
 			if (this instanceof Writer) {
 				url = config.getWriterConfig(rwName).getConfig("_url");
-				user = config.getWriterConfig(rwName).getConfigDecodedIfNecessary("_user");
-				pass = config.getWriterConfig(rwName).getConfigDecodedIfNecessary("_password");
+				user = config.getWriterConfig(rwName).getUser();
+				pass = config.getWriterConfig(rwName).getPassword();
 				ssl = config.getWriterConfig(rwName).isYes("_ssl", false);
 			} else {
 				url = config.getReaderConfig().getConfig("_url");
-				user = config.getReaderConfig().getConfigDecodedIfNecessary("_user");
-				pass = config.getReaderConfig().getConfigDecodedIfNecessary("_password");
+				user = config.getReaderConfig().getUser();
+				pass = config.getReaderConfig().getPassword();
 				ssl = config.getReaderConfig().isYes("_ssl", false);
 			}
 		} catch (Exception e) {
