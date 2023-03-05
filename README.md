@@ -47,9 +47,12 @@ in your own project and IDE.
  - Document Reader that extracts full text (over 80 formats)
  - Database Reader | Writer (Relational databases)
  - MongoDB Reader | Writer
- - REST Reader Writer (Universal REST JSON)
+ - REST Reader | Writer (Universal JSON REST)
  - First Writer (Only writes 1st batch)
  - Console Writer
  - Mail Writers (Sends CSV files)
  - Code Writer (Special: Executes code)
  - Exec (Special: Executes OS programs)
+ 
+Above Core Readers and Writers have many Interface Processor Configurations (IPCs)
+templates that connect to HubSpot, PayPal, Spotify or financial APIs, etc.
