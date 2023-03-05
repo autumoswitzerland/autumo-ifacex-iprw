@@ -175,10 +175,21 @@
 
 
 		<!-- Google Cloud Storage -->
+		
 		<dependency>
 		    <groupId>com.google.cloud</groupId>
 		    <artifactId>google-cloud-storage</artifactId>
 		    <version>2.19.0</version>
+		    <scope>provided</scope>
+		</dependency>
+
+
+		<!-- Web DAV -->
+
+		<dependency>
+			<groupId>com.github.lookfirst</groupId>
+			<artifactId>sardine</artifactId>
+			<version>5.10</version>
 		    <scope>provided</scope>
 		</dependency>
 

@@ -1,0 +1,48 @@
+
+###############################################################################
+# General configuration
+###############################################################################
+
+source_interface=webdav_file_in
+destination_interfaces=file_out
+# For the 'webdav_file_in' reader, define entities that serve as URI paths
+# after the base URL (can have slashes in it).	
+process_source_entities=files
+
+
+
+###############################################################################
+# WebDAV file reader configuration
+###############################################################################
+
+
+#
+# Base URL with port.
+#
+webdav_file_in_url=https://192.168.0.14:5000
+
+
+#
+# Secure SSL/TLS?
+# Values: yes|no
+#
+webdav_file_in_ssl=yes
+
+
+#
+# User (can be encrypted, use encoder.sh).
+#
+webdav_file_in_user=autumo
+
+
+#
+# Password (can be encrypted, use encoder.sh).
+#
+webdav_file_in_password=autumo
+
+
+#
+# Temporary directory for files read from Web DAV. 
+#
+webdav_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex
+

@@ -13,7 +13,7 @@ repository.
 Of course, you can also just look at the source files and use what you need
 in your own project and IDE.
 
-### Install:
+### Install
 
 1.	You can Import the project in eclipse or in any other development IDE.
 
@@ -31,3 +31,25 @@ in your own project and IDE.
 4.	Execute 'make.sh' to create a package that can be deployed into an
 	ifaceX installation directory. 
 
+### Additional Readers | Writers
+
+- Amazon AWS S3
+- DropBox
+- Google Cloud Storage
+- Google Drive
+- WebDAV (with SSL)
+
+#### ifaceX Core Readers | Writers
+
+ - Null Reader
+ - CSV Reader | Writer
+ - File Reader | Writer
+ - Document Reader that extracts full text (over 80 formats)
+ - Database Reader | Writer (Relational databases)
+ - MongoDB Reader | Writer
+ - REST Reader Writer (Universal REST JSON)
+ - First Writer (Only writes 1st batch)
+ - Console Writer
+ - Mail Writers (Sends CSV files)
+ - Code Writer (Special: Executes code)
+ - Exec (Special: Executes OS programs)
