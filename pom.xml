@@ -121,6 +121,15 @@
 		</dependency>
 
 
+		<!-- FTP -->
+
+		<dependency>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+			<version>3.9.0</version>
+		</dependency>
+		
+
 		<!-- Dropbox -->
 
 		<dependency>
@@ -195,6 +204,20 @@
 
 
 		<!-- Testing -->
+
+		<dependency>
+			<groupId>com.github.stefanbirkner</groupId>
+			<artifactId>fake-sftp-server-rule</artifactId>
+			<version>2.0.1</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockftpserver</groupId>
+			<artifactId>MockFtpServer</artifactId>
+			<version>3.1.0</version>
+			<scope>test</scope>
+		</dependency>
 
 		 <dependency>
 	        <groupId>io.findify</groupId>

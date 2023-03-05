@@ -16,7 +16,7 @@
  * code@autumo.ch
  * 
  */
-package ch.autumo.ifacex.ip.writer.amazon;
+package ch.autumo.ifacex.ip.amazon;
 
 import java.io.IOException;
 
@@ -34,7 +34,7 @@ public class AWSS3MockServer {
 	 * Main.
 	 * @param args none or file-path
 	 */
-	public static void main(String[] args) {
+	public static void main(String args[]) {
 
 		String filePath = null;
 		
