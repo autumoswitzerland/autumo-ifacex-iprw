@@ -36,6 +36,9 @@ import ch.autumo.ifacex.writer.Writer;
 
 /**
  * Abstract FTP (with SSL if configured).
+ * 
+ * Tested with the amazing Wing FTP Server,
+ * https://www.wftpserver.com/
  */
 public class AbstractFTP implements Generic {
 
@@ -51,6 +54,8 @@ public class AbstractFTP implements Generic {
 	private String user = null;
 	private String pass = null;
 	
+	private String prot = null;
+	
 	private boolean ssl = false;
 	
 	
@@ -63,28 +68,31 @@ public class AbstractFTP implements Generic {
 				port = config.getWriterConfig(rwName).getNumber(rwName, DEFAULT_PORT);
 				user = config.getWriterConfig(rwName).getUser();
 				pass = config.getWriterConfig(rwName).getPassword();
-				ssl = config.getWriterConfig(rwName).isYes("_ssl", false);
+				ssl  = config.getWriterConfig(rwName).isYes("_ssl", false);
+				prot = config.getWriterConfig(rwName).getConfig("_prot");
 			} else {
 				host = config.getReaderConfig().getHost();
 				port = config.getReaderConfig().getNumber(rwName, DEFAULT_PORT);
 				user = config.getReaderConfig().getUser();
 				pass = config.getReaderConfig().getPassword();
-				ssl = config.getReaderConfig().isYes("_ssl", false);
+				ssl  = config.getReaderConfig().isYes("_ssl", false);
+				prot = config.getReaderConfig().getConfig("_prot");
 			}
 		} catch (Exception e) {
 			throw new IfaceXException("Couldn't read credentials!", e);
 		}
 
+		if (prot == null || prot.trim().length() == 0) {
+			prot = "P";
+		}
+		
 		try {
 			if (ssl) {
 				// Necessary for the SSLUtils!
 				BeetRootConfigurationManager.getInstance().initialize("cfg/ifacex-server.cfg");
-				client = new FTPSClient(SSLUtils.makeSSLContext(SSLUtils.getKeystoreFile(), SSLUtils.getKeystorePw()));
-				
+				client = new FTPSClient(SSLUtils.makeSSLContext());
 			} else {
-				
 				client = new FTPClient();
-				
 			}
 		} catch (Exception e) {
 			throw new IfaceXException("Couldn't create SSL context!", e);
@@ -93,9 +101,13 @@ public class AbstractFTP implements Generic {
 		try {
 			client.connect(host.trim(), port);
 			client.setKeepAlive(true);
-			if (ssl)
-				((FTPSClient) client).execPROT("P"); 
-			client.login(user, pass);
+			if (ssl) {
+				final FTPSClient s_client = ((FTPSClient) client);
+				s_client.login(user, pass);
+				s_client.execPROT(prot);
+			} else {
+				client.login(user, pass);
+			}
 		} catch (Exception e) {
 			throw new IfaceXException("Couldn't create FTP client!", e);
 		}

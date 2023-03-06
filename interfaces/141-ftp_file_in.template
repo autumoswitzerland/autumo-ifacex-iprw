@@ -65,21 +65,3 @@ ftp_file_in_password=autumo
 #
 ftp_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex
 
-
-
-###############################################################################
-# File writer configuration
-###############################################################################
-
-
-#
-# Output directory. 
-#
-file_out_path=/Volumes/Fastdrive/tmp/fromftp
-
-#
-# Delete source files after copying?
-# Values: yes|no
-#
-file_out_delete_files_after_processing=yes
-
