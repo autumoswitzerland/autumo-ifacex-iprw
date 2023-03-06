@@ -144,7 +144,7 @@ public class GoogleDriveWriter extends AbstractGoogleDrive implements Writer {
 	            fileMetadata.setParents(parents);	        	
 	        }
 	        
-	        final AbstractInputStreamContent uploadStreamContent = new FileContent(null, curr);
+	        final AbstractInputStreamContent uploadStreamContent = new FileContent(null, curr); //closed automatically
 	        File file = null;
 	        
 	        try {

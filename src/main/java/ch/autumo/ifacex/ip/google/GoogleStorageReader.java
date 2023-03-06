@@ -20,6 +20,7 @@ package ch.autumo.ifacex.ip.google;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Iterator;
 
 import org.slf4j.Logger;
@@ -102,6 +103,7 @@ public class GoogleStorageReader extends AbstractGoogleStorage implements Reader
 				LOG.info("Processing (bucket: '" + entity.getEntity() + "'): " + blob.getName());
 				
 				String filePath = null;
+				FileOutputStream fos = null;
 				try {
 					
 					/* Using bucket name as directory: Only creates problems when deleting temporary directories
@@ -112,10 +114,17 @@ public class GoogleStorageReader extends AbstractGoogleStorage implements Reader
 						*/
 
 					filePath = tempOutputPath + blob.getName();
-					blob.downloadTo(new FileOutputStream(filePath), BlobSourceOption.userProject(super.getProjectId()));
+					fos = new FileOutputStream(filePath);
+					blob.downloadTo(fos, BlobSourceOption.userProject(super.getProjectId()));
 					
 				} catch (FileNotFoundException e) {
 					throw new IfaceXException("Cannot store blob locally to '" + filePath + "'!", e);
+				} finally {
+					try {
+						if (fos != null)
+							fos.close();
+					} catch (IOException e) {
+					}
 				}
 				
 				final String values[] = new String[] {filePath};

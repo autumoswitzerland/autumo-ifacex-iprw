@@ -19,6 +19,7 @@
 package ch.autumo.ifacex.ip.dropbox;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -98,48 +99,65 @@ public class DropboxReader extends AbstractDropbox implements Reader {
 		LOOP: while (true) {
 			
 			try {
-				
 				if (first) {
 					result = request.listFolder(path);
 					first = false;
 				} else {
 		            result = request.listFolderContinue(result.getCursor());
 				}
-
-            	currBatch = new BatchData(config);
-				
-				// Let Dropbox define our batch size
-	            for (Metadata metadata : result.getEntries()) {
-
-	                final DbxDownloader<FileMetadata> downloader = client().files().download(metadata.getPathLower());
-	                final String filePath = tempOutputPath + metadata.getName();
-	                
-					LOG.info("Processing (path: '" + path + "'): " + metadata.getName());	                
-	                
-	                final FileOutputStream out = new FileOutputStream(filePath);
-	                downloader.download(out);
-	                out.close();
-	                
-					final String values[] = new String[] {filePath};
-					if (exFilter == null)
-						currBatch.addRecordValues(values);
-					else if (exFilter.addRecord(SourceEntity.FILES_SOURCE_FIELDS, values))
-						currBatch.addRecordValues(values);
-	                
-	            }
-	
-	            final boolean moreData = result.getHasMore();
-
-	            // We only have one pseudo NULL entity, there are no more entities following
-				batchProcessor.processBatchData(currBatch, entity, moreData);
-
-	            if (!moreData) {
-	                break LOOP;
-	            }
-            
 			} catch (Exception e) {
-				throw new IfaceXException("Couldn't fetch files from Dropbox!", e);
+				throw new IfaceXException("Couldn't list remote files from folder '"+path+"'!", e);
 			}
+			
+        	currBatch = new BatchData(config);
+			
+			// Let Dropbox define our batch size
+            for (Metadata metadata : result.getEntries()) {
+
+                DbxDownloader<FileMetadata> downloader = null;
+    			try {
+    				downloader = client().files().download(metadata.getPathLower());
+    			} catch (Exception e) {
+    				throw new IfaceXException("Couldn't fetch meta data for remote file '"+metadata.getPathLower() +"'!", e);
+				}
+
+                final String filePath = tempOutputPath + metadata.getName();
+                
+				LOG.info("Processing (path: '" + path + "'): " + metadata.getName());	                
+                
+				FileOutputStream fos = null;
+				try {
+					fos = new FileOutputStream(filePath);
+	                downloader.download(fos);
+	                
+				} catch (Exception e) {
+					throw new IfaceXException("Couldn't fetch file '"+filePath+"' from Dropbox!", e);
+				} finally {
+					try {
+						if (fos != null)
+							fos.close();
+					} catch (IOException e) {
+					}					
+				}
+                
+				final String values[] = new String[] {filePath};
+				if (exFilter == null)
+					currBatch.addRecordValues(values);
+				else if (exFilter.addRecord(SourceEntity.FILES_SOURCE_FIELDS, values))
+					currBatch.addRecordValues(values);
+                
+            }
+
+            final boolean moreData = result.getHasMore();
+
+            // We only have one pseudo NULL entity, there are no more entities following
+			batchProcessor.processBatchData(currBatch, entity, moreData);
+
+            if (!moreData) {
+                break LOOP;
+            }
+            
+
         }
 	}
 

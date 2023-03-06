@@ -133,6 +133,11 @@ public class AWSS3FileReader extends AbstractAWSS3File implements Reader {
 				
 			} catch (IOException e) {
 				throw new IfaceXException("Couldn't create file from '"+fileName+"'!", e);
+			} finally {
+				try {
+					inputStream.close();
+				} catch (IOException e) {
+				}
 			}
 			
 			final String values[] = new String [] {

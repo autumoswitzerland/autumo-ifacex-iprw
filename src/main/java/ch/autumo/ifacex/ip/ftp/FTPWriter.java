@@ -64,7 +64,6 @@ public class FTPWriter extends AbstractFTP implements Writer {
 			try {
 				
 				client().makeDirectory(directory); // if not existing
-				
 			    LOG.info("Remote directory '" + directory + "' created.");
 				
 			} catch (IOException e) {
@@ -101,23 +100,24 @@ public class FTPWriter extends AbstractFTP implements Writer {
 			
 			LOG.info("Processing (path: '" + dirName + "'): " + curr.getName());
 			
+			FileInputStream fis = null;
 			try {
-				
-				final FileInputStream fis = new FileInputStream(curr);
-				
+				fis = new FileInputStream(curr);
 				// Always binary!
 				client().setFileType(FTP.BINARY_FILE_TYPE);
-				//client().enterLocalActiveMode();
-				//client().setFileTransferMode(FTP.BINARY_FILE_TYPE);
 				final boolean result = client().storeFile(curr.getName(), fis);
 				if (!result)
 					LOG.error("Couldn't store file '"+curr.getName()+"'");
-				//client().completePendingCommand();
-				fis.close();
 				
 			} catch (IOException e) {
 				throw new IfaceXException("Couldn't upload file '"+curr.getName()+"' to working directory '"+dirName+"'!", e);
-			}
+			} finally {
+				try {
+					if (fis != null)
+						fis.close();
+				} catch (IOException e) {
+				}
+			}			
 		}
 	}
 

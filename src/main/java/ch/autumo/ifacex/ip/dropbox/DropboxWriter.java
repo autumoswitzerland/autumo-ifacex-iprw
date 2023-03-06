@@ -20,6 +20,7 @@ package ch.autumo.ifacex.ip.dropbox;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,11 +103,19 @@ public class DropboxWriter extends AbstractDropbox implements Writer {
 			LOG.info("Processing (path: '" + path() + "'): " + curr.getName());
 			
 			UploadUploader uploader;
+			FileInputStream fis = null;
 			try {
+				fis = new FileInputStream(vals[0]);
 				uploader = client().files().upload(path + curr.getName());
-				uploader.uploadAndFinish(new FileInputStream(vals[0]));
+				uploader.uploadAndFinish(fis);
 			} catch (Exception e) {
 				throw new IfaceXException("Couldn't upload file '" + vals[0] + "' to Dropbox path '" + path + "'!", e);
+			} finally {
+				try {
+					if (fis != null)
+						fis.close();
+				} catch (IOException e) {
+				}
 			}
 		}		
 	}

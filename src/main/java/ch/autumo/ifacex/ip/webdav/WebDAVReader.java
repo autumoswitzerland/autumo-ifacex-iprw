@@ -110,6 +110,7 @@ public class WebDAVReader extends AbstractWebDAV implements Reader {
 			if (res.isDirectory())
 				continue FILES;
 			
+			FileOutputStream fos = null;
 			try {
 				
 				LOG.info("Processing (entity: '"+entity.getEntity()+"'): " + res.getPath());
@@ -119,7 +120,8 @@ public class WebDAVReader extends AbstractWebDAV implements Reader {
 				String fullUrlPath = this.entityUrl + name;
 				
 				final String fileOutPath = tempOutputPath + res.getName();
-				IOUtils.copy(webDAV().get(fullUrlPath), new FileOutputStream(fileOutPath));
+				fos = new FileOutputStream(fileOutPath);
+				IOUtils.copy(webDAV().get(fullUrlPath), fos);
 				
 				final String values[] = new String[] {fileOutPath};
 				if (exFilter == null)
@@ -129,6 +131,12 @@ public class WebDAVReader extends AbstractWebDAV implements Reader {
 				
 			} catch (IOException e) {
 				throw new IfaceXException("Couldn't read file from '"+res.getPath()+"'!", e);
+			} finally {
+				try {
+					if (fos != null)
+						fos.close();
+				} catch (IOException e) {
+				}
 			}
 		}
 		

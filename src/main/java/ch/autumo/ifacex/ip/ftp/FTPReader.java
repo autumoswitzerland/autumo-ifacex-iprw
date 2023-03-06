@@ -103,16 +103,22 @@ public class FTPReader extends AbstractFTP implements Reader {
 			LOG.info("Processing (entity: '"+directory+"'): " + remoteFile.getName());
 			
 			final String fileOutPath = tempOutputPath + remoteFile.getName();
+			FileOutputStream fos = null;
 			try {
 				
-				final FileOutputStream fos = new FileOutputStream(fileOutPath);
+				fos = new FileOutputStream(fileOutPath);
 				client().retrieveFile(remoteFile.getName(), fos);
 				fos.close();
 				
 			} catch (Exception e) {
 				throw new IfaceXException("Couldn't retriev file '"+remoteFile.getName()+"' from remote directory '"+directory+"'!", e);
-			}
-			
+			} finally {
+				try {
+					if (fos != null)
+						fos.close();
+				} catch (IOException e) {
+				}
+			}			
 			final String values[] = new String[] {fileOutPath};
 			if (exFilter == null)
 				currBatch.addRecordValues(values);

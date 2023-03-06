@@ -19,6 +19,7 @@
 package ch.autumo.ifacex.ip.google;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -100,6 +101,7 @@ public class GoogleDriveReader extends AbstractGoogleDrive implements Reader {
 			com.google.api.services.drive.Drive.Files.List workingSet = null;
 			
 			FileList result = null;
+			boolean nullEntity = false;
 			
 		    try {
 		    	
@@ -116,73 +118,84 @@ public class GoogleDriveReader extends AbstractGoogleDrive implements Reader {
 		    	}
 		    	
 		    	// source entities are Google drive spaces here !
-		    	final boolean nullEntity = entity.getEntity().toUpperCase().equals(SourceEntity.NULL_ENTITY_NAME);
+		    	nullEntity = entity.getEntity().toUpperCase().equals(SourceEntity.NULL_ENTITY_NAME);
 		    	if (!nullEntity)
 		    		workingSet = workingSet.setSpaces(entity.getEntity());
 		    	
 		    	workingSet = workingSet.setPageSize(batchSize).setFields(DRIVE_FIELDS);
-		    			    	
+
 		    	// Get result file set
 		    	result = workingSet.execute();
 		    	
-			    final List<File> files = result.getFiles();
-			    
-				if (files == null || files.isEmpty()) {
-					
-					LOG.error("No files found! Stop reading from Google drive!");
-					batchProcessor.noDataIsComing();
-					break LOOP;
-					
-				} else {
-					
-					for (File file : files) {
-						
-						if (nullEntity)
-							LOG.info("Processing (space: 'default'): " + file.getName());
-						else
-							LOG.info("Processing (space: '" + entity.getEntity() + "'): " + file.getName());
-						
-						//final String kind = file.getKind(); 'kind'
-						
-						boolean isFolder = false;
-						final Object caps = file.get("capabilities");
-						if (caps != null) {
-							final JSONObject jso = new JSONObject(caps.toString());
-							Object v = jso.get("canAddChildren");
-							if (v != null)
-								isFolder = Boolean.valueOf(v.toString()).booleanValue();
-						}
-						
-						final String filePath = tempOutputPath + file.getName();
-						final java.io.File f = new java.io.File(filePath);
-						
-						if (!isFolder) {
-							
-							service().files().get(file.getId()).executeMediaAndDownloadTo(new FileOutputStream(f));
-	
-							final String values[] = new String[] {filePath};
-							if (exFilter == null)
-								currBatch.addRecordValues(values);
-							else if (exFilter.addRecord(SourceEntity.FILES_SOURCE_FIELDS, values))
-								currBatch.addRecordValues(values);
-						
-						} else {
-							
-							// Nope, we don't take folders; this makes the
-							// batch smaller than the batch size
-							
-							//f.mkdirs();
-						}
-					}
-				}	
-				
-				// Another token for another batch?
-				nextToken = result.getNextPageToken();
-				
 		    } catch (Exception e) {
-		    	
 		    	throw new IfaceXException("Cannot read files from google drive!", e);
-		    }
+		    }		    	
+		    	
+		    final List<File> files = result.getFiles();
+			if (files == null || files.isEmpty()) {
+				
+				LOG.error("No files found! Stop reading from Google drive!");
+				batchProcessor.noDataIsComing();
+				break LOOP;
+				
+			} else {
+				
+				for (File file : files) {
+					
+					if (nullEntity)
+						LOG.info("Processing (space: 'default'): " + file.getName());
+					else
+						LOG.info("Processing (space: '" + entity.getEntity() + "'): " + file.getName());
+					
+					//final String kind = file.getKind(); 'kind'
+					
+					boolean isFolder = false;
+					final Object caps = file.get("capabilities");
+					if (caps != null) {
+						final JSONObject jso = new JSONObject(caps.toString());
+						Object v = jso.get("canAddChildren");
+						if (v != null)
+							isFolder = Boolean.valueOf(v.toString()).booleanValue();
+					}
+					
+					final String filePath = tempOutputPath + file.getName();
+					final java.io.File f = new java.io.File(filePath);
+					
+					if (!isFolder) {
+						
+						FileOutputStream fos = null;
+						try {
+							
+							fos = new FileOutputStream(f);
+							service().files().get(file.getId()).executeMediaAndDownloadTo(fos);
+							
+						} catch (Exception e) {
+					    	throw new IfaceXException("Cannot read file '"+filePath+"' from google drive!", e);
+						} finally {
+							try {
+								if (fos != null)
+									fos.close();
+							} catch (IOException e) {
+							}
+						}
+						
+						final String values[] = new String[] {filePath};
+						if (exFilter == null)
+							currBatch.addRecordValues(values);
+						else if (exFilter.addRecord(SourceEntity.FILES_SOURCE_FIELDS, values))
+							currBatch.addRecordValues(values);
+					
+					} else {
+						
+						// Nope, we don't take folders; this makes the
+						// batch smaller than the batch size
+						//f.mkdirs();
+					}
+				}
+			}	
+			
+			// Another token for another batch?
+			nextToken = result.getNextPageToken();
 				
 			// Do we have more data?
 			final boolean moreData = hasMoreEntities || nextToken != null;
