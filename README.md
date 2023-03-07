@@ -39,6 +39,7 @@ in your own project and IDE.
 - Google Drive
 - WebDAV (with SSL)
 - FTP (with SSL)
+- SFTP
 
 #### ifaceX Core Readers | Writers
 
