@@ -1,0 +1,70 @@
+
+###############################################################################
+# General configuration
+###############################################################################
+
+source_interface=sftp_file_in
+destination_interfaces=file_out
+# For the 'sftp_file_in' reader, define entities that serve as directory paths
+# in the remote FTP location.	
+process_source_entities=upload/juhu
+
+
+
+###############################################################################
+# SFTP file writer configuration
+###############################################################################
+
+
+#
+# Host.
+#
+sftp_file_in_host=localhost
+
+
+#
+# Known Hosts file path.
+#
+sftp_file_in_known_hosts=<PATH_TO>/known_hosts
+
+
+#
+# Port.
+#
+sftp_file_in_port=22
+
+
+#
+# User (can be encrypted, use encoder.sh).
+#
+sftp_file_in_user=<YOUR_USER>
+
+
+#
+# Password (can be encrypted, use encoder.sh).
+#
+sftp_file_in_password=<YOUR_PASSWORD>
+
+
+#
+# Temporary directory for files read from FTP. 
+#
+sftp_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex
+
+
+###############################################################################
+# File writer configuration
+###############################################################################
+
+
+#
+# Output directory. 
+#
+file_out_path=/Volumes/Fastdrive/tmp/fromftp
+
+#
+# Delete source files after copying?
+# Values: yes|no
+#
+file_out_delete_files_after_processing=yes
+

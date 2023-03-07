@@ -1,27 +1,9 @@
-/**
- * Copyright 2023 autumo GmbH, Michael Gasche.
- * All Rights Reserved.
- * 
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * Bug fixes, suggestions and comments should be sent to:
- * code@autumo.ch
- * 
- */
 package ch.autumo.ifacex.ip.ftp;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
-import org.apache.commons.net.ftp.FTPFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,17 +17,18 @@ import ch.autumo.ifacex.batch.BatchData;
 import ch.autumo.ifacex.batch.BatchProcessor;
 import ch.autumo.ifacex.reader.Reader;
 import ch.autumo.ifacex.reader.ReaderException;
+import net.schmizz.sshj.sftp.RemoteResourceInfo;
 
 
 /**
- * FTP file in - reader prefix 'ftp_file_in'.
+ * SFTP file in - reader prefix 'sftp_file_in'.
  * 
- * Reads files from a FTP server and folders (directories) as entities 
- * and creates/overwrites them in the directory specified by 'ftp_file_in_temp_out_path';
+ * Reads files from a SFTP server and folders (directories) as entities 
+ * and creates/overwrites them in the directory specified by 'sftp_file_in_temp_out_path';
  * you have to delete them yourself if necessary and if they are not deleted by a 
  * file writer for example.
  */
-public class FTPReader extends AbstractFTP implements Reader {
+public class SFTPReader extends AbstractSFTP implements Reader {
 
 	private final static Logger LOG = LoggerFactory.getLogger(FTPReader.class.getName());
 	
@@ -66,7 +49,7 @@ public class FTPReader extends AbstractFTP implements Reader {
 		super.initialize(readerName, config, processor);
 		
 		exFilter = config.getReaderConfig().getExclusionFilter(SourceEntity.WILDCARD_SOURCE_ENTITY);
-	}	
+	}
 	
 	@Override
 	public void initializeEntity(String readerName, IPC config, SourceEntity entity)
@@ -81,36 +64,35 @@ public class FTPReader extends AbstractFTP implements Reader {
 		entity.overwriteSourceFields(SourceEntity.FILES_SOURCE_FIELDS);
 		
 		final String directory = entity.getEntity().trim();
-
-		FTPFile files[] = null;
+		
+		List<RemoteResourceInfo> infos = null;
 		try {
-			 files = client().listFiles(directory);
+			client().cd(directory);
+			infos =  client().ls();
 		} catch (IOException e) {
 			throw new IfaceXException("Couldn't list files in remote directory '"+directory+"'!", e);
-		}
+		}		
 		
 		// One batch per (entity) directory path
 		currBatch = new BatchData(config);
 		
-		FILES: for (int i = 0; i < files.length; i++) {
-			
-			final FTPFile remoteFile = files[i];
-			if (remoteFile.isDirectory())
+		FILES: for (RemoteResourceInfo remoteResourceInfo: infos) {
+			 
+			if (remoteResourceInfo.isDirectory())
 				continue FILES;
-			if (!remoteFile.isFile())
+			if (!remoteResourceInfo.isRegularFile())
 				continue FILES;
 			
-			LOG.info("Processing (entity: '"+directory+"'): " + remoteFile.getName());
+			LOG.info("Processing (entity: '"+directory+"'): " + remoteResourceInfo.getName());
 			
-			final String fileOutPath = tempOutputPath + remoteFile.getName();
+			final String fileOutPath = tempOutputPath + remoteResourceInfo.getName();
 			FileOutputStream fos = null;
 			try {
 				
-				fos = new FileOutputStream(fileOutPath);
-				client().retrieveFile(remoteFile.getName(), fos);
+				client().get(remoteResourceInfo.getName(), fileOutPath);
 				
 			} catch (Exception e) {
-				throw new IfaceXException("Couldn't retrieve file '"+remoteFile.getName()+"' from remote directory '"+directory+"'!", e);
+				throw new IfaceXException("Couldn't retrieve file '"+remoteResourceInfo.getName()+"' from remote directory '"+directory+"'!", e);
 			} finally {
 				try {
 					if (fos != null)
