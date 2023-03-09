@@ -34,6 +34,7 @@ import ch.autumo.ifacex.Processor;
 import ch.autumo.ifacex.generic.Generic;
 import ch.autumo.ifacex.writer.Writer;
 
+
 /**
  * Abstract Google Cloud Storage.
  */
@@ -59,7 +60,9 @@ public class AbstractGoogleStorage implements Generic {
 		
 		Credentials credentials = null;
 		try {
-			credentials = GoogleCredentials.fromStream(new FileInputStream(json_credentials_file));
+			final FileInputStream fis = new FileInputStream(json_credentials_file);
+			credentials = GoogleCredentials.fromStream(fis);
+			fis.close();
 		} catch (Exception e) {
 		}
 		

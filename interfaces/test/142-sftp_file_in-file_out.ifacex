@@ -7,7 +7,7 @@ source_interface=sftp_file_in
 destination_interfaces=file_out
 # For the 'sftp_file_in' reader, define entities that serve as directory paths
 # in the remote FTP location.	
-process_source_entities=upload/juhu
+process_source_entities=upload
 
 
 
