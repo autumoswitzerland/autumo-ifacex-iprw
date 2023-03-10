@@ -60,7 +60,7 @@ public class AWSS3FileReader extends AbstractAWSS3File implements Reader {
 	
 	private ObjectListing objectListing = null;
 	private int amount = 0;
-	private int fileCounter = 0;
+	private int totalEntityFileCounter = 0;
 
 	private ExclusionFilter exFilter = null;
 	
@@ -89,7 +89,7 @@ public class AWSS3FileReader extends AbstractAWSS3File implements Reader {
 		objectListing = client().listObjects(entity.getEntity());
 
 		amount = objectListing.getObjectSummaries().size();
-		fileCounter = 0;
+		totalEntityFileCounter = 0;
 	}
 
 	@Override
@@ -99,11 +99,11 @@ public class AWSS3FileReader extends AbstractAWSS3File implements Reader {
 		// No matter what is defined, we use standard fields for files here
 		entity.overwriteSourceFields(SourceEntity.FILES_SOURCE_FIELDS);
 		
-		int batchCounter = 0;
+		int batchFileCounter = 0;
 		
 		for (S3ObjectSummary os : objectListing.getObjectSummaries()) {
 
-			if (batchCounter == 0)
+			if (batchFileCounter == 0)
 				currBatch = new BatchData(config);
 			
 			final String key = os.getKey();
@@ -149,15 +149,15 @@ public class AWSS3FileReader extends AbstractAWSS3File implements Reader {
 			else if (exFilter.addRecord(SourceEntity.FILES_SOURCE_FIELDS, values))
 				currBatch.addRecordValues(values);
 			
-			batchCounter++;
-			fileCounter++;
+			batchFileCounter++;
+			totalEntityFileCounter++;
 
 			// More data?
-			final boolean moreData = fileCounter < amount || hasMoreEntities;
-			if (batchCounter == batchSize || !moreData) {
+			final boolean moreData = totalEntityFileCounter < amount || hasMoreEntities;
+			if (batchFileCounter == batchSize || !moreData) {
 				// process batch
 				batchProcessor.processBatchData(currBatch, entity, moreData);
-				batchCounter = 0;
+				batchFileCounter = 0;
 			}
 		}
 	}

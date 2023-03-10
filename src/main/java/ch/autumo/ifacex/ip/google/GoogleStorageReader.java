@@ -84,13 +84,19 @@ public class GoogleStorageReader extends AbstractGoogleStorage implements Reader
 	public void read(String readerName, BatchProcessor batchProcessor, IPC config, SourceEntity entity,
 			boolean hasMoreEntities) throws IfaceXException {
 
+		boolean firstBatchEntity = true;
+		
 		// No matter what is defined, we use standard fields for files here
 		entity.overwriteSourceFields(SourceEntity.FILES_SOURCE_FIELDS);
 		
-		final Page<Blob> page = storage().list(entity.getEntity(), BlobListOption.pageSize(batchSize));
+		Page<Blob> page = storage().list(entity.getEntity(), BlobListOption.pageSize(batchSize));
 		
 		boolean hastNextPage = true;
 		while (hastNextPage) {
+			
+			if (!firstBatchEntity) {
+				page = page.getNextPage();
+			}
 			
 			currBatch = new BatchData(config);
 			
@@ -118,7 +124,7 @@ public class GoogleStorageReader extends AbstractGoogleStorage implements Reader
 					blob.downloadTo(fos, BlobSourceOption.userProject(super.getProjectId()));
 					
 				} catch (FileNotFoundException e) {
-					throw new IfaceXException("Cannot store blob locally to '" + filePath + "'!", e);
+					throw new IfaceXException("Cannot store file locally to '" + filePath + "'!", e);
 				} finally {
 					try {
 						if (fos != null)
@@ -140,6 +146,8 @@ public class GoogleStorageReader extends AbstractGoogleStorage implements Reader
 			final boolean moreData = hasMoreEntities || hastNextPage;
 			// We always have a full batch here
 			batchProcessor.processBatchData(currBatch, entity, moreData);
+			
+			firstBatchEntity = false;
 		}
 	}
 

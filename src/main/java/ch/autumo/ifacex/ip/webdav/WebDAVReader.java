@@ -130,7 +130,7 @@ public class WebDAVReader extends AbstractWebDAV implements Reader {
 					currBatch.addRecordValues(values);			
 				
 			} catch (IOException e) {
-				throw new IfaceXException("Couldn't read file from '"+res.getPath()+"'!", e);
+				throw new IfaceXException("Couldn't store file to '"+res.getPath()+"'!", e);
 			} finally {
 				try {
 					if (fos != null)

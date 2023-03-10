@@ -156,8 +156,6 @@ public class DropboxReader extends AbstractDropbox implements Reader {
             if (!moreData) {
                 break LOOP;
             }
-            
-
         }
 	}
 

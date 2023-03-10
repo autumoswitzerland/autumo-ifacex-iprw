@@ -170,7 +170,7 @@ public class GoogleDriveReader extends AbstractGoogleDrive implements Reader {
 							service().files().get(file.getId()).executeMediaAndDownloadTo(fos);
 							
 						} catch (Exception e) {
-					    	throw new IfaceXException("Cannot read file '"+filePath+"' from google drive!", e);
+					    	throw new IfaceXException("Cannot store file '"+filePath+"' from google drive!", e);
 						} finally {
 							try {
 								if (fos != null)

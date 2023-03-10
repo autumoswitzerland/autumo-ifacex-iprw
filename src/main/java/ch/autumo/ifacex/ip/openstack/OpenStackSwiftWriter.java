@@ -51,9 +51,6 @@ public class OpenStackSwiftWriter extends AbstractOpenStack implements Writer {
 	
 	@Override
 	public void initialize(String writerName, IPC config, Processor processor) throws IfaceXException {
-		
-		if (true)
-			throw new UnsupportedOperationException("Not yet tested!");
 
 		super.initialize(writerName, config, processor);
 		
