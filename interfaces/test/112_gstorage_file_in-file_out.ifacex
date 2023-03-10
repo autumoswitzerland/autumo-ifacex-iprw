@@ -22,15 +22,15 @@ gstorage_file_in_credentials_file=<YOUR_PATH_TO_GOOGLE_JSON_CREDENTIALS>
 
 
 #
-# Temporary directory for files read from the AWS.
-#
-gstorage_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex
-
-
-#
 # Project ID.
 #
 gstorage_file_in_project_id=ifacex
+
+
+#
+# Temporary directory for files read from Google Storage.
+#
+gstorage_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex
 
 
 ###############################################################################

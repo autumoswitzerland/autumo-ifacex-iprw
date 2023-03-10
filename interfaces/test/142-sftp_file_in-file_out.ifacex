@@ -47,7 +47,7 @@ sftp_file_in_password=<YOUR_PASSWORD>
 
 
 #
-# Temporary directory for files read from FTP. 
+# Temporary directory for files read from SFTP. 
 #
 sftp_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex
 

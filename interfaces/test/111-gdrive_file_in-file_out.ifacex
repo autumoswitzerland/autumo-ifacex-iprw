@@ -17,7 +17,7 @@ process_source_entities=NULL
 
 
 #
-# Temporary directory for files read from the AWS.
+# Temporary directory for files read from Google Drive.
 #
 gdrive_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex
 
