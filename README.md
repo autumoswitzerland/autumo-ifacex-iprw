@@ -40,6 +40,7 @@ in your own project and IDE.
 - WebDAV (with SSL)
 - FTP (with SSL)
 - SFTP
+- OpenStack (Keystone V2 and V3)
 
 #### ifaceX Core Readers | Writers
 
