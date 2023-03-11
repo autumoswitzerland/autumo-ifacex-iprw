@@ -100,7 +100,7 @@ public class AbstractOpenStack implements Generic {
 	    
 		if (version == 3) {
 			
-			// KeyStone V2
+			// KeyStone V3
 		    IOSClientBuilder.V3 builder = OSFactory.builderV3()
 		            .endpoint(url_endpoint)
 		            .withConfig(os_config)
@@ -115,7 +115,7 @@ public class AbstractOpenStack implements Generic {
 	    	
 		} else {
 			
-			// KeyStone V3
+			// KeyStone V2
 		    IOSClientBuilder.V2 builder = OSFactory.builderV2()
 		            .endpoint(url_endpoint)
 		            .withConfig(os_config)
