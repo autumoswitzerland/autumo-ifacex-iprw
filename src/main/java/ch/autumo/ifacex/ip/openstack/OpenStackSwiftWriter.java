@@ -21,9 +21,13 @@ package ch.autumo.ifacex.ip.openstack;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 
 import org.openstack4j.api.storage.ObjectStorageContainerService;
+import org.openstack4j.model.common.ActionResponse;
 import org.openstack4j.model.common.Payloads;
+import org.openstack4j.model.storage.object.SwiftContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,9 +43,9 @@ import ch.autumo.ifacex.writer.Writer;
  * OpenStack Swift ObjectStorage file out - writer prefix 'os_swift_file_out'.
  * 
  * Writes files into a container and creates the container first, if it
- * doesn't exist.
+ * doesn't exist. It overwrites or creates the files in the destination, 
+ * by determining existing matching file names!
  * 
- * @WIP - Work in Progress
  */
 public class OpenStackSwiftWriter extends AbstractOpenStack implements Writer {
 
@@ -54,17 +58,36 @@ public class OpenStackSwiftWriter extends AbstractOpenStack implements Writer {
 
 		super.initialize(writerName, config, processor);
 		
-		// Absolute or relative
+		// Write container
 		this.container = config.getWriterConfig(writerName).getConfig("_container");
 		if (container != null && container.length() > 0) {
 			container = container.trim();
 			if (container.length() == 0)
-				container = null;
+				throw new IfaceXException("No container specified!");
 		}
+
+		boolean containerFound = false;
 		
+		// List all containers, lookup container for writing
+		final List<? extends SwiftContainer> containers = client().objectStorage().containers().list();
+		for (Iterator<? extends SwiftContainer> iterator = containers.iterator(); iterator.hasNext();) {
+			final SwiftContainer swiftContainer = iterator.next();
+			if (container.equals(swiftContainer.getName())) {
+				containerFound = true;
+				LOG.info("Container '" + container + "' found.");
+			}
+		}
+
+		// Create container if not found!
 		final ObjectStorageContainerService service = client().objectStorage().containers();
-		if (service.getMetadata(container) == null)
-			service.create(container);
+		if (!containerFound) {
+			LOG.info("Creating container: '" + container + "'...");
+			final ActionResponse resp = service.create(container);
+			if (resp.isSuccess())
+				LOG.info("Container creation result: " + resp.toString());
+			else
+				LOG.error("Container creation result: " + resp.toString());
+		}
 	}
 	
 	@Override
@@ -84,7 +107,7 @@ public class OpenStackSwiftWriter extends AbstractOpenStack implements Writer {
 			final String vals[] = batch.next();
 			final File curr = new File(vals[0]); // absolute file path when reader 'FilePathReader/file_in' is used!
 			
-			LOG.info("Processing (conatainer: '" + container + "'): " + curr.getName());
+			LOG.info("Processing (container: '" + container + "'): " + curr.getName());
 			
 			FileInputStream fis = null;
 			try {

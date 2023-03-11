@@ -42,10 +42,9 @@ import ch.autumo.ifacex.reader.ReaderException;
  * OpenStack Swift ObjectStorage file in - writer prefix 'os_swift_file_in'.
  * 
  * Reads files from a OpenStack containers as entities and creates them 
- * in the directory specified by 'os_swfit_file_in_temp_out_path'; you have to delete
+ * in the directory specified by 'os_swift_file_in_temp_out_path'; you have to delete
  * them yourself if necessary and if they are not deleted by a file writer for example.
  * 
- * @WIP - Work in Progress
  */
 public class OpenStackSwiftReader extends AbstractOpenStack implements Reader {
 
@@ -56,6 +55,7 @@ public class OpenStackSwiftReader extends AbstractOpenStack implements Reader {
 	private ExclusionFilter exFilter = null;
 	
 	private BatchData currBatch = null;
+	
 	
 	@Override
 	public void initialize(String readerName, IPC config, Processor processor) throws IfaceXException {
@@ -83,7 +83,7 @@ public class OpenStackSwiftReader extends AbstractOpenStack implements Reader {
 		//final ObjectListOptions options = ObjectListOptions.create();
 		// options = options.limit(10);
 		
-		List<? extends SwiftObject> page = client().objectStorage().objects().list(entity.getEntity());
+		final List<? extends SwiftObject> page = client().objectStorage().objects().list(entity.getEntity());
 		currBatch = new BatchData(config);
 		
 		for (SwiftObject o : page) {

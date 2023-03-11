@@ -37,7 +37,7 @@ import ch.autumo.ifacex.writer.Writer;
 /**
  * Abstract FTP (with SSL if configured).
  * 
- * Tested with the amazing Wing FTP Server,
+ * Tested with the Wing FTP Server,
  * https://www.wftpserver.com/
  */
 public class AbstractFTP implements Generic {

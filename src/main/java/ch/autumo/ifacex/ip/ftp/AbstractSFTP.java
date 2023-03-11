@@ -36,7 +36,7 @@ import net.schmizz.sshj.sftp.StatefulSFTPClient;
 /**
  * Abstract SFTP (SSH FTP).
  * 
- * Tested with the amazing Wing FTP Server,
+ * Tested with the Wing FTP Server,
  * https://www.wftpserver.com/
  */
 public class AbstractSFTP implements Generic {

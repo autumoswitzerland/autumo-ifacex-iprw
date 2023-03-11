@@ -1,0 +1,104 @@
+
+###############################################################################
+# General configuration
+###############################################################################
+
+source_interface=os_swift_file_in
+destination_interfaces=file_out
+# For the 'os_swift_file_in' reader, define a bucket-list as source entities!
+process_source_entities=autumo
+
+
+
+###############################################################################
+# OpenStack Swift file writer configuration
+###############################################################################
+
+
+#
+# OpenStack KeyStone Version.
+# Possible values: 2|3
+#
+os_swift_file_in_version=3
+
+
+#
+# URL end-point (ends usually with a version, e.g., '/v3').
+#
+os_swift_file_in_url_endpoint=https://<HOST:PORT>/v3
+
+
+#
+# User ID (can be encrypted, use encoder.sh).
+# Works only with KeyStone version 3.
+# If lef blank, 'User name' is used.
+#
+os_swift_file_in_user_id=
+
+
+#
+# User name (can be encrypted, use encoder.sh).
+#
+os_swift_file_in_user=<YOUR_USER_NAME>
+
+
+#
+# Password (can be encrypted, use encoder.sh).
+#
+os_swift_file_in_password=<YOUR_SECRET>
+
+
+#
+# Secure SSL/TLS?
+# Values: yes|no
+#
+# You might want to use the keystore file a
+# for a HTTPS certificate too!
+#
+os_swift_file_in_ssl=yes
+
+
+#
+# Project name if any.
+# If you use KeyStone version 2, this is the "tenant".
+#
+os_swift_file_in_project=<YOUR_PROJECT>
+
+
+#
+# Domain name if any, otherwise 'Default' is used!
+# Only used in KeyStone version 3.
+#
+os_swift_file_in_domain=<YOUR_DOMAIN>
+
+
+#
+# Container to write to.
+# It is created if non-existent.
+#
+os_swift_file_in_container=<CONTAINER_TO_WRITE_TO>
+
+
+#
+# Temporary directory for files read from the OpenStack Swift Storage.
+#
+os_swift_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex
+
+
+
+###############################################################################
+# File writer configuration
+###############################################################################
+
+
+#
+# Output directory. 
+#
+file_out_path=/Volumes/Fastdrive/tmp/fromos
+
+#
+# Delete source files after copying?
+# Values: yes|no
+#
+file_out_delete_files_after_processing=yes
+
