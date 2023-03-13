@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.openstack4j.model.common.DLPayload;
 import org.openstack4j.model.storage.object.SwiftObject;
+import org.openstack4j.model.storage.object.options.ObjectListOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,6 +55,12 @@ public class OpenStackSwiftReader extends AbstractOpenStack implements Reader {
 	
 	private ExclusionFilter exFilter = null;
 	
+	List<? extends SwiftObject> page = null;
+	
+	//private int amount = 0;
+	//private int totalEntityFileCounter = 0;
+	
+	//private int batchSize = 0;
 	private BatchData currBatch = null;
 	
 	
@@ -66,11 +73,28 @@ public class OpenStackSwiftReader extends AbstractOpenStack implements Reader {
 
 		super.initialize(readerName, config, processor);
 		
+		//batchSize = config.getReaderConfig().getFetchSize(SourceEntity.WILDCARD_SOURCE_ENTITY);
 		exFilter = config.getReaderConfig().getExclusionFilter(SourceEntity.WILDCARD_SOURCE_ENTITY);
 	}	
 	@Override
 	public void initializeEntity(String readerName, IPC config, SourceEntity entity)
 			throws ReaderException, IfaceXException {
+		
+		/**
+		 * OpenStack4j API has a very strange pagination API that relies on strings instead
+		 * of a list size (batch size). This might be OK for containers, but not for objects;
+		 * generally you don't know the object names, e.g., file names.
+		 * See here: https://docs.openstack.org/swift/latest/api/pagination.html
+		 */
+		final ObjectListOptions options = ObjectListOptions.create();
+		// options.limit(maxSize);
+
+		// So, one page per entity!
+		page =  client().objectStorage().objects().list(entity.getEntity(), options);
+		// amount = page.size();
+		// totalEntityFileCounter = 0;
+		
+		// PS: Since there's no paging, code is here instead within the read-method.
 	}
 
 	@Override
@@ -80,12 +104,12 @@ public class OpenStackSwiftReader extends AbstractOpenStack implements Reader {
 		// No matter what is defined, we use standard fields for files here
 		entity.overwriteSourceFields(SourceEntity.FILES_SOURCE_FIELDS);
 		
-		//final ObjectListOptions options = ObjectListOptions.create();
-		// options = options.limit(10);
-		
-		final List<? extends SwiftObject> page = client().objectStorage().objects().list(entity.getEntity());
+		// int batchFileCounter = 0;
+
+		// Again, one page = one batch
 		currBatch = new BatchData(config);
 		
+		// Iterate objects for one batch
 		for (SwiftObject o : page) {
 			
 			if (o.isDirectory())
@@ -93,7 +117,7 @@ public class OpenStackSwiftReader extends AbstractOpenStack implements Reader {
 			
 			LOG.info("Processing (container: '" + entity.getEntity() + "'): " + o.getName());
 			
-			String filePath = tempOutputPath + o.getName();
+			final String filePath = tempOutputPath + o.getName();
 			try {
 				
 				final DLPayload payload = o.download();

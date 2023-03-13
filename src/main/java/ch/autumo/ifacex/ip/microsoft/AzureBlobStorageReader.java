@@ -3,11 +3,13 @@ package ch.autumo.ifacex.ip.microsoft;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.Iterator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.models.BlobItem;
@@ -41,9 +43,6 @@ public class AzureBlobStorageReader extends AbstractAzureBlobStorage implements 
 	
 	private ExclusionFilter exFilter = null;
 	
-	private int amount = 0;
-	private int totalEntityFileCounter = 0;
-	
 	private int batchSize = 0;
 	private BatchData currBatch = null;	
 
@@ -68,13 +67,6 @@ public class AzureBlobStorageReader extends AbstractAzureBlobStorage implements 
 			throws ReaderException, IfaceXException {
 
 		contClient = client().getBlobContainerClient(entity.getEntity());
-
-		// Not yet found a better way
-		final PagedIterable<BlobItem> blobs = contClient.listBlobs();
-		for (@SuppressWarnings("unused") BlobItem blob : blobs) {
-			amount++;	
-		}
-		totalEntityFileCounter = 0;
 	}
 
 	@Override
@@ -87,54 +79,87 @@ public class AzureBlobStorageReader extends AbstractAzureBlobStorage implements 
 		int batchFileCounter = 0;
 		
 		final ListBlobsOptions options = new ListBlobsOptions();
+		// Overall max. results per batch, so a page should be equal to this size,
+		// but it is not guaranteed!
 		options.setMaxResultsPerPage(batchSize);
 		
+		// List all blobs of the entity container
 		final PagedIterable<BlobItem> blobs = contClient.listBlobs(options, Duration.ofMillis(CONNECTION_TIMEOUT));
-		for (BlobItem blob : blobs) {
-
-			if (batchFileCounter == 0)
-				currBatch = new BatchData(config);
-			
-			final String fileName = blob.getName();
-			
-			LOG.info("Processing (conatiner: '" + entity.getEntity() + "'): " + fileName);
-			
-			final BlobClient client = contClient.getBlobClient(fileName);
-			FileOutputStream fos = null;
-			try {
+		String continueToken = null;
+		
+		// First page
+		Iterator<PagedResponse<BlobItem>> pages = blobs.iterableByPage(batchSize).iterator();
+	
+		// Necessary additional loop, if page sizes are different from batch sizes!
+		LOOP: while (true) {
+		
+			// Go through pages
+			while (pages.hasNext()) {
+	
+				// The page
+				final PagedResponse<BlobItem> page = pages.next();
+	
+				// Save continue token every time a page of blob-items is processed.
+				continueToken = page.getContinuationToken();
 				
-				fos = new FileOutputStream(tempOutputPath + fileName);
-				client.downloadStream(fos);
-				
-			} catch (IOException e) {
-				throw new IfaceXException("Couldn't create file from '" + fileName + "'!", e);
-			} finally {
-				try {
-					fos.close();
-				} catch (IOException e) {
+				// Iterate the blobs
+				for (BlobItem blob: page.getElements()) {
+			
+					if (batchFileCounter == 0)
+						currBatch = new BatchData(config);
+					
+					final String fileName = blob.getName();
+					
+					LOG.info("Processing (conatiner: '" + entity.getEntity() + "'): " + fileName);
+					
+					final BlobClient client = contClient.getBlobClient(fileName);
+					FileOutputStream fos = null;
+					try {
+						
+						fos = new FileOutputStream(tempOutputPath + fileName);
+						client.downloadStream(fos);
+						
+					} catch (IOException e) {
+						throw new IfaceXException("Couldn't create file '" + fileName + "'!", e);
+					} finally {
+						try {
+							fos.close();
+						} catch (IOException e) {
+						}
+					}	
+					
+					final String values[] = new String [] {
+							tempOutputPath + fileName
+						};
+					
+					if (exFilter == null)
+						currBatch.addRecordValues(values);
+					else if (exFilter.addRecord(SourceEntity.FILES_SOURCE_FIELDS, values))
+						currBatch.addRecordValues(values);
+					
+					batchFileCounter++;
+					
+					// More data?
+					final boolean moreData = continueToken != null || hasMoreEntities;
+					if (batchFileCounter == batchSize || !moreData) {
+						// process batch
+						batchProcessor.processBatchData(currBatch, entity, moreData);
+						batchFileCounter = 0;
+					}					
 				}
-			}	
+			}
+	
+			// At this point we may be finished, if the batch size was
+			// equal to the page size, but this might not have been the case,
+			// so we might have more pages waiting!
 			
-			final String values[] = new String [] {
-					tempOutputPath + fileName
-				};
-			
-			if (exFilter == null)
-				currBatch.addRecordValues(values);
-			else if (exFilter.addRecord(SourceEntity.FILES_SOURCE_FIELDS, values))
-				currBatch.addRecordValues(values);
-			
-			batchFileCounter++;
-			totalEntityFileCounter++;
-			
-			// More data?
-			final boolean moreData = totalEntityFileCounter < amount || hasMoreEntities;
-			if (batchFileCounter == batchSize || !moreData) {
-				// process batch
-				batchProcessor.processBatchData(currBatch, entity, moreData);
-				batchFileCounter = 0;
-			}			
-		}		
+			// All data for this entity, break additional LOOP
+			if (continueToken == null)
+				break LOOP;
+			else
+				// We have more pages, so go on!
+				pages = blobs.iterableByPage(continueToken, batchSize).iterator();
+		}
 	}
 
 }
