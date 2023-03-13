@@ -41,6 +41,7 @@ in your own project and IDE.
 - FTP (with SSL)
 - SFTP
 - OpenStack (Keystone V2 and V3)
+- Microsoft Azure Blob Storage
 
 #### ifaceX Core Readers | Writers
 
