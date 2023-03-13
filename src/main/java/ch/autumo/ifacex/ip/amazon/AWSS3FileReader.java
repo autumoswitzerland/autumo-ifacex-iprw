@@ -132,7 +132,7 @@ public class AWSS3FileReader extends AbstractAWSS3File implements Reader {
 				Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING);
 				
 			} catch (IOException e) {
-				throw new IfaceXException("Couldn't create file from '"+fileName+"'!", e);
+				throw new IfaceXException("Couldn't create file '"+fileName+"'!", e);
 			} finally {
 				try {
 					inputStream.close();

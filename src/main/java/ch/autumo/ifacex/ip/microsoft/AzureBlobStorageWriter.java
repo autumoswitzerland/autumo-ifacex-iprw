@@ -16,12 +16,15 @@
  * code@autumo.ch
  * 
  */
-package ch.autumo.ifacex.ip.amazon;
+package ch.autumo.ifacex.ip.microsoft;
 
 import java.io.File;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobContainerClient;
 
 import ch.autumo.ifacex.IPC;
 import ch.autumo.ifacex.IfaceXException;
@@ -32,34 +35,33 @@ import ch.autumo.ifacex.writer.Writer;
 
 
 /**
- * Amazon AWS S3 file out - writer prefix 'aws_file_out'.
+ * Microsoft Azure Blob Storage file out - writer prefix 'azure_file_out'.
  * 
- * Writes files into a bucket and creates the bucket first, if it
+ * Writes files into a container and creates the container first, if it
  * doesn't exist. Existing files are overwritten!
- * 
- * Uses path-style access and puts the 'aws_file_out_key_prefix'
- * in front of the file name, separated by a '/' in any case.
- * URL end-point and region should be provided for faster access!
  *  
  */
-public class AWSS3FileWriter extends AbstractAWSS3File implements Writer {
+public class AzureBlobStorageWriter extends AbstractAzureBlobStorage implements Writer {
 
-	private final static Logger LOG = LoggerFactory.getLogger(AWSS3FileReader.class.getName());
-
-	private String bucketName = null;
-
+	private final static Logger LOG = LoggerFactory.getLogger(AzureBlobStorageWriter.class.getName());
+	
+	private String container = null;
+	
+	private BlobContainerClient contClient = null;
+	
 	
 	@Override
 	public void initialize(String writerName, IPC config, Processor processor) throws IfaceXException {
 		
-		bucketName = config.getWriterConfig(writerName).getConfig("_bucket_name");
+		container = config.getWriterConfig(writerName).getConfig("_container");
 
 		super.initialize(writerName, config, processor);
 		
-	    // Only create bucket if it doesn't exists
-		if (!client().doesBucketExistV2(bucketName)) {
-			client().createBucket(bucketName);
-			LOG.info("AWS bucket '"+bucketName+"' created!");
+	    // Only create container if it doesn't exists
+		contClient = client().getBlobContainerClient(container);
+		if (!contClient.exists()) {
+			contClient = client().createBlobContainerIfNotExists(container);
+			LOG.info("Azure container '"+container+"' created!");
 		}
 	}
 
@@ -72,17 +74,23 @@ public class AWSS3FileWriter extends AbstractAWSS3File implements Writer {
 	}
 
 	@Override
-	public void writeBatchData(String writerName, IPC config, BatchData batch, SourceEntity entity) throws IfaceXException {
-	
+	public void writeBatchData(String writerName, IPC config, BatchData batch, SourceEntity entity)
+			throws IfaceXException {
+		
 		while (batch.hasNext()) {
 			
 			final String vals[] = batch.next();
 			final File curr = new File(vals[0]); // absolute file path when reader 'FilePathReader/file_in' is used!
 			
-			LOG.info("Processing (bucket: '" + bucketName + "'): " + getKeyPrefix() + curr.getName());
+			LOG.info("Processing (container: '" + container + "'): " + curr.getName());
+
+			final BlobClient client = contClient.getBlobClient(curr.getName());
 			
-			client().putObject(bucketName, getKeyPrefix() + curr.getName(), curr);
-		}
+			if (client.exists())
+				client.deleteIfExists();
+			
+			client.uploadFromFile(curr.getAbsolutePath());
+		}		
 	}
-	
+
 }

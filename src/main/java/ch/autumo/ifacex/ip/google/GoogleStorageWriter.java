@@ -46,7 +46,7 @@ import ch.autumo.ifacex.writer.Writer;
  * Google Storage file out - writer prefix 'gstorage_file_out'.
  * 
  * Writes files into a bucket and creates the bucket first, if it
- * doesn't exist.
+ * doesn't exist. Existing files are overwritten!
  * 
  * Region should be provided for faster access!
  *  
