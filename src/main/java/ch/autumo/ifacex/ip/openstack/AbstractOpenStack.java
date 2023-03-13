@@ -169,7 +169,7 @@ public class AbstractOpenStack implements Generic {
 					        //    therefore they have to be specified together!
 					        //.scopeToProject(Identifier.byName(project));
 					        
-					        // B) This works fine, a project ID is unique independentyl of a domain
+					        // B) This works fine, a project ID is unique independently of a domain
 			        		//.scopeToProject(Identifier.byId("5b96ca434ebb47b388f706c8827895c0"));
 					        
 					        // C) This is what we want!
