@@ -60,3 +60,10 @@ in your own project and IDE.
  
 Above Core Readers and Writers have many Interface Processor Configurations (IPCs)
 templates that connect to HubSpot, PayPal, Spotify or financial APIs, etc.
+
+If you want to run the additional Readers and Writers independently from autumo ifaceX,
+you might need to make small code adjustments (e.g., get SSL context differently) and
+you can find all necessary API interfaces and objects in the ifaceX Developer project:
+
+https://github.com/autumoswitzerland/autumo-ifacex-developer
+
