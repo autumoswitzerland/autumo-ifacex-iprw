@@ -166,7 +166,7 @@ public class AbstractOpenStack implements Generic {
 					        .credentials(user, pass, domainIdentifier)
 					        
 					        // A) Doesn't work, because project names are only unique in domains, 
-					        //    therefore they hae to be specified together!
+					        //    therefore they have to be specified together!
 					        //.scopeToProject(Identifier.byName(project));
 					        
 					        // B) This works fine, a project ID is unique independentyl of a domain
