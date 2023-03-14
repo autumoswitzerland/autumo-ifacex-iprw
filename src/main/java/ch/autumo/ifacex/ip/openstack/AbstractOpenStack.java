@@ -1,5 +1,5 @@
 /**
-s * Copyright 2023 autumo GmbH, Michael Gasche.
+ * Copyright 2023 autumo GmbH, Michael Gasche.
  * All Rights Reserved.
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -68,7 +68,6 @@ public class AbstractOpenStack implements Generic {
 	public void initialize(String rwName, IPC config, Processor processor) throws IfaceXException {
 		
 	    try {
-	    	
 			// IPC configurations
 			if (this instanceof Writer) {
 				user = config.getWriterConfig(rwName).getUser();

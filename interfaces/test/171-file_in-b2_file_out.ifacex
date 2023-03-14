@@ -1,0 +1,49 @@
+
+###############################################################################
+# General configuration
+###############################################################################
+
+source_interface=file_in
+destination_interfaces=b2_file_out
+# In this case, you define one pseudo entity, that defines in which
+# directory files should be read and processed as source entities
+# for the 'file_in'-reader
+process_source_entities=files:/Volumes/Fastdrive/autumo/docs/FTP
+
+
+
+###############################################################################
+# File reader configuration
+###############################################################################
+
+# No parameters necessary 
+
+
+
+###############################################################################
+# Azure Blob file writer configuration
+###############################################################################
+
+
+#
+# B2 API key ID.
+#
+# This value can be encrypted, use encoder.sh.
+#
+b2_file_out_api_key_id=<API_KEY_ID>
+
+
+#
+# B2 API key.
+#
+# This value can be encrypted, use encoder.sh.
+#
+b2_file_out_api_key=<API_KEY>
+
+
+#
+# Bucket to write to.
+# It is created if non-existent.
+#
+b2_file_out_bucket=<BUCKET_TO_WRITE_TO>
+
