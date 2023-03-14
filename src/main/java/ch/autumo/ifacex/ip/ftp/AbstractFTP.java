@@ -40,7 +40,7 @@ import ch.autumo.ifacex.writer.Writer;
  * Tested with the Wing FTP Server,
  * https://www.wftpserver.com/
  */
-public class AbstractFTP implements Generic {
+public abstract class AbstractFTP implements Generic {
 
 	private final static Logger LOG = LoggerFactory.getLogger(AbstractFTP.class.getName());
 	

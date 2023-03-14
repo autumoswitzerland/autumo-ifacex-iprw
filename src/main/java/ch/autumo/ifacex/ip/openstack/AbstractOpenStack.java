@@ -45,7 +45,7 @@ import ch.autumo.ifacex.writer.Writer;
  * https://openmetal.io/
  * 
  */
-public class AbstractOpenStack implements Generic {
+public abstract class AbstractOpenStack implements Generic {
 
 	private final static Logger LOG = LoggerFactory.getLogger(AbstractOpenStack.class.getName());
 	

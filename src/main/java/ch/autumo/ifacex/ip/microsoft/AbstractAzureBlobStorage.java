@@ -39,7 +39,7 @@ import ch.autumo.ifacex.writer.Writer;
  * 
  * See: https://learn.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-java#authenticate-to-azure-and-authorize-access-to-blob-data
  */
-public class AbstractAzureBlobStorage implements Generic {
+public abstract class AbstractAzureBlobStorage implements Generic {
 
 	private final static Logger LOG = LoggerFactory.getLogger(AbstractAzureBlobStorage.class.getName());
 	

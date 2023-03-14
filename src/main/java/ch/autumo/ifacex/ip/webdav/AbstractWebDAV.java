@@ -46,7 +46,7 @@ import ch.autumo.ifacex.writer.Writer;
 /**
  * Abstract Web DAV (with SSL if configured).
  */
-public class AbstractWebDAV implements Generic {
+public abstract class AbstractWebDAV implements Generic {
 
 	private final static Logger LOG = LoggerFactory.getLogger(AbstractWebDAV.class.getName());
 	

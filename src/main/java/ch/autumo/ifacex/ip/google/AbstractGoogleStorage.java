@@ -38,7 +38,7 @@ import ch.autumo.ifacex.writer.Writer;
 /**
  * Abstract Google Cloud Storage.
  */
-public class AbstractGoogleStorage implements Generic {
+public abstract class AbstractGoogleStorage implements Generic {
 
 	private final static Logger LOG = LoggerFactory.getLogger(AbstractGoogleStorage.class.getName());
 	

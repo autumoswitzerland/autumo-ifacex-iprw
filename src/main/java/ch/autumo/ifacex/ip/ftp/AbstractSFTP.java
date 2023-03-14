@@ -39,7 +39,7 @@ import net.schmizz.sshj.sftp.StatefulSFTPClient;
  * Tested with the Wing FTP Server,
  * https://www.wftpserver.com/
  */
-public class AbstractSFTP implements Generic {
+public abstract class AbstractSFTP implements Generic {
 
 	private final static Logger LOG = LoggerFactory.getLogger(AbstractSFTP.class.getName());
 	

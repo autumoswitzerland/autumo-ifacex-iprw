@@ -38,7 +38,7 @@ import ch.autumo.ifacex.writer.Writer;
  * See: https://github.com/Backblaze/b2-sdk-java
  * 
  */
-public class AbstractB2Storage implements Generic {
+public abstract class AbstractB2Storage implements Generic {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(AbstractB2Storage.class.getName());
 	
