@@ -25,7 +25,7 @@ gdrive_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex
 #
 # Application name that is connected through OAuth 2.0.
 #
-gdrive_file_in_application_name=ifacex-test
+gdrive_file_in_application_name=<YOUR_APP_NAME>
 
 
 #
@@ -61,7 +61,7 @@ gdrive_file_in_client_id=<YOUR_CLIENT_ID>
 #
 # Project ID.
 #
-gdrive_file_in_project_id=ifacex
+gdrive_file_in_project_id=<YOUR_PROJECT_ID>
 
 
 #

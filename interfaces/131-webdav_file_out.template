@@ -52,5 +52,5 @@ webdav_file_out_password=autumo
 #
 # Temporary directory for files read from Web DAV. 
 #
-webdav_file_out_dest_uri=files
+webdav_file_out_dest_uri=<UPLOAD_DIRECTORY>
 

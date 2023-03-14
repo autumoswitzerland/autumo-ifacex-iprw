@@ -42,13 +42,13 @@ gstorage_file_out_region=EU
 #
 # Project ID.
 #
-gstorage_file_out_project_id=ifacex
+gstorage_file_out_project_id=<YOUR_PROJECT_ID>
 
 
 #
 # Bucket name.
 #
-gstorage_file_out_bucket_name=ifacex_bucket
+gstorage_file_out_bucket_name=<YOUR_BUCKET_NAME>
 
 
 #

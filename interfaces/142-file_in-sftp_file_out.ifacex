@@ -50,5 +50,5 @@ sftp_file_out_password=<YOUR_PASSWORD>
 #
 # Remote target directory. 
 #
-sftp_file_out_directory=upload/juhu
+sftp_file_out_directory=upload
 

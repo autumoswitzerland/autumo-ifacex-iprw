@@ -42,6 +42,7 @@ in your own project and IDE.
 - SFTP
 - OpenStack (Keystone V2 and V3)
 - Microsoft Azure Blob Storage
+- BackBlaze B2 Storage
 
 #### ifaceX Core Readers | Writers
 

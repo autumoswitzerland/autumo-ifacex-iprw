@@ -36,7 +36,7 @@ gdrive_file_out_folder_id_parent=
 #
 # Application name that is connected through OAuth 2.0.
 #
-gdrive_file_out_application_name=ifacex-test
+gdrive_file_out_application_name=<YOUR_APP_NAME>
 
 #
 # Client ID (can be encrypted, use encoder.sh).

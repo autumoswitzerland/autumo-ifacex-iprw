@@ -3,17 +3,15 @@
 # General configuration
 ###############################################################################
 
-source_interface=file_in
-destination_interfaces=b2_file_out
-# In this case, you define one pseudo entity, that defines in which
-# directory files should be read and processed as source entities
-# for the 'file_in'-reader
-process_source_entities=files:/Volumes/Fastdrive/autumo/docs/FTP
+source_interface=b2_file_in
+destination_interfaces=file_out
+# For the 'b2_file_in' reader, define a bucket-list as source entities!
+process_source_entities=autumo
 
 
 
 ###############################################################################
-# BackBlaze B2 file writer configuration
+# BackBlaze B2 file reader configuration
 ###############################################################################
 
 
@@ -22,7 +20,7 @@ process_source_entities=files:/Volumes/Fastdrive/autumo/docs/FTP
 #
 # This value can be encrypted, use encoder.sh.
 #
-b2_file_out_api_key_id=<API_KEY_ID>
+b2_file_in_api_key_id=<YOUR_API_KEY_ID>
 
 
 #
@@ -30,12 +28,11 @@ b2_file_out_api_key_id=<API_KEY_ID>
 #
 # This value can be encrypted, use encoder.sh.
 #
-b2_file_out_api_key=<API_KEY>
+b2_file_in_api_key=<YOUR_API_KEY>
 
 
 #
-# Bucket to write to.
-# It is created if non-existent.
+# Temporary directory for files read from the Azure Blob Storage.
 #
-b2_file_out_bucket=<BUCKET_TO_WRITE_TO>
+b2_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex
 

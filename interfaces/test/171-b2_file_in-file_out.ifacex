@@ -1,0 +1,56 @@
+
+###############################################################################
+# General configuration
+###############################################################################
+
+source_interface=b2_file_in
+destination_interfaces=file_out
+# For the 'b2_file_in' reader, define a bucket-list as source entities!
+process_source_entities=autumo
+
+
+
+###############################################################################
+# BackBlaze B2 file reader configuration
+###############################################################################
+
+
+#
+# B2 API key ID.
+#
+# This value can be encrypted, use encoder.sh.
+#
+b2_file_in_api_key_id=<YOUR_API_KEY_ID>
+
+
+#
+# B2 API key.
+#
+# This value can be encrypted, use encoder.sh.
+#
+b2_file_in_api_key=<YOUR_API_KEY>
+
+
+#
+# Temporary directory for files read from the Azure Blob Storage.
+#
+b2_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex
+
+
+
+###############################################################################
+# File writer configuration
+###############################################################################
+
+
+#
+# Output directory. 
+#
+file_out_path=/Volumes/Fastdrive/tmp/fromb2
+
+#
+# Delete source files after copying?
+# Values: yes|no
+#
+file_out_delete_files_after_processing=yes
+

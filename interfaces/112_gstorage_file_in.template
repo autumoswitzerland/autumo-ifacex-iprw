@@ -30,5 +30,5 @@ gstorage_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex
 #
 # Project ID.
 #
-gstorage_file_in_project_id=ifacex
+gstorage_file_in_project_id=<YOUR_PROJECT_ID>
 

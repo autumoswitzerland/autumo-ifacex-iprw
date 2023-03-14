@@ -42,7 +42,7 @@ import ch.autumo.ifacex.reader.ReaderException;
 /**
  * OpenStack Swift ObjectStorage file in - writer prefix 'os_swift_file_in'.
  * 
- * Reads files from a OpenStack containers as entities and creates them 
+ * Reads files from OpenStack containers as entities and creates them 
  * in the directory specified by 'os_swift_file_in_temp_out_path'; you have to delete
  * them yourself if necessary and if they are not deleted by a file writer for example.
  * 
@@ -75,7 +75,8 @@ public class OpenStackSwiftReader extends AbstractOpenStack implements Reader {
 		
 		//batchSize = config.getReaderConfig().getFetchSize(SourceEntity.WILDCARD_SOURCE_ENTITY);
 		exFilter = config.getReaderConfig().getExclusionFilter(SourceEntity.WILDCARD_SOURCE_ENTITY);
-	}	
+	}
+	
 	@Override
 	public void initializeEntity(String readerName, IPC config, SourceEntity entity)
 			throws ReaderException, IfaceXException {

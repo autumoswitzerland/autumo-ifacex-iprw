@@ -52,17 +52,17 @@ ftp_file_out_prot=S
 #
 # User (can be encrypted, use encoder.sh).
 #
-ftp_file_out_user=autumo
+ftp_file_out_user=<YOUR_USER>
 
 
 #
 # Password (can be encrypted, use encoder.sh).
 #
-ftp_file_out_password=autumo
+ftp_file_out_password=<YOUR_PASSWORD>
 
 
 #
 # Remote target directory. 
 #
-ftp_file_out_directory=upload
+ftp_file_out_directory=<UPLOAD_DIRECTORY>
 

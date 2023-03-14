@@ -51,13 +51,13 @@ ftp_file_in_prot=S
 #
 # User (can be encrypted, use encoder.sh).
 #
-ftp_file_in_user=autumo
+ftp_file_in_user=<YOUR_USER>
 
 
 #
 # Password (can be encrypted, use encoder.sh).
 #
-ftp_file_in_password=autumo
+ftp_file_in_password=<YOUR_PASSWORD>
 
 
 #
