@@ -110,7 +110,7 @@ public class B2StorageWriter extends AbstractB2Storage implements Writer {
 			
 			final B2UploadFileRequest request = B2UploadFileRequest
 				    .builder(bucketId, curr.getName(), B2ContentTypes.APPLICATION_OCTET, B2FileContentSource.build(curr))
-				    .setCustomField("color", "green")
+				    // .setCustomField("key", "value") // No fields yet 
 				    .build();
 			
 			boolean found = false;
