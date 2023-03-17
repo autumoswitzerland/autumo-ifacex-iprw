@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>autumo-ifacex-ip-ftp</name>
+	<name>autumo-ifacex-iprw-ftp</name>
 	<comment>Additional Readers/Writers for autumo ifaceX. NO_M2ECLIPSE_SUPPORT: Project files created with the maven-eclipse-plugin are not supported in M2Eclipse.</comment>
 	<projects>
 	</projects>

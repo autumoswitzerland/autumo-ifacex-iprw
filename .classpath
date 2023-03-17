@@ -17,16 +17,16 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/autumo-ifacex-ip-az-aws-s3"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/autumo-ifacex-ip-bb-b2"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/autumo-ifacex-ip-dbox"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/autumo-ifacex-ip-ftp"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/autumo-ifacex-ip-google-drive"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/autumo-ifacex-ip-google-storage"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/autumo-ifacex-ip-ms-azure"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/autumo-ifacex-ip-ms-graph"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/autumo-ifacex-ip-os"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/autumo-ifacex-ip-sftp"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/autumo-ifacex-ip-webdav"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/autumo-ifacex-iprw-az-aws-s3"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/autumo-ifacex-iprw-bb-b2"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/autumo-ifacex-iprw-dbox"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/autumo-ifacex-iprw-ftp"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/autumo-ifacex-iprw-google-drive"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/autumo-ifacex-iprw-google-storage"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/autumo-ifacex-iprw-ms-azure"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/autumo-ifacex-iprw-ms-graph"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/autumo-ifacex-iprw-os"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/autumo-ifacex-iprw-sftp"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/autumo-ifacex-iprw-webdav"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

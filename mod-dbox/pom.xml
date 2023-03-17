@@ -5,10 +5,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<artifactId>autumo-ifacex-iprw</artifactId>
-		<groupId>ch.autumo.ifacex</groupId>
+		<groupId>ch.autumo.ifacex.iprw</groupId>
 		<version>1.0.0</version>
 	</parent>	
-	<artifactId>autumo-ifacex-ip-dbox</artifactId>
+	<groupId>ch.autumo.ifacex.iprw.dbox</groupId>
+	<artifactId>autumo-ifacex-iprw-dbox</artifactId>
 	<packaging>jar</packaging>
 	
 	<properties>
