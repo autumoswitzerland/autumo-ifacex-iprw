@@ -55,7 +55,7 @@ then
 	fi
 	
 	# remove package
-	if [ -f "autumo-ifaceX-iprw-*.zip" ]
+	if [ -f "autumo-ifaceX-iprw-$IPRW_VERSION.zip" ]
 	then
     	rm autumo-ifaceX-iprw-*.zip
 	fi
@@ -112,15 +112,19 @@ then
 	echo "-> Copying..."
 	
 	mkdir -p lib
-	cp ../../lib/*.jar lib/
 
-	# for the product we dont' need the ifaceX libs
-	rm lib/autumo-commons-*.jar
-	rm lib/autumo-ifacex-*.jar
-	rm lib/autumo-beetroot-*.jar
-
-	# re-copy
-	cp ../../lib/autumo-ifacex-iprw-*.jar lib/
+	# copy libs
+	cp ../../mod-az-aws-s3/lib/*.jar lib/
+	cp ../../mod-bb-b2/lib/*.jar lib/
+	cp ../../mod-dbox/lib/*.jar lib/
+	cp ../../mod-ftp/lib/*.jar lib/
+	cp ../../mod-google-drive/lib/*.jar lib/
+	cp ../../mod-google-storage/lib/*.jar lib/
+	cp ../../mod-ms-azure/lib/*.jar lib/
+	cp ../../mod-ms-graph/lib/*.jar lib/
+	cp ../../mod-os/lib/*.jar lib/
+	cp ../../mod-sftp/lib/*.jar lib/
+	cp ../../mod-webdav/lib/*.jar lib/
 	
 	cp ../../LICENSE.md .
 
