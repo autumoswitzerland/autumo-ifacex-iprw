@@ -1,0 +1,38 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>autumo-ifacex-iprw</artifactId>
+		<groupId>ch.autumo.ifacex</groupId>
+		<version>1.0.0</version>
+	</parent>	
+	<artifactId>autumo-ifacex-ip-ftp</artifactId>
+	<packaging>jar</packaging>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	
+	<dependencies>
+
+		<dependency>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+			<version>3.9.0</version>
+		    <scope>provided</scope>
+		</dependency>
+		
+		<!-- Testing -->
+
+		<dependency>
+			<groupId>org.mockftpserver</groupId>
+			<artifactId>MockFtpServer</artifactId>
+			<version>3.1.0</version>
+			<scope>test</scope>
+		</dependency>		
+		
+	</dependencies>
+	
+</project>

@@ -6,30 +6,41 @@
 	<groupId>ch.autumo.ifacex</groupId>
 	<artifactId>autumo-ifacex-iprw</artifactId>
 	<version>1.0.0</version>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 	
 	<name>autumo-ifacex-iprw</name>
+	<description>Additional Readers/Writers for autumo ifaceX</description>
 	<url>http://products.autumo.ch</url>
 	
+	<organization>
+		<name>autumo</name>
+	</organization>
+		
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-	
-	<!-- REPOSITORIES -->
-
-	<repositories>
-		
-		<!-- Microsoft OneDrive -->
-		<!-- API is not optimal, use DropBox ;)
-		<repository>
-			<id>jitpack.io</id>
-			<url>https://jitpack.io</url>
-		</repository>
-		-->
-		
-	</repositories>
-	
+	<modules>
+	    <module>mod-az-aws-s3</module>
+	    <module>mod-bb-b2</module>
+	    <module>mod-dbox</module>
+	    <module>mod-ftp</module>
+	    <module>mod-google-drive</module>
+	    <module>mod-google-storage</module>
+	    <module>mod-ms-azure</module>
+	    <module>mod-ms-graph</module>
+	    <module>mod-os</module>
+	    <module>mod-sftp</module>
+	    <module>mod-webdav</module>
+  	</modules>
+  		
+	<licenses>
+		<license>
+			<name>GPL-3.0 license with Classpath Exception</name>
+			<url>https://github.com/autumoswitzerland/autumo-ifacex-iprw/blob/main/LICENSE.md</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
 	<build>
 		<plugins>
@@ -40,7 +51,7 @@
 				<configuration>
 					<archive>
 						<manifestEntries>
-							<Automatic-Module-Name>autumo.search</Automatic-Module-Name>
+							<Automatic-Module-Name>autumo.ifacex.iprw</Automatic-Module-Name>
 						</manifestEntries>
 					</archive>
 				</configuration>
@@ -110,30 +121,6 @@
 						
 		</plugins>
 	</build>
-
-
-	<!-- DEPENDENCY MANAGEMENT -->
-	
-	<dependencyManagement>
-		
-		<dependencies>
-			
-			<!-- Microsoft Azure -->
-
-			<dependency>
-				<groupId>com.azure</groupId>
-				<artifactId>azure-sdk-bom</artifactId>
-				<version>1.2.10</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			
-		</dependencies>
-		
-	</dependencyManagement>
-	
-	
-	<!-- LIBRARY DEPENDENCIES -->
 	
 	<dependencies>
 		
@@ -161,221 +148,7 @@
 		</dependency>
 
 
-		<!-- FTP/FTPS -->
-
-		<dependency>
-			<groupId>commons-net</groupId>
-			<artifactId>commons-net</artifactId>
-			<version>3.9.0</version>
-		    <scope>provided</scope>
-		</dependency>
-		
-		
-		<!-- SFTP -->
-		
-		<dependency>
-		    <groupId>com.hierynomus</groupId>
-		    <artifactId>sshj</artifactId>
-		    <version>0.35.0</version>
-		    <scope>provided</scope>
-		</dependency>
-
-		
-		<!-- Web DAV -->
-
-		<dependency>
-			<groupId>com.github.lookfirst</groupId>
-			<artifactId>sardine</artifactId>
-			<version>5.10</version>
-		    <scope>provided</scope>
-		</dependency>
-		
-		
-		<!-- OpenStack -->
-		
-		<dependency>
-			<groupId>com.github.openstack4j.core</groupId>
-			<artifactId>openstack4j</artifactId>
-			<version>3.3</version>
-			<classifier>withdeps</classifier>
-		    <scope>provided</scope>
-		</dependency>
-
-
-		<!-- BackBlaze B2 -->
-
-		<dependency>
-			<groupId>com.backblaze.b2</groupId>
-			<artifactId>b2-sdk-core</artifactId>
-			<version>6.1.1</version>
-		    <scope>provided</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.backblaze.b2</groupId>
-			<artifactId>b2-sdk-httpclient</artifactId>
-			<version>6.1.1</version>
-		    <scope>provided</scope>
-		</dependency>
-
-
-		<!-- Dropbox -->
-
-		<dependency>
-    		<groupId>com.dropbox.core</groupId>
-    		<artifactId>dropbox-core-sdk</artifactId>
-    		<version>5.4.4</version>
-		    <scope>provided</scope>
-		</dependency>
-
-
-		<!-- Amazon AWS S3 -->
-
-		<dependency>
-			<groupId>com.amazonaws</groupId>
-			<artifactId>aws-java-sdk-bundle</artifactId>
-		    <version>1.12.418</version>
-		    <scope>provided</scope>
-		</dependency>
-
-		<!--
-		<dependency>
-		    <groupId>com.amazonaws</groupId>
-		    <artifactId>aws-java-sdk</artifactId>
-		    <version>1.12.416</version>
-		    <scope>provided</scope>
-		</dependency>
-		-->
-		
-
-		<!-- Google Drive -->
-
-		<dependency>
-		    <groupId>com.google.api-client</groupId>
-		    <artifactId>google-api-client</artifactId>
-		    <version>2.0.0</version>
-		    <scope>provided</scope>
-		</dependency>
-
-		<dependency>
-		    <groupId>com.google.oauth-client</groupId>
-		    <artifactId>google-oauth-client-jetty</artifactId>
-		    <version>1.34.1</version>
-		    <scope>provided</scope>
-		</dependency>
-		
-		<dependency>
-		    <groupId>com.google.apis</groupId>
-		    <artifactId>google-api-services-drive</artifactId>
-		    <version>v3-rev20220815-2.0.0</version>
-		    <scope>provided</scope>
-		</dependency>
-
-
-		<!-- Google Cloud Storage -->
-		
-		<dependency>
-		    <groupId>com.google.cloud</groupId>
-		    <artifactId>google-cloud-storage</artifactId>
-		    <version>2.19.0</version>
-		    <scope>provided</scope>
-		</dependency>
-
-
-		<!-- Microsoft OneDrive -->
-		<!-- API is not optimal, use DropBox ;)
-
-		<dependency>
-			<groupId>com.github.isac322</groupId>
-			<artifactId>OneDrive-SDK-java</artifactId>
-			<version>0.10.1</version>
-		    <scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-all</artifactId>
-			<version>4.1.89.Final</version>
-		    <scope>provided</scope>
-		</dependency>
-
-		<dependency>
-		    <groupId>io.netty</groupId>
-		    <artifactId>netty-transport-native-epoll</artifactId>
-		    <version>4.1.89.Final</version>
-		    <scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-			<version>2.14.2</version>
-		    <scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-annotations</artifactId>
-			<version>2.14.2</version>
-		    <scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.jetbrains</groupId>
-			<artifactId>annotations</artifactId>
-			<version>24.0.1</version>
-		    <scope>provided</scope>
-		</dependency>
-		-->
-
-
-		<!-- Microsoft Graph API, needs 'azure-identity'' -->
-
-		<dependency>
-			<groupId>com.microsoft.graph</groupId>
-			<artifactId>microsoft-graph</artifactId>
-			<version>5.49.0</version>
-		    <scope>provided</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.microsoft.graph</groupId>
-			<artifactId>microsoft-graph-core</artifactId>
-			<version>2.0.16</version>
-		    <scope>provided</scope>
-		</dependency>
-		
-		
-		<!-- Microsoft Azure -->
-
-		<dependency>
-			<groupId>com.azure</groupId>
-			<artifactId>azure-storage-blob</artifactId>
-		    <scope>provided</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.azure</groupId>
-			<artifactId>azure-identity</artifactId>
-		    <scope>provided</scope>
-		</dependency>
-
-
 		<!-- Testing -->
-
-		<dependency>
-			<groupId>org.mockftpserver</groupId>
-			<artifactId>MockFtpServer</artifactId>
-			<version>3.1.0</version>
-			<scope>test</scope>
-		</dependency>
-
-		 <dependency>
-	        <groupId>io.findify</groupId>
-	        <artifactId>s3mock_2.13</artifactId>
-	        <version>0.2.6</version>
-	        <scope>test</scope>
-	    </dependency>
 
 		<dependency>
 			<groupId>junit</groupId>

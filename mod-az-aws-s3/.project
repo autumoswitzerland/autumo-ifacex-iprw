@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>autumo-ifacex-iprw</name>
-	<comment></comment>
+	<name>autumo-ifacex-ip-az-aws-s3</name>
+	<comment>Additional Readers/Writers for autumo ifaceX. NO_M2ECLIPSE_SUPPORT: Project files created with the maven-eclipse-plugin are not supported in M2Eclipse.</comment>
 	<projects>
 	</projects>
 	<buildSpec>
@@ -9,7 +9,7 @@
 			<name>org.eclipse.jdt.core.javabuilder</name>
 			<arguments>
 			</arguments>
-		</buildCommand>	
+		</buildCommand>
 		<buildCommand>
 			<name>org.eclipse.m2e.core.maven2Builder</name>
 			<arguments>
@@ -17,7 +17,7 @@
 		</buildCommand>
 	</buildSpec>
 	<natures>
-		<nature>org.eclipse.jdt.core.javanature</nature>	
 		<nature>org.eclipse.m2e.core.maven2Nature</nature>
+		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
 </projectDescription>
