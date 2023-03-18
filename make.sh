@@ -114,6 +114,16 @@ then
 	mkdir -p lib
 
 
+	##  Sorting out libs beforehand, example:
+	#LIST=(`ls ../../mod-google-storage/lib/*.jar`)
+	#LIST=${LIST[@]/*failureaccess*}
+	#LIST=${LIST[@]/*google-oauth-client*}
+	#LIST=${LIST[@]/*j2objc-annotations*}
+	#LIST=${LIST[@]/*jsr305*}
+	#LIST=${LIST[@]/*listenablefuture*}
+	#cp $LIST lib/
+
+
 	# COPY LIBS
 	
 	
