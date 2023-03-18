@@ -113,20 +113,85 @@ then
 	
 	mkdir -p lib
 
-	# copy libs
-	cp ../../mod-az-aws-s3/lib/*.jar lib/
-	cp ../../mod-bb-b2/lib/*.jar lib/
-	cp ../../mod-dbox/lib/*.jar lib/
-	cp ../../mod-ftp/lib/*.jar lib/
-	cp ../../mod-google-drive/lib/*.jar lib/
-	cp ../../mod-google-storage/lib/*.jar lib/
-	cp ../../mod-ms-azure/lib/*.jar lib/
-	cp ../../mod-ms-graph/lib/*.jar lib/
-	cp ../../mod-os/lib/*.jar lib/
-	cp ../../mod-sftp/lib/*.jar lib/
-	cp ../../mod-webdav/lib/*.jar lib/
+
+	# COPY LIBS
 	
+	
+	# Module 'mod-az-aws-s3'
+	cp ../../mod-az-aws-s3/lib/*.jar lib/
+	
+	
+	# Module 'mod-bb-b2'
+	cp ../../mod-bb-b2/lib/*.jar lib/
+
+	
+	# Module 'mod-dbox'
+	cp ../../mod-dbox/lib/*.jar lib/
+
+	
+	# Module 'mod-ftp'
+	cp ../../mod-ftp/lib/*.jar lib/
+
+	
+	# Module 'mod-google-drive'
+	cp ../../mod-google-drive/lib/*.jar lib/
+	
+	
+	# Module 'mod-google-storage'
+	cp ../../mod-google-storage/lib/*.jar lib/
+	
+	
+	# Module 'mod-ms-azure'
+	cp ../../mod-ms-azure/lib/*.jar lib/
+	
+	
+	# Module 'mod-ms-graph'
+	cp ../../mod-ms-graph/lib/*.jar lib/
+
+	
+	# Module 'mod-os'
+	cp ../../mod-os/lib/*.jar lib/
+
+	
+	# Module 'mod-sftp'
+	cp ../../mod-sftp/lib/*.jar lib/
+
+	
+	# Module 'mod-webdav'
+	cp ../../mod-webdav/lib/*.jar lib/
+
+
+
+	# REMOVE ifaceX Doublettes
+	rm lib/bcprov-jdk15on*
+	rm lib/checker-qual*
+	rm lib/commons-codec*
+	rm lib/commons-io*
+	rm lib/commons-logging*
+	rm lib/error_prone_annotations*
+	rm lib/failureaccess*
+	rm lib/gson*
+	rm lib/httpcore*
+	rm lib/httpclient*
+	rm lib/j2objc-annotations*
+	rm lib/jackson-annotations*
+	rm lib/jackson-core-*
+	rm lib/jackson-databind*
+	rm lib/jackson-dataformat-xml*
+	rm lib/jackson-datatype-jsr310*
+	rm lib/json-20230227*
+	rm lib/jsr305*
+	rm lib/slf4j-api*
+	rm lib/stax2-api*
+	rm lib/woodstox-core*
+	rm lib/listenablefuture*
+
+	
+	
+	# COPY LICENSE
 	cp ../../LICENSE.md .
+	# COPY README
+	cp ../../README.md .
 
 	
 

@@ -145,6 +145,7 @@
 	
 	<dependencies>
 		
+		
 		<!-- autumo ifaceX -->
 		
 		<dependency>
@@ -168,6 +169,30 @@
 		    <scope>compile</scope>
 		</dependency>
 
+  
+		<!-- Deps -->
+		
+		<dependency>
+		    <groupId>org.slf4j</groupId>
+		    <artifactId>slf4j-api</artifactId>
+		    <version>1.7.36</version>
+		    <scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20230227</version>
+		    <scope>provided</scope>
+		</dependency>
+
+		<dependency>
+    		<groupId>commons-io</groupId>
+    		<artifactId>commons-io</artifactId>
+    		<version>2.11.0</version>
+		    <scope>provided</scope>
+		</dependency>
+
 
 		<!-- Testing -->
 
@@ -177,7 +202,6 @@
 			<version>3.8.1</version>
 			<scope>test</scope>
 		</dependency>
-
 		
 	</dependencies>
 	

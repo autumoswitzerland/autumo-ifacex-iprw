@@ -25,6 +25,15 @@
 		    <scope>provided</scope>
 		</dependency>
 		
+  	<!-- Overwrites (Newer versions) -->
+		
+		<dependency>
+		    <groupId>org.checkerframework</groupId>
+		    <artifactId>checker-qual</artifactId>
+		    <version>3.32.0</version>
+		    <scope>provided</scope>
+		</dependency>
+				
 	</dependencies>
 	
 </project>
