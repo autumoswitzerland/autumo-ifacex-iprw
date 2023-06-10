@@ -63,13 +63,13 @@ public abstract class AbstractSFTP implements Generic {
 			if (this instanceof Writer) {
 				known_hosts = config.getWriterConfig(rwName).getConfig("_known_hosts");
 				host = config.getWriterConfig(rwName).getHost();
-				port = config.getWriterConfig(rwName).getNumber(rwName, DEFAULT_PORT);
+				port = config.getWriterConfig(rwName).getNumber("_port", DEFAULT_PORT);
 				user = config.getWriterConfig(rwName).getUser();
 				pass = config.getWriterConfig(rwName).getPassword();
 			} else {
 				known_hosts = config.getReaderConfig().getConfig("_known_hosts");
 				host = config.getReaderConfig().getHost();
-				port = config.getReaderConfig().getNumber(rwName, DEFAULT_PORT);
+				port = config.getReaderConfig().getNumber("_port", DEFAULT_PORT);
 				user = config.getReaderConfig().getUser();
 				pass = config.getReaderConfig().getPassword();
 			}

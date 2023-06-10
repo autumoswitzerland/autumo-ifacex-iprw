@@ -65,14 +65,14 @@ public abstract class AbstractFTP implements Generic {
 		try {
 			if (this instanceof Writer) {
 				host = config.getWriterConfig(rwName).getHost();
-				port = config.getWriterConfig(rwName).getNumber(rwName, DEFAULT_PORT);
+				port = config.getWriterConfig(rwName).getNumber("_port", DEFAULT_PORT);
 				user = config.getWriterConfig(rwName).getUser();
 				pass = config.getWriterConfig(rwName).getPassword();
 				ssl  = config.getWriterConfig(rwName).isYes("_ssl", false);
 				prot = config.getWriterConfig(rwName).getConfig("_prot");
 			} else {
 				host = config.getReaderConfig().getHost();
-				port = config.getReaderConfig().getNumber(rwName, DEFAULT_PORT);
+				port = config.getReaderConfig().getNumber("_port", DEFAULT_PORT);
 				user = config.getReaderConfig().getUser();
 				pass = config.getReaderConfig().getPassword();
 				ssl  = config.getReaderConfig().isYes("_ssl", false);
