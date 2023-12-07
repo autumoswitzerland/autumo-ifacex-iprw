@@ -26,7 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ch.autumo.beetroot.BeetRootConfigurationManager;
-import ch.autumo.beetroot.utils.security.SSLUtils;
+import ch.autumo.beetroot.utils.SSL;
 import ch.autumo.ifacex.IPC;
 import ch.autumo.ifacex.IfaceXException;
 import ch.autumo.ifacex.Processor;
@@ -90,7 +90,7 @@ public abstract class AbstractFTP implements Generic {
 			if (ssl) {
 				// Necessary for the SSLUtils!
 				BeetRootConfigurationManager.getInstance().initialize("cfg/ifacex-server.cfg");
-				client = new FTPSClient(SSLUtils.makeSSLContext());
+				client = new FTPSClient(SSL.makeSSLContext());
 			} else {
 				client = new FTPClient();
 			}

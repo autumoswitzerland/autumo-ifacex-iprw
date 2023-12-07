@@ -27,7 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ch.autumo.beetroot.BeetRootConfigurationManager;
-import ch.autumo.beetroot.utils.security.SSLUtils;
+import ch.autumo.beetroot.utils.SSL;
 import ch.autumo.ifacex.IPC;
 import ch.autumo.ifacex.IfaceXException;
 import ch.autumo.ifacex.Processor;
@@ -102,7 +102,7 @@ public abstract class AbstractOpenStack implements Generic {
 			if (ssl) {
 				// Necessary for the SSLUtils!
 				BeetRootConfigurationManager.getInstance().initialize("cfg/ifacex-server.cfg");
-				os_config = os_config.withSSLContext(SSLUtils.makeSSLContext());
+				os_config = os_config.withSSLContext(SSL.makeSSLContext());
 			}
 		} catch (Exception e) {
 			throw new IfaceXException("Couldn't create SSL context!", e);

@@ -36,7 +36,7 @@ import com.github.sardine.impl.SardineImpl;
 
 import ch.autumo.beetroot.BeetRootConfigurationManager;
 import ch.autumo.beetroot.transport.SecureSocketFactory;
-import ch.autumo.beetroot.utils.security.SSLUtils;
+import ch.autumo.beetroot.utils.SSL;
 import ch.autumo.ifacex.IPC;
 import ch.autumo.ifacex.IfaceXException;
 import ch.autumo.ifacex.Processor;
@@ -89,7 +89,7 @@ public abstract class AbstractWebDAV implements Generic {
 			try {
 				// Necessary for the SSLUtils!
 				BeetRootConfigurationManager.getInstance().initialize("cfg/ifacex-server.cfg");
-				final SecureSocketFactory factory = new SecureSocketFactory(SSLUtils.makeSSLSocketFactory(SSLUtils.getKeystoreFile(), SSLUtils.getKeystorePw()), null);
+				final SecureSocketFactory factory = new SecureSocketFactory(SSL.makeSSLSocketFactory(), null);
 				socketFactory = factory.getBaseSocketFactory();
 			} catch (Exception e) {
 				throw new IfaceXException("Couldn't create SSL socket factory!", e);

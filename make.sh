@@ -3,7 +3,7 @@
 ###############################################################################
 #
 #  autumo ifaceX Additional Reader/Writer packager.
-#  Version: 1.0
+#  Version: 1.1
 #
 #  Notes:
 #   -
@@ -11,7 +11,7 @@
 #------------------------------------------------------------------------------
 #
 #  2023 autumo GmbH
-#  Date: 01.03.2023
+#  Date: 07.12.2023
 #
 ###############################################################################
 
@@ -19,7 +19,7 @@
 
 
 # VARS
-IPRW_VERSION=1.0.0
+IPRW_VERSION=1.3.0
 
 
 
@@ -180,6 +180,7 @@ then
 	rm lib/commons-logging*
 	rm lib/error_prone_annotations*
 	rm lib/failureaccess*
+	rm lib/guava-*
 	rm lib/gson*
 	rm lib/httpcore*
 	rm lib/httpclient*
@@ -189,7 +190,9 @@ then
 	rm lib/jackson-databind*
 	rm lib/jackson-dataformat-xml*
 	rm lib/jackson-datatype-jsr310*
-	rm lib/json-20230227*
+	rm lib/jakarta-activation-api-*
+	rm lib/jna-*
+	rm lib/json-20231013*
 	rm lib/jsr305*
 	rm lib/slf4j-api*
 	rm lib/stax2-api*
