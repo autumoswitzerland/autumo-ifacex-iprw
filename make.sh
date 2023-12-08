@@ -190,7 +190,7 @@ then
 	rm lib/jackson-databind*
 	rm lib/jackson-dataformat-xml*
 	rm lib/jackson-datatype-jsr310*
-	rm lib/jakarta-activation-api-*
+	rm lib/jakarta.activation-api-*
 	rm lib/jna-*
 	rm lib/json-20231013*
 	rm lib/jsr305*
