@@ -6,7 +6,7 @@ REM
 REM Vars
 set COMMONS_VERSION=1.0.0
 set IFACEX_VERSION=1.3.0
-set BEETROOT_VERSION=2.2.0
+set BEETROOT_VERSION=2.2.1
 
 REM Install
 mvn install:install-file -Dfile=lib/autumo-commons-%COMMONS_VERSION%.jar -DgroupId=ch.autumo.commons -DartifactId=autumo-commons -Dversion=%COMMONS_VERSION% -Dpackaging=jar
