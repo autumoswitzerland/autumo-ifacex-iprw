@@ -15,7 +15,7 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ListBlobsOptions;
 
-import ch.autumo.commons.utils.OSUtils;
+import ch.autumo.commons.utils.system.OSUtils;
 import ch.autumo.ifacex.ExclusionFilter;
 import ch.autumo.ifacex.IPC;
 import ch.autumo.ifacex.IfaceXException;

@@ -31,7 +31,7 @@ import com.backblaze.b2.client.structures.B2DownloadByNameRequest;
 import com.backblaze.b2.client.structures.B2FileVersion;
 import com.backblaze.b2.client.structures.B2ListFileVersionsRequest;
 
-import ch.autumo.commons.utils.OSUtils;
+import ch.autumo.commons.utils.system.OSUtils;
 import ch.autumo.ifacex.ExclusionFilter;
 import ch.autumo.ifacex.IPC;
 import ch.autumo.ifacex.IfaceXException;

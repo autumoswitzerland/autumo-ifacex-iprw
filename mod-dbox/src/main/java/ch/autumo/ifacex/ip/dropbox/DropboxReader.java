@@ -30,7 +30,7 @@ import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.files.Metadata;
 
-import ch.autumo.commons.utils.OSUtils;
+import ch.autumo.commons.utils.system.OSUtils;
 import ch.autumo.ifacex.ExclusionFilter;
 import ch.autumo.ifacex.IPC;
 import ch.autumo.ifacex.IfaceXException;

@@ -36,7 +36,7 @@ import com.github.sardine.impl.SardineImpl;
 
 import ch.autumo.beetroot.BeetRootConfigurationManager;
 import ch.autumo.beetroot.transport.SecureSocketFactory;
-import ch.autumo.beetroot.utils.SSL;
+import ch.autumo.beetroot.utils.security.SSL;
 import ch.autumo.ifacex.IPC;
 import ch.autumo.ifacex.IfaceXException;
 import ch.autumo.ifacex.Processor;
