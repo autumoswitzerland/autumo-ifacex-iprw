@@ -74,7 +74,6 @@ public abstract class AbstractGraph implements Generic {
     
 	@Override
 	public void initialize(String rwName, IPC config, Processor processor) throws IfaceXException {
-		
 		try {
 			if (this instanceof Writer) {
 				tokenAuth = config.getWriterConfig(rwName).isYes("_token_auth", false);
