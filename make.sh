@@ -3,7 +3,7 @@
 ###############################################################################
 #
 #  autumo ifaceX Additional Reader/Writer packager.
-#  Version: 1.1
+#  Version: 2.0
 #
 #  Notes:
 #   -
@@ -19,7 +19,7 @@
 
 
 # VARS
-IPRW_VERSION=1.3.0
+IPRW_VERSION=2.0.0
 
 
 
@@ -192,7 +192,7 @@ then
 	rm lib/jackson-datatype-jsr310*
 	rm lib/jakarta.activation-api-*
 	rm lib/jna-*
-	rm lib/json-20231013*
+	rm lib/json-20*
 	rm lib/jsr305*
 	rm lib/slf4j-api*
 	rm lib/stax2-api*
