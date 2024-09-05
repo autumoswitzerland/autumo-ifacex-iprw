@@ -199,6 +199,13 @@ then
 	rm lib/woodstox-core*
 	rm lib/listenablefuture*
 
+
+
+	# COPY Templates
+	
+	mkdir -p interfaces
+	cp ../../interfaces/*.* interfaces/
+
 	
 	
 	# COPY LICENSE

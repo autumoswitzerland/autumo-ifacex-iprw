@@ -12,7 +12,7 @@ process_source_entities=upload/juhu
 
 
 ###############################################################################
-# SFTP file writer configuration
+# SFTP file reader configuration
 ###############################################################################
 
 
