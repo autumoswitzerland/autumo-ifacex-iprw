@@ -44,31 +44,31 @@ in your own project and IDE.
 
 ### Additional Readers | Writers
 
-- Amazon AWS S3
-- DropBox
-- Google Cloud Storage
-- Google Drive
-- WebDAV (with SSL)
-- FTP (with SSL)
-- SFTP
-- OpenStack (Keystone V2 and V3)
-- Microsoft Azure Blob Storage
-- BackBlaze B2 Storage
+- Amazon AWS S3 : Read and write files via blops.
+- DropBox : Read and write files.
+- Google Cloud Storage : Read and write files via blops.
+- Google Drive : Read and write files.
+- WebDAV (with or without SSL) : Read and write files.
+- FTP (with or without SSL) : Read and write files.
+- SFTP : Read and write files.
+- OpenStack (Swift ObjectStorage, Keystone V2 and V3) : Read and write files via blops.
+- Microsoft Azure (Blob Storage) : Read and write files via blops.
+- BackBlaze B2 Storage : Read and write files.
 
 #### ifaceX Core Readers | Writers
 
- - Null Reader
- - CSV Reader | Writer
- - File Reader | Writer
- - Document Reader that extracts full text (over 80 formats)
- - Database Reader | Writer (Relational databases)
- - MongoDB Reader | Writer
- - REST Reader | Writer (Universal JSON REST)
- - First Writer (Only writes 1st batch)
- - Console Writer
- - Mail Writers (Sends CSV files)
- - Code Writer (Special: Executes code)
- - Exec (Special: Executes OS programs)
+- Null Reader : Reads nothing, is used when the IP itself produces data.
+- CSV Reader | Writer : CSV files
+- File Reader | Writer : Does not read or write contents if a file, only for file transports.
+- Document Reader : Extracts full text (over 80 formats, optional package).
+- Database Reader | Writer : Read and write relational databases.
+- MongoDB Reader | Writer : Read and write MongoDB databases.
+- REST Reader | Writer : Read and write universal JSON REST APIs.
+- First Writer : Only writes 1st batch.
+- Console Writer : Writes to console.
+- Mail Writer : Sends CSV files.
+- Code Writer : Executes code.
+- Exec : Executes OS programs.
  
 Above Core Readers and Writers have many Interface Processor Configurations (IPCs)
 templates that connect to HubSpot, PayPal, Spotify or financial APIs, etc.
