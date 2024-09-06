@@ -56,6 +56,8 @@ public class GoogleDriveReader extends AbstractGoogleDrive implements Reader {
 	/** Google drive fields that are requested. */
 	private static final String DRIVE_FIELDS = "nextPageToken,files(id,name,capabilities)";
 	
+	private String folder = null;
+	
 	private String tempOutputPath = null;
 	
 	private String corpora = null;
@@ -69,6 +71,8 @@ public class GoogleDriveReader extends AbstractGoogleDrive implements Reader {
 	@Override
 	public void initialize(String readerName, IPC config, Processor processor) throws IfaceXException {
 
+		folder = config.getReaderConfig().getConfig("_folder");
+		
 		tempOutputPath = config.getReaderConfig().getConfig("_temp_out_path");
 		if (!tempOutputPath.endsWith(OSUtils.FILE_SEPARATOR)) 
 			tempOutputPath += OSUtils.FILE_SEPARATOR;
@@ -91,6 +95,8 @@ public class GoogleDriveReader extends AbstractGoogleDrive implements Reader {
 	public void read(String readerName, BatchProcessor batchProcessor, IPC config, SourceEntity entity,
 			boolean hasMoreEntities) throws IfaceXException {
 		
+		boolean nullEntity = entity.getEntity().toUpperCase().equals(SourceEntity.NULL_ENTITY_NAME);
+		
 		// No matter what is defined, we use standard fields for files here
 		entity.overwriteSourceFields(SourceEntity.FILES_SOURCE_FIELDS);
 		
@@ -101,26 +107,39 @@ public class GoogleDriveReader extends AbstractGoogleDrive implements Reader {
 			com.google.api.services.drive.Drive.Files.List workingSet = null;
 			
 			FileList result = null;
-			boolean nullEntity = false;
 			
 		    try {
 		    	
-		    	if (nextToken != null)
-		    		workingSet = service().files().list().setPageToken(nextToken);
-		    	else
+		    	if (nextToken != null) {
 		    		workingSet = service().files().list();
-
-		    	// Corpora and drive ID if any.
-		    	if (corpora != null && corpora.length() > 0) {
-		    		workingSet = workingSet.setCorpora(corpora);
-		    		if (driveId != null && driveId.length() > 0)
-			    		workingSet = workingSet.setDriveId(driveId);
+		    		workingSet = this.setAddons(workingSet, entity);
+		    		workingSet = workingSet.setPageToken(nextToken);
+		    	} else {
+		    		
+		    		if (folder == null || folder.length() == 0) {
+			            workingSet = service().files().list();
+			    		workingSet = this.setAddons(workingSet, entity);
+		    		} else {
+		    			
+			    		final String folderQuery = "mimeType='application/vnd.google-apps.folder' and name='test_docs11' and trashed=false";
+			    		workingSet = service().files().list();
+			    		workingSet = workingSet.setQ(folderQuery);
+			    		workingSet = this.setAddons(workingSet, entity);
+			    		workingSet = workingSet.setFields("files(id, name)");
+			    		final FileList folderList = workingSet.execute();
+			                
+			            final List<File> folders = folderList.getFiles();
+			            if (folders.isEmpty()) {
+			            	throw new IfaceXException("Folder 'sss' is empty!");
+			            }
+			            // Assuming the first folder found is the one we want
+			            final String folderId = folders.get(0).getId();
+			            final String fileQuery = "parents in '" + folderId + "' and trashed=false";
+			            workingSet = service().files().list();
+			    		workingSet = this.setAddons(workingSet, entity);
+			    		workingSet = workingSet.setQ(fileQuery);
+		    		}
 		    	}
-		    	
-		    	// source entities are Google drive spaces here !
-		    	nullEntity = entity.getEntity().toUpperCase().equals(SourceEntity.NULL_ENTITY_NAME);
-		    	if (!nullEntity)
-		    		workingSet = workingSet.setSpaces(entity.getEntity());
 		    	
 		    	workingSet = workingSet.setPageSize(batchSize).setFields(DRIVE_FIELDS);
 
@@ -206,6 +225,19 @@ public class GoogleDriveReader extends AbstractGoogleDrive implements Reader {
 			if (!moreData)
 				break LOOP;
 		}
+	}
+	
+	private com.google.api.services.drive.Drive.Files.List setAddons(com.google.api.services.drive.Drive.Files.List workingSet, SourceEntity entity) {
+    	// Corpora and drive ID if any.
+    	if (corpora != null && corpora.length() > 0) {
+    		workingSet = workingSet.setCorpora(corpora);
+    		if (driveId != null && driveId.length() > 0)
+	    		workingSet = workingSet.setDriveId(driveId);
+    	}
+    	// source entities are Google drive spaces here !
+    	if (!entity.getEntity().toUpperCase().equals(SourceEntity.NULL_ENTITY_NAME))
+    		workingSet = workingSet.setSpaces(entity.getEntity());
+    	return workingSet;
 	}
 
 }

@@ -17,6 +17,13 @@ process_source_entities=NULL
 
 
 #
+# Folder from where files are read.
+# Can be left empty.
+#
+gdrive_file_in_folder=test_docs11
+
+
+#
 # Temporary directory for files read from Google Drive.
 #
 gdrive_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex

@@ -17,6 +17,13 @@ process_source_entities=NULL
 
 
 #
+# Folder from where files are read.
+# Can be left empty.
+#
+gdrive_file_in_folder=<FOLDER>
+
+
+#
 # Temporary directory for files read from the AWS.
 #
 gdrive_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex

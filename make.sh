@@ -181,7 +181,6 @@ then
 	rm lib/error_prone_annotations*
 	rm lib/failureaccess*
 	rm lib/guava-*
-	rm lib/gson*
 	rm lib/httpcore*
 	rm lib/httpclient*
 	rm lib/j2objc-annotations*
