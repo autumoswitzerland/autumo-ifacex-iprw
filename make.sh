@@ -203,8 +203,9 @@ then
 
 	# COPY Templates
 	
-	mkdir -p interfaces
+	mkdir -p interfaces/examples
 	cp ../../interfaces/*.* interfaces/
+	cp ../../interfaces/examples/*.* interfaces/examples/
 
 	
 	
