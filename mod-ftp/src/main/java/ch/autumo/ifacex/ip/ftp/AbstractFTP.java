@@ -57,6 +57,7 @@ public abstract class AbstractFTP implements Generic {
 	private String prot = null;
 	
 	private boolean ssl = false;
+	private boolean reusableSsl = false;
 	
 	
 	@Override
@@ -69,6 +70,7 @@ public abstract class AbstractFTP implements Generic {
 				user = config.getWriterConfig(rwName).getUser();
 				pass = config.getWriterConfig(rwName).getPassword();
 				ssl  = config.getWriterConfig(rwName).isYes("_ssl", false);
+				reusableSsl = config.getWriterConfig(rwName).isYes("_reusable_ssl", false);
 				prot = config.getWriterConfig(rwName).getConfig("_prot");
 			} else {
 				host = config.getReaderConfig().getHost();
@@ -76,6 +78,7 @@ public abstract class AbstractFTP implements Generic {
 				user = config.getReaderConfig().getUser();
 				pass = config.getReaderConfig().getPassword();
 				ssl  = config.getReaderConfig().isYes("_ssl", false);
+				reusableSsl = config.getReaderConfig().isYes("_reusable_ssl", false);
 				prot = config.getReaderConfig().getConfig("_prot");
 			}
 		} catch (Exception e) {
@@ -90,7 +93,10 @@ public abstract class AbstractFTP implements Generic {
 			if (ssl) {
 				// Necessary for the SSLUtils!
 				BeetRootConfigurationManager.getInstance().initialize("cfg/ifacex-server.cfg");
-				client = new FTPSClient(SSL.makeSSLContext());
+				if (reusableSsl)
+					client = new CustomFTPSClient(SSL.makeSSLContext(), reusableSsl);
+				else
+					client = new FTPSClient(SSL.makeSSLContext());
 			} else {
 				client = new FTPClient();
 			}

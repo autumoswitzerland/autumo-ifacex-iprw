@@ -30,9 +30,29 @@ ftp_file_in_port=21
 
 #
 # Secure SSL/TLS?
+#
+# Make sure a valid certificate has been installed in
+# the keysore file 'cfg/ifacex.cfg'.  
+#
 # Values: yes|no
 #
-ftp_file_in_ssl=yes
+ftp_file_in_ssl=no
+
+
+#
+# Reusable SSL/TLS connections?
+# Necessary for servers like FileZilla when TLS/SSL is used.
+#
+# If switched on, you also have to add JDK/JVM module parameters:
+#
+#   --add-opens java.base/sun.security.util=ALL-UNNAMED
+#   --add-opens java.base/sun.security.ssl=ALL-UNNAMED
+#
+# No better workaround available at the moment!
+#
+# Values: yes|no
+#
+ftp_file_in_reusable_ssl=yes
 
 
 #
@@ -45,7 +65,7 @@ ftp_file_in_ssl=yes
 #
 # P is default.
 #
-ftp_file_in_prot=S
+ftp_file_in_prot=P
 
 
 #

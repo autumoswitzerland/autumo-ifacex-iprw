@@ -64,6 +64,7 @@ public abstract class AbstractGoogleStorage implements Generic {
 			credentials = GoogleCredentials.fromStream(fis);
 			fis.close();
 		} catch (Exception e) {
+		    LOG.error("Couldn't load credentials '" + json_credentials_file + "'!", e);
 		}
 		
 		storage = StorageOptions.newBuilder().setCredentials(credentials).setProjectId(project_id).build().getService();

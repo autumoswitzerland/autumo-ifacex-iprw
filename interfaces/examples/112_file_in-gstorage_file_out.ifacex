@@ -19,6 +19,7 @@ process_source_entities=files:/Volumes/Fastdrive/autumo/docs/GOOGLE
 
 #
 # Google storage credentials file, refers to a specific project.
+# Type: Service Account
 #
 gstorage_file_out_credentials_file=<YOUR_PATH_TO_GOOGLE_JSON_CREDENTIALS>
 

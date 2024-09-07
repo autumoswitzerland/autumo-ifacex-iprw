@@ -6,7 +6,7 @@
 source_interface=ftp_file_in
 destination_interfaces=file_out
 # For the 'ftp_file_in' reader, define entities that serve as directory paths
-# in the remote FTP location.	
+# in the remote FTP location.
 process_source_entities=upload
 
 
@@ -19,7 +19,7 @@ process_source_entities=upload
 #
 # Host.
 #
-ftp_file_in_host=192.168.0.14
+ftp_file_in_host=192.168.0.228
 
 
 #
@@ -30,9 +30,29 @@ ftp_file_in_port=21
 
 #
 # Secure SSL/TLS?
+#
+# Make sure a valid certificate has been installed in
+# the keysore file 'cfg/ifacex.cfg'.  
+#
 # Values: yes|no
 #
-ftp_file_in_ssl=yes
+ftp_file_in_ssl=no
+
+
+#
+# Reusable SSL/TLS connections?
+# Necessary for servers like FileZilla when TLS/SSL is used.
+#
+# If switched on, you also have to add JDK/JVM module parameters:
+#
+#   --add-opens java.base/sun.security.util=ALL-UNNAMED
+#   --add-opens java.base/sun.security.ssl=ALL-UNNAMED
+#
+# No better workaround available at the moment!
+#
+# Values: yes|no
+#
+ftp_file_in_reusable_ssl=yes
 
 
 #
@@ -45,7 +65,7 @@ ftp_file_in_ssl=yes
 #
 # P is default.
 #
-ftp_file_in_prot=S
+ftp_file_in_prot=P
 
 
 #
@@ -61,7 +81,7 @@ ftp_file_in_password=autumo
 
 
 #
-# Temporary directory for files read from FTP. 
+# Temporary directory for files read from FTP.
 #
 ftp_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex
 
@@ -73,7 +93,7 @@ ftp_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex
 
 
 #
-# Output directory. 
+# Output directory.
 #
 file_out_path=/Volumes/Fastdrive/tmp/fromftp
 
@@ -82,4 +102,3 @@ file_out_path=/Volumes/Fastdrive/tmp/fromftp
 # Values: yes|no
 #
 file_out_delete_files_after_processing=yes
-

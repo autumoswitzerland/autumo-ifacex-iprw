@@ -56,6 +56,7 @@ public class FTPMockServer {
         final FileSystem fileSystem = new UnixFakeFileSystem();
         
         fileSystem.add(new DirectoryEntry(filePath));
+        fileSystem.add(new DirectoryEntry(filePath + "/upload"));
         fileSystem.add(new FileEntry(filePath + "/foobar.txt", "abcdef 1234567890"));
                 
         fakeFtpServer.setFileSystem(fileSystem);
@@ -66,7 +67,7 @@ public class FTPMockServer {
         
         
         // Test
-        //final FTPSClient sftpClient = new FTPSClient();
+        //final FTPSClient ftpClient = new FTPSClient();
         final FTPClient ftpClient = new FTPClient();
         ftpClient.connect("localhost", port);
         ftpClient.login("autumo", "autumo");
