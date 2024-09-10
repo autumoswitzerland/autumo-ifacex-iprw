@@ -110,7 +110,7 @@ public class AzureBlobStorageReader extends AbstractAzureBlobStorage implements 
 					
 					final String fileName = blob.getName();
 					
-					LOG.info("Processing (conatiner: '" + entity.getEntity() + "'): " + fileName);
+					LOG.info("Processing (container: '" + entity.getEntity() + "'): " + fileName);
 					
 					final BlobClient client = contClient.getBlobClient(fileName);
 					FileOutputStream fos = null;

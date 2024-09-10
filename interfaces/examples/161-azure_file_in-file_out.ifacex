@@ -5,7 +5,7 @@
 
 source_interface=azure_file_in
 destination_interfaces=file_out
-# For the 'azure_file_in' reader, define a bucket-list as source entities!
+# For the 'azure_file_in' reader, define a bucket-/container-list as source entities!
 process_source_entities=autumo
 
 
@@ -47,7 +47,7 @@ azure_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex
 
 
 #
-# Output directory. 
+# Output directory.
 #
 file_out_path=/Volumes/Fastdrive/tmp/fromaz
 
@@ -56,4 +56,3 @@ file_out_path=/Volumes/Fastdrive/tmp/fromaz
 # Values: yes|no
 #
 file_out_delete_files_after_processing=yes
-
