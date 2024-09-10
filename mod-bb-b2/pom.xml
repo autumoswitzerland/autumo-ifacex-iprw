@@ -25,6 +25,13 @@
 		    <scope>provided</scope>
 		</dependency>
 	
+		<dependency>
+		    <groupId>com.backblaze.b2</groupId>
+		    <artifactId>b2-sdk-httpclient</artifactId>
+		    <version>6.2.1</version>
+		    <scope>provided</scope>
+		</dependency>
+			
   	<!-- Overwrites (Newer versions) -->
 	
 		<dependency>
