@@ -16,7 +16,7 @@ process_source_entities=files:/Volumes/Fastdrive/autumo/docs/FTP
 # File reader configuration
 ###############################################################################
 
-# No parameters necessary 
+# No parameters necessary
 
 
 
@@ -35,7 +35,7 @@ os_swift_file_out_version=3
 #
 # URL end-point (ends usually with a version, e.g., '/v3').
 #
-os_swift_file_out_url_endpoint=https://<HOST:PORT>/v3
+os_swift_file_out_url_endpoint=https://<HOST:PORT>/identity/v3
 
 
 #
@@ -87,4 +87,3 @@ os_swift_file_out_domain=<YOUR_DOMAIN>
 # It is created if non-existent.
 #
 os_swift_file_out_container=<CONTAINER_TO_WRITE_TO>
-

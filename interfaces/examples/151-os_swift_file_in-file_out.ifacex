@@ -25,7 +25,7 @@ os_swift_file_in_version=3
 #
 # URL end-point (ends usually with a version, e.g., '/v3').
 #
-os_swift_file_in_url_endpoint=https://<HOST:PORT>/v3
+os_swift_file_in_url_endpoint=https://<HOST:PORT>/identity/v3
 
 
 #
@@ -92,13 +92,6 @@ os_swift_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex
 
 
 #
-# Output directory. 
+# Output directory.
 #
 file_out_path=/Volumes/Fastdrive/tmp/fromos
-
-#
-# Delete source files after copying?
-# Values: yes|no
-#
-file_out_delete_files_after_processing=yes
-
