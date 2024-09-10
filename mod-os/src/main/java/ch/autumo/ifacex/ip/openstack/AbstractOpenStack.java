@@ -47,7 +47,7 @@ import ch.autumo.ifacex.writer.Writer;
  */
 public abstract class AbstractOpenStack implements Generic {
 
-	private final static Logger LOG = LoggerFactory.getLogger(AbstractOpenStack.class.getName());
+	private static final Logger LOG = LoggerFactory.getLogger(AbstractOpenStack.class.getName());
 	
 	public static String DEFAULT_DOMAIN = "Default";
 	public static int CONNECTION_TIMEOUT = 3000;

@@ -19,9 +19,8 @@
 package ch.autumo.ifacex.ip.webdav;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.net.URLEncoder;
+import java.net.URI;
+import java.nio.file.Files;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,29 +94,23 @@ public class WebDAVWriter extends AbstractWebDAV implements Writer {
 			
 			LOG.info("Processing (path: '" + this.origDestinationUri + "'): " + curr.getName());
 			
-			FileInputStream fis = null;
 			try {
 				
 				String name = curr.getName();
-				name = URLEncoder.encode(name, "UTF-8").replace("+", "%20");
-				String fullUrlPath = this.destinationUrl + name;
+				String encodedFileName = new URI(null, null, name, null).toASCIIString();
+				String fullUrlPath = this.destinationUrl + encodedFileName;
 				
 				if (webDAV().exists(fullUrlPath) && this.allowDelete)
 					webDAV().delete(fullUrlPath);
 				
-				fis = new FileInputStream(curr);
-				webDAV().put(fullUrlPath, fis);
-
+				final String mimeType = Files.probeContentType(curr.toPath());
+				
+				webDAV().put(fullUrlPath, curr, mimeType);
+				
 			} catch (Exception e) {
 				throw new IfaceXException("Couldn't upload file '" + vals[0] + "' to Web DAV path '" + this.destinationUrl + "'!", e);
-			} finally {
-				try {
-					if (fis != null)
-						fis.close();
-				} catch (IOException e) {
-				}
-			}		
+			}
 		}	
 	}
-
+    
 }

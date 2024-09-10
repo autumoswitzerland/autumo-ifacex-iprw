@@ -65,28 +65,34 @@ public class OpenStackSwiftWriter extends AbstractOpenStack implements Writer {
 			if (container.length() == 0)
 				throw new IfaceXException("No container specified!");
 		}
-
-		boolean containerFound = false;
-		
-		// List all containers, lookup container for writing
-		final List<? extends SwiftContainer> containers = client().objectStorage().containers().list();
-		for (Iterator<? extends SwiftContainer> iterator = containers.iterator(); iterator.hasNext();) {
-			final SwiftContainer swiftContainer = iterator.next();
-			if (container.equals(swiftContainer.getName())) {
-				containerFound = true;
-				LOG.info("Container '" + container + "' found.");
+	
+		try {
+			
+			boolean containerFound = false;
+			
+			// List all containers, lookup container for writing
+			final List<? extends SwiftContainer> containers = client().objectStorage().containers().list();
+			for (Iterator<? extends SwiftContainer> iterator = containers.iterator(); iterator.hasNext();) {
+				final SwiftContainer swiftContainer = iterator.next();
+				if (container.equals(swiftContainer.getName())) {
+					containerFound = true;
+					LOG.info("Container '" + container + "' found.");
+				}
 			}
-		}
-
-		// Create container if not found!
-		final ObjectStorageContainerService service = client().objectStorage().containers();
-		if (!containerFound) {
-			LOG.info("Creating container: '" + container + "'...");
-			final ActionResponse resp = service.create(container);
-			if (resp.isSuccess())
-				LOG.info("Container creation result: " + resp.toString());
-			else
-				LOG.error("Container creation result: " + resp.toString());
+	
+			// Create container if not found!
+			final ObjectStorageContainerService service = client().objectStorage().containers();
+			if (!containerFound) {
+				LOG.info("Creating container: '" + container + "'...");
+				final ActionResponse resp = service.create(container);
+				if (resp.isSuccess())
+					LOG.info("Container creation result: " + resp.toString());
+				else
+					LOG.error("Container creation result: " + resp.toString());
+			}
+		
+		} catch (Exception e) {
+			throw new IfaceXException("Listing containers failed!", e);
 		}
 	}
 	

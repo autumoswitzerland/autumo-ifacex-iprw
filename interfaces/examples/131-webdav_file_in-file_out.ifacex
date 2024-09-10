@@ -6,7 +6,7 @@
 source_interface=webdav_file_in
 destination_interfaces=file_out
 # For the 'webdav_file_in' reader, define entities that serve as URI paths
-# after the base URL (can have slashes in it).	
+# after the base URL (can have slashes in it).
 process_source_entities=files
 
 
@@ -42,7 +42,7 @@ webdav_file_in_password=autumo
 
 
 #
-# Temporary directory for files read from Web DAV. 
+# Temporary directory for files read from Web DAV.
 #
 webdav_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex
 
@@ -54,7 +54,7 @@ webdav_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex
 
 
 #
-# Output directory. 
+# Output directory.
 #
 file_out_path=/Volumes/Fastdrive/tmp/fromdav
 
@@ -63,4 +63,3 @@ file_out_path=/Volumes/Fastdrive/tmp/fromdav
 # Values: yes|no
 #
 file_out_delete_files_after_processing=yes
-

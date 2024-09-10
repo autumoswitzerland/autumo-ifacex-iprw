@@ -90,12 +90,16 @@ public class OpenStackSwiftReader extends AbstractOpenStack implements Reader {
 		final ObjectListOptions options = ObjectListOptions.create();
 		// options.limit(maxSize);
 
-		// So, one page per entity!
-		page =  client().objectStorage().objects().list(entity.getEntity(), options);
-		// amount = page.size();
-		// totalEntityFileCounter = 0;
-		
-		// PS: Since there's no paging, code is here instead within the read-method.
+		try {
+			// So, one page per entity!
+			page =  client().objectStorage().objects().list(entity.getEntity(), options);
+			// amount = page.size();
+			// totalEntityFileCounter = 0;
+			
+			// PS: Since there's no paging, code is here instead within the read-method.
+		} catch (Exception e) {
+			throw new IfaceXException("Listing containers failed!", e);
+		}
 	}
 
 	@Override

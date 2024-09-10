@@ -95,6 +95,7 @@ public abstract class AbstractWebDAV implements Generic {
 				throw new IfaceXException("Couldn't create SSL socket factory!", e);
 			}
 			
+			
 			webdav = new SardineImpl(user, pass) {
 				@Override
 				protected ConnectionSocketFactory createDefaultSecureSocketFactory() {
