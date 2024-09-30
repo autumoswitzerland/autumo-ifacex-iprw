@@ -59,6 +59,7 @@ in your own project and IDE.
 
 - Null Reader : Reads nothing, is used when the IP itself produces data.
 - CSV Reader | Writer : CSV files
+- JSON Reader | Writer : JSON files
 - File Reader | Writer : Does not read or write contents if a file, only for file transports.
 - Document Reader : Extracts full text (over 80 formats, optional package).
 - Database Reader | Writer : Read and write relational databases.
