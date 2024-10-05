@@ -28,7 +28,7 @@ import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.users.FullAccount;
 
-import ch.autumo.ifacex.Constants;
+import ch.autumo.beetroot.BeetRootConfigurationManager;
 import ch.autumo.ifacex.IPC;
 import ch.autumo.ifacex.IfaceXException;
 import ch.autumo.ifacex.Processor;
@@ -46,7 +46,7 @@ public abstract class AbstractDropbox implements Generic {
 	private final static Logger LOG = LoggerFactory.getLogger(AbstractDropbox.class.getName());
 
 	private static String SOFTWARE_NAME = "ifaceX-IP-Dropbox";
-	private static String SOFTWARE_VERSION = Constants.APP_VERSION;
+	private static String SOFTWARE_VERSION = BeetRootConfigurationManager.getAppVersion();
 	
 	private DbxClientV2 client= null;
 	

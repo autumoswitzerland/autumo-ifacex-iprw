@@ -26,6 +26,7 @@
 		<version.autumo.beetroot>3.1.0</version.autumo.beetroot>
 		<version.autumo.commons>1.1.0</version.autumo.commons>
 		<version.autumo.ifacex>2.1.0</version.autumo.ifacex>
+		
 		<version.commons.io>2.17.0</version.commons.io>
 		<version.json>20240303</version.json>
 		<version.junit.jupiter.api>5.10.2</version.junit.jupiter.api>
