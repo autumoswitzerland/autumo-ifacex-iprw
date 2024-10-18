@@ -6,7 +6,7 @@
 # Vars
 COMMONS_VERSION=1.1.0
 IFACEX_VERSION=2.1.0
-BEETROOT_VERSION=3.1.0
+BEETROOT_VERSION=3.1.1
 
 # Install
 mvn install:install-file -Dfile=lib/autumo-commons-${COMMONS_VERSION}.jar -DgroupId=ch.autumo.commons -DartifactId=autumo-commons -Dversion=${COMMONS_VERSION} -Dpackaging=jar
