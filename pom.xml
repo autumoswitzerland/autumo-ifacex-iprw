@@ -23,7 +23,7 @@
 		<version.maven.jar.plugin>3.4.2</version.maven.jar.plugin>
 		<version.maven.resources.plugin>3.3.1</version.maven.resources.plugin>
 		
-		<version.autumo.beetroot>3.1.2</version.autumo.beetroot>
+		<version.autumo.beetroot>3.1.3</version.autumo.beetroot>
 		<version.autumo.commons>1.1.0</version.autumo.commons>
 		<version.autumo.ifacex>2.1.0</version.autumo.ifacex>
 		
