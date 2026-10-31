@@ -1,54 +1,66 @@
-
 ###############################################################################
-# General configuration
+#
+#  Title: 
+#  Version: 1.0
+#
+#  Notes:
+#   -
+#
+#------------------------------------------------------------------------------
+#
+#  Author: 
+#  Date: Sat Oct 31 16:20:28 CET 2026
+#
 ###############################################################################
 
-source_interface=file_in
-destination_interfaces=sftp_file_out
+formatVersion: 1
+
+general: {}
+
+sourceInterface: file_in
+
+destinationInterfaces:
+  - sftp_file_out
+
 # In this case, you define one pseudo entity, that defines in which
 # directory files should be read and processed as source entities
 # for the 'file_in'-reader
-process_source_entities=files:/Volumes/Fastdrive/autumo/docs/FTP
+processSourceEntities:
+  - "files:/Volumes/Fastdrive/autumo/docs/FTP"
 
+sources: []
 
+destinations:
+  - name: sftp_file_out
 
-###############################################################################
-# SFTP file writer configuration
-###############################################################################
+    params:
 
+      #
+      # Host.
+      #
+      host: localhost
 
-#
-# Host.
-#
-sftp_file_out_host=localhost
+      #
+      # Port.
+      #
+      port: "22"
 
+      #
+      # User (can be encrypted, use encoder.sh).
+      #
+      user: "<YOUR_USER>"
 
-#
-# Known Hosts file path.
-#
-sftp_file_out_known_hosts=<PATH_TO>/known_hosts
+      #
+      # Password (can be encrypted, use encoder.sh).
+      #
+      password: "<YOUR_PASSWORD>"
 
+      #
+      # Known Hosts file path.
+      #
+      known_hosts: "<PATH_TO>/known_hosts"
 
-#
-# Port.
-#
-sftp_file_out_port=22
-
-
-#
-# User (can be encrypted, use encoder.sh).
-#
-sftp_file_out_user=<YOUR_USER>
-
-
-#
-# Password (can be encrypted, use encoder.sh).
-#
-sftp_file_out_password=<YOUR_PASSWORD>
-
-
-#
-# Remote target directory. 
-#
-sftp_file_out_directory=upload
-
+      #
+      # Remote target directory.
+      #
+      directory: upload

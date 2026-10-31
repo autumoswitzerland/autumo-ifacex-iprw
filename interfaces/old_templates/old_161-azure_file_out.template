@@ -1,0 +1,44 @@
+
+###############################################################################
+# General configuration
+###############################################################################
+
+source_interface=file_in
+destination_interfaces=azure_file_out
+# In this case, you define one pseudo entity, that defines in which
+# directory files should be read and processed as source entities
+# for the 'file_in'-reader
+process_source_entities=files:/Volumes/Fastdrive/autumo/docs/FTP
+
+
+
+###############################################################################
+# Azure Blob file writer configuration
+###############################################################################
+
+
+#
+# Azure connection string. You find it in 'Access Keys'
+# in the Azure portal.
+#
+# We don't recommend using this access method! If left
+# blank, the default and more secure authentication
+# chain is used.
+#
+# This value can be encrypted, use encoder.sh.
+#
+azure_file_out_connection_string=<YOUR_CONNECTION_STRING>
+
+
+#
+# Azure account name.
+#
+azure_file_out_account=<YOUR_ACCOUNT_NAME>
+
+
+#
+# Container to write to.
+# It is created if non-existent.
+#
+azure_file_out_container=<YOUR_CONTAINER>
+

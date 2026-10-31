@@ -3,15 +3,15 @@
 ###############################################################################
 #
 #  autumo ifaceX Additional Reader/Writer packager.
-#  Version: 2.0
+#  Version: 2.1
 #
 #  Notes:
 #   -
 #
 #------------------------------------------------------------------------------
 #
-#  2023 autumo GmbH
-#  Date: 07.12.2023
+#  2025 autumo GmbH
+#  Date: 31.10.2026
 #
 ###############################################################################
 
@@ -19,7 +19,7 @@
 
 
 # VARS
-IPRW_VERSION=2.1.0
+IPRW_VERSION=3.0.0
 
 
 
@@ -193,7 +193,7 @@ then
 	rm lib/jna-*
 	rm lib/json-20*
 	rm lib/jsr305*
-	rm lib/slf4j-api*
+	rm lib/slf4j2-api*
 	rm lib/stax2-api*
 	rm lib/woodstox-core*
 	rm lib/listenablefuture*

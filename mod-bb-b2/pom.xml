@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>autumo-ifacex-iprw</artifactId>
 		<groupId>ch.autumo.ifacex.iprw</groupId>
-		<version>2.1.0</version>
+		<version>3.0.0</version>
 	</parent>	
 	<groupId>ch.autumo.ifacex.iprw.bb.b2</groupId>
 	<artifactId>autumo-ifacex-iprw-bb-b2</artifactId>

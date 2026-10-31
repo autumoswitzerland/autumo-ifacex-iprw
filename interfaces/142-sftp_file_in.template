@@ -1,53 +1,68 @@
-
 ###############################################################################
-# General configuration
+#
+#  Title: 
+#  Version: 1.0
+#
+#  Notes:
+#   -
+#
+#------------------------------------------------------------------------------
+#
+#  Author: 
+#  Date: Sat Oct 31 16:20:28 CET 2026
+#
 ###############################################################################
 
-source_interface=sftp_file_in
-destination_interfaces=file_out
+formatVersion: 1
+
+general: {}
+
+sourceInterface: sftp_file_in
+
+destinationInterfaces:
+  - file_out
+
 # For the 'sftp_file_in' reader, define entities that serve as directory paths
-# in the remote FTP location.	
-process_source_entities=upload/juhu
+# in the remote FTP location.
+processSourceEntities:
+  - upload/juhu
 
+sources:
+  - name: sftp_file_in
 
+    params:
 
-###############################################################################
-# SFTP file reader configuration
-###############################################################################
+      #
+      # Host.
+      #
+      host: localhost
 
+      #
+      # Port.
+      #
+      port: "22"
 
-#
-# Host.
-#
-sftp_file_in_host=localhost
+      #
+      # User (can be encrypted, use encoder.sh).
+      #
+      user: "<YOUR_USER>"
 
+      #
+      # Password (can be encrypted, use encoder.sh).
+      #
+      password: "<YOUR_PASSWORD>"
 
-#
-# Known Hosts file path.
-#
-sftp_file_in_known_hosts=<PATH_TO>/known_hosts
+      #
+      # Known Hosts file path.
+      #
+      known_hosts: "<PATH_TO>/known_hosts"
 
+      #
+      # Temporary directory for files read from FTP.
+      #
+      temp_out_path: /Volumes/Fastdrive/tmp/ifacex
 
-#
-# Port.
-#
-sftp_file_in_port=22
+    entities:
+      upload/juhu: {}
 
-
-#
-# User (can be encrypted, use encoder.sh).
-#
-sftp_file_in_user=<YOUR_USER>
-
-
-#
-# Password (can be encrypted, use encoder.sh).
-#
-sftp_file_in_password=<YOUR_PASSWORD>
-
-
-#
-# Temporary directory for files read from FTP. 
-#
-sftp_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex
-
+destinations: []

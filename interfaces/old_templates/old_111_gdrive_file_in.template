@@ -1,0 +1,102 @@
+
+###############################################################################
+# General configuration
+###############################################################################
+
+source_interface=gdrive_file_in
+destination_interfaces=file_out
+# For the 'gdrive_file_in' reader, define a spaces-list as source entities or
+# use 'NULL' if you want to access the default google drive space.
+process_source_entities=NULL
+
+
+
+###############################################################################
+# Google Drive file reader configuration
+###############################################################################
+
+
+#
+# Folder from where files are read.
+# Can be left empty.
+#
+gdrive_file_in_folder=<FOLDER>
+
+
+#
+# Temporary directory for files read from the AWS.
+#
+gdrive_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex
+
+
+#
+# Application name that is connected through OAuth 2.0.
+#
+gdrive_file_in_application_name=<YOUR_APP_NAME>
+
+
+#
+# Corpora; Groupings of files to which the query applies.
+# No value specified is allowed.
+#
+# Possible Values:
+# - 'user':     : Files created by, opened by, or shared directly with the user
+# - 'drive'     : Files in the specified shared drive as indicated by the 'driveId')
+# - 'domain'    : Files shared to the user's domain
+# - 'allDrives' : A combination of 'user' and 'drive' for all drives where the user is a member
+# When able, use 'user' or 'drive', instead of 'allDrives', for efficiency.
+#
+gdrive_file_in_corpora=
+
+
+#
+# Necessary if above value is set to 'drive',
+# otherwise unused.
+#
+gdrive_file_in_drive_id=
+
+
+#
+# Client ID (can be encrypted, use encoder.sh).
+#
+# The subsequent parameters can be take out of
+# 'credentials.json' from Google.
+#
+gdrive_file_in_client_id=<YOUR_CLIENT_ID>
+
+
+#
+# Project ID.
+#
+gdrive_file_in_project_id=<YOUR_PROJECT_ID>
+
+
+#
+# Authentication URI.
+#
+gdrive_file_in_auth_uri=https://accounts.google.com/o/oauth2/auth
+
+
+#
+# Token URI.
+#
+gdrive_file_in_token_uri=https://oauth2.googleapis.com/token
+
+
+#
+# Certification URL.
+#
+gdrive_file_in_auth_provider_x509_cert_url=https://www.googleapis.com/oauth2/v1/certs
+
+
+#
+# Your client secret (can be encrypted, use encoder.sh).
+#
+gdrive_file_in_client_secret=<YOUR_CLIENT_SECRET>
+
+
+#
+# Redirect URIs, comma-separated list or leave empty.
+#
+gdrive_file_in_redirect_uris=
+

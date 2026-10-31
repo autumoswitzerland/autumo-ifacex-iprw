@@ -1,48 +1,64 @@
-
 ###############################################################################
-# General configuration
+#
+#  Title: 
+#  Version: 1.0
+#
+#  Notes:
+#   -
+#
+#------------------------------------------------------------------------------
+#
+#  Author: 
+#  Date: Sat Oct 31 16:20:28 CET 2026
+#
 ###############################################################################
 
-source_interface=webdav_file_in
-destination_interfaces=file_out
+formatVersion: 1
+
+general: {}
+
+sourceInterface: webdav_file_in
+
+destinationInterfaces:
+  - file_out
+
 # For the 'webdav_file_in' reader, define entities that serve as URI paths
-# after the base URL (can have slashes in it).	
-process_source_entities=files
+# after the base URL (can have slashes in it).
+processSourceEntities:
+  - files
 
+sources:
+  - name: webdav_file_in
 
+    params:
 
-###############################################################################
-# WebDAV file reader configuration
-###############################################################################
+      #
+      # Base URL with port.
+      #
+      url: "https://192.168.0.14:5000"
 
+      #
+      # Secure SSL/TLS?
+      # Values: yes|no
+      #
+      ssl: "yes"
 
-#
-# Base URL with port.
-#
-webdav_file_in_url=https://192.168.0.14:5000
+      #
+      # User (can be encrypted, use encoder.sh).
+      #
+      user: autumo
 
+      #
+      # Password (can be encrypted, use encoder.sh).
+      #
+      password: autumo
 
-#
-# Secure SSL/TLS?
-# Values: yes|no
-#
-webdav_file_in_ssl=yes
+      #
+      # Temporary directory for files read from Web DAV.
+      #
+      temp_out_path: /Volumes/Fastdrive/tmp/ifacex
 
+    entities:
+      files: {}
 
-#
-# User (can be encrypted, use encoder.sh).
-#
-webdav_file_in_user=autumo
-
-
-#
-# Password (can be encrypted, use encoder.sh).
-#
-webdav_file_in_password=autumo
-
-
-#
-# Temporary directory for files read from Web DAV. 
-#
-webdav_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex
-
+destinations: []

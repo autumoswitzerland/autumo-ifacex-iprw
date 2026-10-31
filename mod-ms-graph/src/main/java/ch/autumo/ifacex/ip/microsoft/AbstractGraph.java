@@ -18,18 +18,15 @@
  */
 package ch.autumo.ifacex.ip.microsoft;
 
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import java.net.URI;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
@@ -37,8 +34,10 @@ import com.microsoft.aad.msal4j.ClientCredentialParameters;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.IClientCredential;
-import com.microsoft.graph.authentication.TokenCredentialAuthProvider;
-import com.microsoft.graph.requests.GraphServiceClient;
+import com.microsoft.graph.serviceclient.GraphServiceClient;
+import com.microsoft.kiota.authentication.AccessTokenProvider;
+import com.microsoft.kiota.authentication.AllowedHostsValidator;
+import com.microsoft.kiota.authentication.BaseBearerTokenAuthenticationProvider;
 
 import ch.autumo.commons.utils.UtilsException;
 import ch.autumo.ifacex.IPC;
@@ -46,8 +45,6 @@ import ch.autumo.ifacex.IfaceXException;
 import ch.autumo.ifacex.Processor;
 import ch.autumo.ifacex.generic.Generic;
 import ch.autumo.ifacex.writer.Writer;
-import okhttp3.Request;
-import reactor.core.publisher.Mono;
 
 
 /**
@@ -69,7 +66,7 @@ public abstract class AbstractGraph implements Generic {
 
     private List<String> scopes = null;
     
-    private GraphServiceClient<Request> client = null;
+    private GraphServiceClient client = null;
     
     
 	@Override
@@ -134,52 +131,49 @@ public abstract class AbstractGraph implements Generic {
 	 * 
 	 * @return graph client
 	 */
-	protected GraphServiceClient<Request> client() {
+	protected GraphServiceClient client() {
 		return this.client;
 	}
 	
-	private GraphServiceClient<Request> createClient() {
-		GraphServiceClient<Request> client = null;
+	private GraphServiceClient createClient() {
 		if (!tokenAuth) {
+			// Client secret authentication: the Graph client accepts the Azure credential directly
+			// and acquires the token for the configured scope(s).
 			final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
-			        .clientId(client_id)
-			        .clientSecret(client_secret)
-			        .tenantId(tenant_id)
-			        .build();
-			final TokenCredentialAuthProvider tokenCredentialAuthProvider = new TokenCredentialAuthProvider(scopes, clientSecretCredential);
-			client = GraphServiceClient
-					.builder()
-					.authenticationProvider(tokenCredentialAuthProvider)
-					.buildClient();
-			
-		} else {
-			final TokenCredential tokenCredential = new TokenCredential() {
-				@Override
-				public AccessToken getTokenSync(TokenRequestContext request) {
-					IAuthenticationResult result = null;
-					try {
-						result = AbstractGraph.this.acquireToken();
-					} catch (Exception e) {
-						throw new RuntimeException("Couldn't acquire token!", e);
-					}
-					final OffsetDateTime offsetDateTime = result.expiresOnDate().toInstant().atOffset(ZoneOffset.UTC);
-					final AccessToken at = new AccessToken(result.accessToken(), offsetDateTime);
-					return at;
-				}
-				@Override
-				public Mono<AccessToken> getToken(TokenRequestContext request) {
-					return Mono.just(this.getTokenSync(request));
-				}
-			};
-			final TokenCredentialAuthProvider bap = new TokenCredentialAuthProvider(scopes, tokenCredential); 
-			client = GraphServiceClient
-					    .builder()
-					    .authenticationProvider(bap)
-					    .buildClient();			
+					.clientId(client_id)
+					.clientSecret(client_secret)
+					.tenantId(tenant_id)
+					.build();
+			return new GraphServiceClient(clientSecretCredential, scopes.toArray(new String[0]));
 		}
-		return client;
-	} 
-	
+		// Token authentication: the MSAL token is acquired here and handed to Kiota as bearer token.
+		return new GraphServiceClient(new BaseBearerTokenAuthenticationProvider(new MsalAccessTokenProvider()));
+	}
+
+	/**
+	 * Kiota access token provider for the token authentication mode: acquires the token with MSAL
+	 * (confidential client, client secret) and returns it as bearer token.
+	 */
+	private final class MsalAccessTokenProvider implements AccessTokenProvider {
+
+		/** Only the Graph host may receive the token. */
+		private final AllowedHostsValidator validator = new AllowedHostsValidator("graph.microsoft.com");
+
+		@Override
+		public String getAuthorizationToken(URI uri, Map<String, Object> additionalAuthenticationContext) {
+			try {
+				return AbstractGraph.this.acquireToken().accessToken();
+			} catch (Exception e) {
+				throw new IllegalStateException("Couldn't acquire token from '" + authorisation_url + "'!", e);
+			}
+		}
+
+		@Override
+		public AllowedHostsValidator getAllowedHostsValidator() {
+			return validator;
+		}
+	}
+
 	private IAuthenticationResult acquireToken() throws Exception {
         // This is the secret that is created in the Azure portal when registering the application
         final IClientCredential credential = ClientCredentialFactory.createFromSecret(client_secret);
@@ -197,6 +191,5 @@ public abstract class AbstractGraph implements Generic {
                         .build();
         return cca.acquireToken(parameters).join();	
 	}
-	
 }
 

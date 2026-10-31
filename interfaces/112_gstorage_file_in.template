@@ -1,34 +1,52 @@
-
 ###############################################################################
-# General configuration
+#
+#  Title: 
+#  Version: 1.0
+#
+#  Notes:
+#   -
+#
+#------------------------------------------------------------------------------
+#
+#  Author: 
+#  Date: Sat Oct 31 16:20:28 CET 2026
+#
 ###############################################################################
 
-source_interface=gstorage_file_in
-destination_interfaces=file_out
+formatVersion: 1
+
+general: {}
+
+sourceInterface: gstorage_file_in
+
+destinationInterfaces:
+  - file_out
+
 # For the 'gstorage_file_in' reader, define a bucket-list as source entities!
-process_source_entities=ifacex_bucket
+processSourceEntities:
+  - ifacex_bucket
 
+sources:
+  - name: gstorage_file_in
 
+    params:
 
-###############################################################################
-# Google Storage file reader configuration
-###############################################################################
+      #
+      # Google storage credentials file, refers to a specific project.
+      #
+      credentials_file: "<YOUR_PATH_TO_GOOGLE_JSON_CREDENTIALS>"
 
+      #
+      # Project ID.
+      #
+      project_id: "<YOUR_PROJECT_ID>"
 
-#
-# Google storage credentials file, refers to a specific project.
-#
-gstorage_file_in_credentials_file=<YOUR_PATH_TO_GOOGLE_JSON_CREDENTIALS>
+      #
+      # Temporary directory for files read from the AWS.
+      #
+      temp_out_path: /Volumes/Fastdrive/tmp/ifacex
 
+    entities:
+      ifacex_bucket: {}
 
-#
-# Temporary directory for files read from the AWS.
-#
-gstorage_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex
-
-
-#
-# Project ID.
-#
-gstorage_file_in_project_id=<YOUR_PROJECT_ID>
-
+destinations: []

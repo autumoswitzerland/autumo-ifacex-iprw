@@ -1,56 +1,68 @@
-
 ###############################################################################
-# General configuration
+#
+#  Title: 
+#  Version: 1.0
+#
+#  Notes:
+#   -
+#
+#------------------------------------------------------------------------------
+#
+#  Author: 
+#  Date: Sat Oct 31 16:20:28 CET 2026
+#
 ###############################################################################
 
-source_interface=file_in
-destination_interfaces=webdav_file_out
+formatVersion: 1
+
+general: {}
+
+sourceInterface: file_in
+
+destinationInterfaces:
+  - webdav_file_out
+
 # In this case, you define one pseudo entity, that defines in which
 # directory files should be read and processed as source entities
 # for the 'file_in'-reader
-process_source_entities=files:/Volumes/Fastdrive/autumo/docs/WEBDAV
+processSourceEntities:
+  - "files:/Volumes/Fastdrive/autumo/docs/WEBDAV"
 
+sources: []
 
+destinations:
+  - name: webdav_file_out
 
-###############################################################################
-# WebDAV file writer configuration
-###############################################################################
+    params:
 
+      #
+      # Base URL with port.
+      #
+      url: "https://192.168.0.14:5000"
 
-#
-# Base URL with port.
-#
-webdav_file_out_url=https://192.168.0.14:5000
+      #
+      # Secure SSL/TLS?
+      # Values: yes|no
+      #
+      ssl: "yes"
 
+      #
+      # User (can be encrypted, use encoder.sh).
+      #
+      user: autumo
 
-#
-# Secure SSL/TLS?
-# Values: yes|no
-#
-webdav_file_out_ssl=yes
+      #
+      # Password (can be encrypted, use encoder.sh).
+      #
+      password: autumo
 
+      #
+      # Temporary directory for files read from Web DAV.
+      #
+      dest_uri: "<UPLOAD_DIRECTORY>"
 
-#
-# Does server allow to delete files?
-# Values: yes|no
-#
-webdav_file_out_allow_delete=yes
-
-
-#
-# User (can be encrypted, use encoder.sh).
-#
-webdav_file_out_user=autumo
-
-
-#
-# Password (can be encrypted, use encoder.sh).
-#
-webdav_file_out_password=autumo
-
-
-#
-# Temporary directory for files read from Web DAV. 
-#
-webdav_file_out_dest_uri=<UPLOAD_DIRECTORY>
-
+      #
+      # Does server allow to delete files?
+      # Values: yes|no
+      #
+      allow_delete: "yes"

@@ -1,82 +1,91 @@
-
 ###############################################################################
-# General configuration
+#
+#  Title: 
+#  Version: 1.0
+#
+#  Notes:
+#   -
+#
+#------------------------------------------------------------------------------
+#
+#  Author: 
+#  Date: Sat Oct 31 16:20:28 CET 2026
+#
 ###############################################################################
 
-source_interface=file_in
-destination_interfaces=os_swift_file_out
+formatVersion: 1
+
+general: {}
+
+sourceInterface: file_in
+
+destinationInterfaces:
+  - os_swift_file_out
+
 # In this case, you define one pseudo entity, that defines in which
 # directory files should be read and processed as source entities
 # for the 'file_in'-reader
-process_source_entities=files:/Volumes/Fastdrive/autumo/docs/FTP
+processSourceEntities:
+  - "files:/Volumes/Fastdrive/autumo/docs/FTP"
 
+sources: []
 
+destinations:
+  - name: os_swift_file_out
 
-###############################################################################
-# OpenStack Swift file writer configuration
-###############################################################################
+    params:
 
+      #
+      # OpenStack KeyStone Version.
+      # Possible values: 2|3
+      #
+      version: "3"
 
-#
-# OpenStack KeyStone Version.
-# Possible values: 2|3
-#
-os_swift_file_out_version=3
+      #
+      # URL end-point (ends usually with a version, e.g., '/v3').
+      #
+      url_endpoint: "https://<HOST:PORT>/v3"
 
+      #
+      # User name (can be encrypted, use encoder.sh).
+      #
+      user: "<YOUR_USER_NAME>"
 
-#
-# URL end-point (ends usually with a version, e.g., '/v3').
-#
-os_swift_file_out_url_endpoint=https://<HOST:PORT>/v3
+      #
+      # User ID (can be encrypted, use encoder.sh).
+      # Works only with KeyStone version 3.
+      # If lef blank, 'User name' is used.
+      #
+      user_id: ""
 
+      #
+      # Password (can be encrypted, use encoder.sh).
+      #
+      password: "<YOUR_SECRET>"
 
-#
-# User ID (can be encrypted, use encoder.sh).
-# Works only with KeyStone version 3.
-# If lef blank, 'User name' is used.
-#
-os_swift_file_out_user_id=
+      #
+      # Project name if any.
+      # If you use KeyStone version 2, this is the "tenant".
+      #
+      project: "<YOUR_PROJECT>"
 
+      #
+      # Domain name if any, otherwise 'Default' is used!
+      # Only used in KeyStone version 3.
+      #
+      domain: "<YOUR_DOMAIN>"
 
-#
-# User name (can be encrypted, use encoder.sh).
-#
-os_swift_file_out_user=<YOUR_USER_NAME>
+      #
+      # Secure SSL/TLS?
+      # Values: yes|no
+      #
+      # You might want to use the keystore file a
+      # for a HTTPS certificate too!
+      #
+      ssl: "yes"
 
-
-#
-# Password (can be encrypted, use encoder.sh).
-#
-os_swift_file_out_password=<YOUR_SECRET>
-
-
-#
-# Secure SSL/TLS?
-# Values: yes|no
-#
-# You might want to use the keystore file a
-# for a HTTPS certificate too!
-#
-os_swift_file_out_ssl=yes
-
-
-#
-# Project name if any.
-# If you use KeyStone version 2, this is the "tenant".
-#
-os_swift_file_out_project=<YOUR_PROJECT>
-
-
-#
-# Domain name if any, otherwise 'Default' is used!
-# Only used in KeyStone version 3.
-#
-os_swift_file_out_domain=<YOUR_DOMAIN>
-
-
-#
-# Container to write to.
-# It is created if non-existent.
-#
-os_swift_file_out_container=<CONTAINER_TO_WRITE_TO>
-
+      #
+      # Container to write to.
+      # It is created if non-existent.
+      #
+      container: "<CONTAINER_TO_WRITE_TO>"

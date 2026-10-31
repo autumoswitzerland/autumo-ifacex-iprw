@@ -1,59 +1,75 @@
-
 ###############################################################################
-# General configuration
+#
+#  Title: 
+#  Version: 1.0
+#
+#  Notes:
+#   -
+#
+#------------------------------------------------------------------------------
+#
+#  Author: 
+#  Date: Sat Oct 31 16:20:28 CET 2026
+#
 ###############################################################################
 
+formatVersion: 1
 
-source_interface=file_in
-destination_interfaces=aws_file_out
+general: {}
+
+sourceInterface: file_in
+
+destinationInterfaces:
+  - aws_file_out
+
 # In this case, you define one pseudo entity, that defines in which
 # directory files should be read and processed as source entities
 # for the 'file_in'-reader
-process_source_entities=files:/Volumes/Documents/all
+processSourceEntities:
+  - "files:/Volumes/Documents/all"
 
+sources: []
 
+destinations:
+  - name: aws_file_out
 
-###############################################################################
-# Amazon AWS file writer configuration
-###############################################################################
+    params:
 
+      #
+      # AWS access key (can be encrypted, use encoder.sh).
+      #
+      access_key: "<YOUR_ACCESS_KEY>"
 
-#
-# AWS access key (can be encrypted, use encoder.sh).
-#
-aws_file_out_access_key=<YOUR_ACCESS_KEY>
+      #
+      # AWS secret key (can be encrypted, use encoder.sh).
+      #
+      secret_key: "<YOUR_SECRET>"
 
-#
-# AWS secret key (can be encrypted, use encoder.sh).
-#
-aws_file_out_secret_key=<YOUR_SECRET>
+      #
+      # URL end-point - can be empty; provide for faster access.
+      #
+      url_endpoint: "http://localhost:8001"
 
-#
-# Key prefix for whole key, will be completed with
-# a '/' in any case and supplemented with the file
-# name of the read file from the reader-side; usually
-# per 'file_in' reader.
-#
-# AWS creates a directory with this key within the
-# bucket id specified.
-#
-aws_file_out_key_prefix=myFiles/
+      #
+      # Region - can be empty; provide for faster access.
+      #
+      # See here:
+      #   https://github.com/aws/aws-sdk-java/blob/master/aws-java-sdk-core/src/main/java/com/amazonaws/regions/Regions.java
+      #
+      region: eu-central-2
 
-#
-# File bucket name (only lower-case allowed).
-#
-aws_file_out_bucket_name=<YOUR_BUCKET_NAME>
+      #
+      # File bucket name (only lower-case allowed).
+      #
+      bucket_name: "<YOUR_BUCKET_NAME>"
 
-#
-# URL end-point - can be empty; provide for faster access.
-#
-aws_file_out_url_endpoint=http://localhost:8001
-
-#
-# Region - can be empty; provide for faster access.
-#
-# See here:
-#   https://github.com/aws/aws-sdk-java/blob/master/aws-java-sdk-core/src/main/java/com/amazonaws/regions/Regions.java
-#
-aws_file_out_region=eu-central-2
-
+      #
+      # Key prefix for whole key, will be completed with
+      # a '/' in any case and supplemented with the file
+      # name of the read file from the reader-side; usually
+      # per 'file_in' reader.
+      #
+      # AWS creates a directory with this key within the
+      # bucket id specified.
+      #
+      key_prefix: myFiles/

@@ -1,0 +1,41 @@
+
+###############################################################################
+# General configuration
+###############################################################################
+
+source_interface=azure_file_in
+destination_interfaces=file_out
+# For the 'azure_file_in' reader, define a bucket-list as source entities!
+process_source_entities=autumo
+
+
+
+###############################################################################
+# Azure Blob file reader configuration
+###############################################################################
+
+
+#
+# Azure connection string. You find it in 'Access Keys'
+# in the Azure portal.
+#
+# We don't recommend using this access method! If left
+# blank, the default and more secure authentication
+# chain is used.
+#
+# This value can be encrypted, use encoder.sh.
+#
+azure_file_in_connection_string=<YOUR_CONNECTION_STRING>
+
+
+#
+# Azure account name.
+#
+azure_file_in_account=<YOUR_ACCOUNT_NAME>
+
+
+#
+# Temporary directory for files read from the Azure Blob Storage.
+#
+azure_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex
+

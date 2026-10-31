@@ -1,84 +1,93 @@
-
 ###############################################################################
-# General configuration
+#
+#  Title: 
+#  Version: 1.0
+#
+#  Notes:
+#   -
+#
+#------------------------------------------------------------------------------
+#
+#  Author: 
+#  Date: Sat Oct 31 16:20:28 CET 2026
+#
 ###############################################################################
 
-source_interface=file_in
-destination_interfaces=gdrive_file_out
+formatVersion: 1
+
+general: {}
+
+sourceInterface: file_in
+
+destinationInterfaces:
+  - gdrive_file_out
+
 # In this case, you define one pseudo entity, that defines in which
 # directory files should be read and processed as source entities
 # for the 'file_in'-reader
-process_source_entities=files:/Volumes/Fastdrive/autumo/docs/GOOGLE
+processSourceEntities:
+  - "files:/Volumes/Fastdrive/autumo/docs/GOOGLE"
 
+sources: []
 
+destinations:
+  - name: gdrive_file_out
 
-###############################################################################
-# Google Drive file writer configuration
-###############################################################################
+    params:
 
+      #
+      # Application name that is connected through OAuth 2.0.
+      #
+      application_name: "<YOUR_APP_NAME>"
 
-#
-# Folder to create and where the file are uploaded.
-# Can be left empty.
-#
-gdrive_file_out_folder=docs
+      #
+      # Project ID.
+      #
+      project_id: ifacex
 
+      #
+      # Client ID (can be encrypted, use encoder.sh).
+      #
+      # The subsequent parameters can be take out of
+      # 'credentials.json' from Google.
+      #
+      client_id: "<YOUR_CLIENT_ID>"
 
-#
-# If known, the parent ID of an existing folder where the folder
-# above is created or if the folder above isn't specified the
-# parent ID of an existing folder where the files are uploaded.  
-# Can be left empty too.
-#
-gdrive_file_out_folder_id_parent=
+      #
+      # Your client secret (can be encrypted, use encoder.sh).
+      #
+      client_secret: "<YOUR_CLIENT_SECRET>"
 
+      #
+      # Authentication URI.
+      #
+      auth_uri: "https://accounts.google.com/o/oauth2/auth"
 
-#
-# Application name that is connected through OAuth 2.0.
-#
-gdrive_file_out_application_name=<YOUR_APP_NAME>
+      #
+      # Token URI.
+      #
+      token_uri: "https://oauth2.googleapis.com/token"
 
-#
-# Client ID (can be encrypted, use encoder.sh).
-#
-# The subsequent parameters can be take out of
-# 'credentials.json' from Google.
-#
-gdrive_file_out_client_id=<YOUR_CLIENT_ID>
+      #
+      # Certification URL.
+      #
+      auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs"
 
+      #
+      # Redirect URIs, comma-separated list or leave empty.
+      #
+      redirect_uris: ""
 
-#
-# Project ID.
-#
-gdrive_file_out_project_id=ifacex
+      #
+      # Folder to create and where the file are uploaded.
+      # Can be left empty.
+      #
+      folder: docs
 
-
-#
-# Authentication URI.
-#
-gdrive_file_out_auth_uri=https://accounts.google.com/o/oauth2/auth
-
-
-#
-# Token URI.
-#
-gdrive_file_out_token_uri=https://oauth2.googleapis.com/token
-
-
-#
-# Certification URL.
-#
-gdrive_file_out_auth_provider_x509_cert_url=https://www.googleapis.com/oauth2/v1/certs
-
-
-#
-# Your client secret (can be encrypted, use encoder.sh).
-#
-gdrive_file_out_client_secret=<YOUR_CLIENT_SECRET>
-
-
-#
-# Redirect URIs, comma-separated list or leave empty.
-#
-gdrive_file_out_redirect_uris=
-
+      #
+      # If known, the parent ID of an existing folder where the folder
+      # above is created or if the folder above isn't specified the
+      # parent ID of an existing folder where the files are uploaded.
+      # Can be left empty too.
+      #
+      folder_id_parent: ""

@@ -1,45 +1,65 @@
-
 ###############################################################################
-# General configuration
+#
+#  Title: 
+#  Version: 1.0
+#
+#  Notes:
+#   -
+#
+#------------------------------------------------------------------------------
+#
+#  Author: 
+#  Date: Sat Oct 31 16:20:28 CET 2026
+#
 ###############################################################################
 
-source_interface=aws_file_in
-destination_interfaces=file_out
+formatVersion: 1
+
+general: {}
+
+sourceInterface: aws_file_in
+
+destinationInterfaces:
+  - file_out
+
 # For the 'aws_file_in' reader, define a bucket-list as source entities!
-process_source_entities=filebucket
+processSourceEntities:
+  - filebucket
 
+sources:
+  - name: aws_file_in
 
+    params:
 
-###############################################################################
-# Amazon AWS file reader configuration
-###############################################################################
+      #
+      # AWS access key (can be encrypted, use encoder.sh).
+      #
+      access_key: "<YOUR_ACCESS_KEY>"
 
+      #
+      # AWS secret key (can be encrypted, use encoder.sh).
+      #
+      secret_key: "<YOUR_SECRET>"
 
-#
-# AWS access key (can be encrypted, use encoder.sh).
-#
-aws_file_in_access_key=<YOUR_ACCESS_KEY>
+      #
+      # URL end-point - can be empty; provide for faster access.
+      #
+      url_endpoint: "http://localhost:8001"
 
-#
-# AWS secret key (can be encrypted, use encoder.sh).
-#
-aws_file_in_secret_key=<YOUR_SECRET>
+      #
+      # Region - can be empty; provide for faster access.
+      #
+      # See here:
+      #   https://github.com/aws/aws-sdk-java/blob/master/aws-java-sdk-core/src/main/java/com/amazonaws/regions/Regions.java
+      #
+      region: eu-central-2
 
-#
-# URL end-point - can be empty; provide for faster access.
-#
-aws_file_in_url_endpoint=http://localhost:8001
+      #
+      # Temporary directory for files read from the AWS.
+      #
+      temp_out_path: /Volumes/Fastdrive/tmp/ifacex
 
-#
-# Region - can be empty; provide for faster access.
-#
-# See here:
-#   https://github.com/aws/aws-sdk-java/blob/master/aws-java-sdk-core/src/main/java/com/amazonaws/regions/Regions.java
-#
-aws_file_in_region=eu-central-2
+    entities:
+      filebucket: {}
 
-#
-# Temporary directory for files read from the AWS. 
-#
-aws_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex
-
+destinations: []

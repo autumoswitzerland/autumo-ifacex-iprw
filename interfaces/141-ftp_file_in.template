@@ -1,87 +1,100 @@
-
 ###############################################################################
-# General configuration
+#
+#  Title: 
+#  Version: 1.0
+#
+#  Notes:
+#   -
+#
+#------------------------------------------------------------------------------
+#
+#  Author: 
+#  Date: Sat Oct 31 16:20:28 CET 2026
+#
 ###############################################################################
 
-source_interface=ftp_file_in
-destination_interfaces=file_out
+formatVersion: 1
+
+general: {}
+
+sourceInterface: ftp_file_in
+
+destinationInterfaces:
+  - file_out
+
 # For the 'ftp_file_in' reader, define entities that serve as directory paths
-# in the remote FTP location.	
-process_source_entities=upload
+# in the remote FTP location.
+processSourceEntities:
+  - upload
 
+sources:
+  - name: ftp_file_in
 
+    params:
 
-###############################################################################
-# FTP file reader configuration
-###############################################################################
+      #
+      # Host.
+      #
+      host: 192.168.0.14
 
+      #
+      # Port.
+      #
+      port: "21"
 
-#
-# Host.
-#
-ftp_file_in_host=192.168.0.14
+      #
+      # User (can be encrypted, use encoder.sh).
+      #
+      user: "<YOUR_USER>"
 
+      #
+      # Password (can be encrypted, use encoder.sh).
+      #
+      password: "<YOUR_PASSWORD>"
 
-#
-# Port.
-#
-ftp_file_in_port=21
+      #
+      # Secure SSL/TLS?
+      #
+      # Make sure a valid certificate has been installed in
+      # the keysore file 'cfg/ifacex.cfg'.
+      #
+      # Values: yes|no
+      #
+      ssl: "no"
 
+      #
+      # Reusable SSL/TLS connections?
+      # Necessary for servers like FileZilla when TLS/SSL is used.
+      #
+      # If switched on, you also have to add JDK/JVM module parameters:
+      #
+      #   --add-opens java.base/sun.security.util=ALL-UNNAMED
+      #   --add-opens java.base/sun.security.ssl=ALL-UNNAMED
+      #
+      # No better workaround available at the moment!
+      #
+      # Values: yes|no
+      #
+      reusable_ssl: "yes"
 
-#
-# Secure SSL/TLS?
-#
-# Make sure a valid certificate has been installed in
-# the keysore file 'cfg/ifacex.cfg'.  
-#
-# Values: yes|no
-#
-ftp_file_in_ssl=no
+      #
+      # SSL FTP PROT command.
+      #
+      # C - Clear
+      # S - Safe (SSL protocol only)
+      # E - Confidential (SSL protocol only)
+      # P - Private
+      #
+      # P is default.
+      #
+      prot: P
 
+      #
+      # Temporary directory for files read from FTP.
+      #
+      temp_out_path: /Volumes/Fastdrive/tmp/ifacex
 
-#
-# Reusable SSL/TLS connections?
-# Necessary for servers like FileZilla when TLS/SSL is used.
-#
-# If switched on, you also have to add JDK/JVM module parameters:
-#
-#   --add-opens java.base/sun.security.util=ALL-UNNAMED
-#   --add-opens java.base/sun.security.ssl=ALL-UNNAMED
-#
-# No better workaround available at the moment!
-#
-# Values: yes|no
-#
-ftp_file_in_reusable_ssl=yes
+    entities:
+      upload: {}
 
-
-#
-# SSL FTP PROT command.
-#
-# C - Clear
-# S - Safe (SSL protocol only)
-# E - Confidential (SSL protocol only)
-# P - Private
-#
-# P is default.
-#
-ftp_file_in_prot=P
-
-
-#
-# User (can be encrypted, use encoder.sh).
-#
-ftp_file_in_user=<YOUR_USER>
-
-
-#
-# Password (can be encrypted, use encoder.sh).
-#
-ftp_file_in_password=<YOUR_PASSWORD>
-
-
-#
-# Temporary directory for files read from FTP. 
-#
-ftp_file_in_temp_out_path=/Volumes/Fastdrive/tmp/ifacex
-
+destinations: []

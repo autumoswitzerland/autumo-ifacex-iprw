@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>autumo-ifacex-iprw</artifactId>
 		<groupId>ch.autumo.ifacex.iprw</groupId>
-		<version>2.1.0</version>
+		<version>3.0.0</version>
 	</parent>	
 	<groupId>ch.autumo.ifacex.iprw.ms.azure</groupId>
 	<artifactId>autumo-ifacex-iprw-ms-azure</artifactId>
@@ -14,8 +14,8 @@
 	
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	
-		<version.azure.sdk.bom>1.2.18</version.azure.sdk.bom>
-		<version.azure.identity>1.13.1</version.azure.identity>
+		<version.azure.sdk.bom>1.3.9</version.azure.sdk.bom>
+		<version.azure.identity>1.19.0</version.azure.identity>
 		
 	</properties>
 	
