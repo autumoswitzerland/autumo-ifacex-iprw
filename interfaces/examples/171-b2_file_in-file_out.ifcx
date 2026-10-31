@@ -1,0 +1,70 @@
+###############################################################################
+#
+#  Title: 
+#  Version: 1.0
+#
+#  Notes:
+#   -
+#
+#------------------------------------------------------------------------------
+#
+#  Author: 
+#  Date: Sat Oct 31 18:48:38 CET 2026
+#
+###############################################################################
+
+formatVersion: 1
+
+general: {}
+
+sourceInterface: b2_file_in
+
+destinationInterfaces:
+  - file_out
+
+# For the 'b2_file_in' reader, define a bucket-list as source entities!
+processSourceEntities:
+  - autumo
+
+sources:
+  - name: b2_file_in
+
+    params:
+
+      #
+      # B2 API key ID.
+      #
+      # This value can be encrypted, use encoder.sh.
+      #
+      api_key_id: "<YOUR_API_KEY_ID>"
+
+      #
+      # B2 API key.
+      #
+      # This value can be encrypted, use encoder.sh.
+      #
+      api_key: "<YOUR_API_KEY>"
+
+      #
+      # Temporary directory for files read from the Azure Blob Storage.
+      #
+      temp_out_path: /Volumes/Fastdrive/tmp/ifacex
+
+    entities:
+      autumo: {}
+
+destinations:
+  - name: file_out
+
+    params:
+
+      #
+      # Output directory.
+      #
+      path: /Volumes/Fastdrive/tmp/fromb2
+
+      #
+      # Delete source files after copying?
+      # Values: yes|no
+      #
+      delete_files_after_processing: "yes"

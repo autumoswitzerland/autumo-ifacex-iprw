@@ -1,0 +1,114 @@
+###############################################################################
+#
+#  Title: 
+#  Version: 1.0
+#
+#  Notes:
+#   -
+#
+#------------------------------------------------------------------------------
+#
+#  Author: 
+#  Date: Sat Oct 31 18:48:38 CET 2026
+#
+###############################################################################
+
+formatVersion: 1
+
+general: {}
+
+sourceInterface: ftp_file_in
+
+destinationInterfaces:
+  - file_out
+
+# For the 'ftp_file_in' reader, define entities that serve as directory paths
+# in the remote FTP location.
+processSourceEntities:
+  - upload
+
+sources:
+  - name: ftp_file_in
+
+    params:
+
+      #
+      # Host.
+      #
+      host: 192.168.0.228
+
+      #
+      # Port.
+      #
+      port: "21"
+
+      #
+      # User (can be encrypted, use encoder.sh).
+      #
+      user: autumo
+
+      #
+      # Password (can be encrypted, use encoder.sh).
+      #
+      password: autumo
+
+      #
+      # Secure SSL/TLS?
+      #
+      # Make sure a valid certificate has been installed in
+      # the keysore file 'cfg/ifacex.cfg'.
+      #
+      # Values: yes|no
+      #
+      ssl: "no"
+
+      #
+      # Reusable SSL/TLS connections?
+      # Necessary for servers like FileZilla when TLS/SSL is used.
+      #
+      # If switched on, you also have to add JDK/JVM module parameters:
+      #
+      #   --add-opens java.base/sun.security.util=ALL-UNNAMED
+      #   --add-opens java.base/sun.security.ssl=ALL-UNNAMED
+      #
+      # No better workaround available at the moment!
+      #
+      # Values: yes|no
+      #
+      reusable_ssl: "yes"
+
+      #
+      # SSL FTP PROT command.
+      #
+      # C - Clear
+      # S - Safe (SSL protocol only)
+      # E - Confidential (SSL protocol only)
+      # P - Private
+      #
+      # P is default.
+      #
+      prot: P
+
+      #
+      # Temporary directory for files read from FTP.
+      #
+      temp_out_path: /Volumes/Fastdrive/tmp/ifacex
+
+    entities:
+      upload: {}
+
+destinations:
+  - name: file_out
+
+    params:
+
+      #
+      # Output directory.
+      #
+      path: /Volumes/Fastdrive/tmp/fromftp
+
+      #
+      # Delete source files after copying?
+      # Values: yes|no
+      #
+      delete_files_after_processing: "yes"

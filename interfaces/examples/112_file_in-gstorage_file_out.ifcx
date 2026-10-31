@@ -1,0 +1,72 @@
+###############################################################################
+#
+#  Title: 
+#  Version: 1.0
+#
+#  Notes:
+#   -
+#
+#------------------------------------------------------------------------------
+#
+#  Author: 
+#  Date: Sat Oct 31 18:48:38 CET 2026
+#
+###############################################################################
+
+formatVersion: 1
+
+general: {}
+
+sourceInterface: file_in
+
+destinationInterfaces:
+  - gstorage_file_out
+
+# In this case, you define one pseudo entity, that defines in which
+# directory files should be read and processed as source entities
+# for the 'file_in'-reader
+processSourceEntities:
+  - "files:/Volumes/Fastdrive/autumo/docs/GOOGLE"
+
+sources: []
+
+destinations:
+  - name: gstorage_file_out
+
+    params:
+
+      #
+      # Google storage credentials file, refers to a specific project.
+      # Type: Service Account
+      #
+      credentials_file: "<YOUR_PATH_TO_GOOGLE_JSON_CREDENTIALS>"
+
+      #
+      # Project ID.
+      #
+      project_id: ifacex
+
+      #
+      # Bucket name.
+      #
+      bucket_name: ifacex_bucket
+
+      #
+      # Region/location, you can use multi-regions too.
+      #
+      # See: https://cloud.google.com/storage/docs/bucket-locations
+      #
+      region: EU
+
+      #
+      # Used when new buckets must be created.
+      #
+      # Possible values:
+      #
+      # - 'STANDARD' : https://cloud.google.com/storage/docs/storage-classes#standard">https://cloud.google.com/storage/docs/storage-classes#standard
+      # - 'NEARLINE' : https://cloud.google.com/storage/docs/storage-classes#nearline">https://cloud.google.com/storage/docs/storage-classes#nearline
+      # - 'COLDLINE' : https://cloud.google.com/storage/docs/storage-classes#nearline">https://cloud.google.com/storage/docs/storage-classes#coldline
+      # - 'ARCHIVE'  : https://cloud.google.com/storage/docs/storage-classes#nearline">https://cloud.google.com/storage/docs/storage-classes#archive
+      # - 'REGIONAL' : https://cloud.google.com/storage/docs/storage-classes#nearline">https://cloud.google.com/storage/docs/storage-classes#legacy
+      #
+      storage_class: STANDARD

@@ -1,0 +1,68 @@
+###############################################################################
+#
+#  Title: 
+#  Version: 1.0
+#
+#  Notes:
+#   -
+#
+#------------------------------------------------------------------------------
+#
+#  Author: 
+#  Date: Sat Oct 31 18:48:38 CET 2026
+#
+###############################################################################
+
+formatVersion: 1
+
+general: {}
+
+sourceInterface: file_in
+
+destinationInterfaces:
+  - webdav_file_out
+
+# In this case, you define one pseudo entity, that defines in which
+# directory files should be read and processed as source entities
+# for the 'file_in'-reader
+processSourceEntities:
+  - "files:/Volumes/Fastdrive/autumo/docs/WEBDAV"
+
+sources: []
+
+destinations:
+  - name: webdav_file_out
+
+    params:
+
+      #
+      # Base URL with port.
+      #
+      url: "https://192.168.0.14:5000"
+
+      #
+      # Secure SSL/TLS?
+      # Values: yes|no
+      #
+      ssl: "yes"
+
+      #
+      # User (can be encrypted, use encoder.sh).
+      #
+      user: autumo
+
+      #
+      # Password (can be encrypted, use encoder.sh).
+      #
+      password: autumo
+
+      #
+      # Destination directory within the Web DAV.
+      #
+      dest_uri: files
+
+      #
+      # Does server allow to delete files?
+      # Values: yes|no
+      #
+      allow_delete: "yes"

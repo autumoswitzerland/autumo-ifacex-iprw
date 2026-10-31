@@ -1,0 +1,75 @@
+###############################################################################
+#
+#  Title: 
+#  Version: 1.0
+#
+#  Notes:
+#   -
+#
+#------------------------------------------------------------------------------
+#
+#  Author: 
+#  Date: Sat Oct 31 18:48:38 CET 2026
+#
+###############################################################################
+
+formatVersion: 1
+
+general: {}
+
+sourceInterface: file_in
+
+destinationInterfaces:
+  - aws_file_out
+
+# In this case, you define one pseudo entity, that defines in which
+# directory files should be read and processed as source entities
+# for the 'file_in'-reader
+processSourceEntities:
+  - "files:/Volumes/Fastdrive/autumo/docs/ALL"
+
+sources: []
+
+destinations:
+  - name: aws_file_out
+
+    params:
+
+      #
+      # AWS access key (can be encrypted, use encoder.sh).
+      #
+      access_key: "<YOUR_ACCESS_KEY>"
+
+      #
+      # AWS secret key (can be encrypted, use encoder.sh).
+      #
+      secret_key: "<YOUR_SECRET>"
+
+      #
+      # URL end-point - can be empty; provide for faster access.
+      #
+      url_endpoint: "http://localhost:8001"
+
+      #
+      # Region - can be empty; provide for faster access.
+      #
+      # See here:
+      #   https://github.com/aws/aws-sdk-java/blob/master/aws-java-sdk-core/src/main/java/com/amazonaws/regions/Regions.java
+      #
+      region: eu-central-2
+
+      #
+      # File bucket name (only lower-case allowed).
+      #
+      bucket_name: filebucket
+
+      #
+      # Key prefix for whole key, will be completed with
+      # a '/' in any case and supplemented with the file
+      # name of the read file from the reader-side; usually
+      # per 'file_in' reader.
+      #
+      # AWS creates a directory with this key within the
+      # bucket id specified.
+      #
+      key_prefix: myFiles/

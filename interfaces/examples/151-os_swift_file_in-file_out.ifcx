@@ -1,0 +1,106 @@
+###############################################################################
+#
+#  Title: 
+#  Version: 1.0
+#
+#  Notes:
+#   -
+#
+#------------------------------------------------------------------------------
+#
+#  Author: 
+#  Date: Sat Oct 31 18:48:38 CET 2026
+#
+###############################################################################
+
+formatVersion: 1
+
+general: {}
+
+sourceInterface: os_swift_file_in
+
+destinationInterfaces:
+  - file_out
+
+# For the 'os_swift_file_in' reader, define a bucket-list as source entities!
+processSourceEntities:
+  - autumo
+
+sources:
+  - name: os_swift_file_in
+
+    params:
+
+      #
+      # OpenStack KeyStone Version.
+      # Possible values: 2|3
+      #
+      version: "3"
+
+      #
+      # URL end-point (ends usually with a version, e.g., '/v3').
+      #
+      url_endpoint: "https://<HOST:PORT>/identity/v3"
+
+      #
+      # User name (can be encrypted, use encoder.sh).
+      #
+      user: "<YOUR_USER_NAME>"
+
+      #
+      # User ID (can be encrypted, use encoder.sh).
+      # Works only with KeyStone version 3.
+      # If lef blank, 'User name' is used.
+      #
+      user_id: ""
+
+      #
+      # Password (can be encrypted, use encoder.sh).
+      #
+      password: "<YOUR_SECRET>"
+
+      #
+      # Project name if any.
+      # If you use KeyStone version 2, this is the "tenant".
+      #
+      project: "<YOUR_PROJECT>"
+
+      #
+      # Domain name if any, otherwise 'Default' is used!
+      # Only used in KeyStone version 3.
+      #
+      domain: "<YOUR_DOMAIN>"
+
+      #
+      # Secure SSL/TLS?
+      # Values: yes|no
+      #
+      # You might want to use the keystore file a
+      # for a HTTPS certificate too!
+      #
+      ssl: "yes"
+
+      #
+      # Container to write to.
+      # It is created if non-existent.
+      #
+      container: "<CONTAINER_TO_WRITE_TO>"
+
+      #
+      # Temporary directory for files read from the OpenStack Swift Storage.
+      #
+      temp_out_path: /Volumes/Fastdrive/tmp/ifacex
+
+    entities:
+      autumo: {}
+
+destinations:
+  - name: file_out
+
+    params:
+
+      #
+      # Output directory.
+      #
+      path: /Volumes/Fastdrive/tmp/fromos
+      delete_files_after_processing: "no"

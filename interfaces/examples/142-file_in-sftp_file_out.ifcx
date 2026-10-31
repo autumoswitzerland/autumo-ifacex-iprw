@@ -1,0 +1,66 @@
+###############################################################################
+#
+#  Title: 
+#  Version: 1.0
+#
+#  Notes:
+#   -
+#
+#------------------------------------------------------------------------------
+#
+#  Author: 
+#  Date: Sat Oct 31 18:48:38 CET 2026
+#
+###############################################################################
+
+formatVersion: 1
+
+general: {}
+
+sourceInterface: file_in
+
+destinationInterfaces:
+  - sftp_file_out
+
+# In this case, you define one pseudo entity, that defines in which
+# directory files should be read and processed as source entities
+# for the 'file_in'-reader
+processSourceEntities:
+  - "files:/Volumes/Fastdrive/autumo/docs/FTP"
+
+sources: []
+
+destinations:
+  - name: sftp_file_out
+
+    params:
+
+      #
+      # Host.
+      #
+      host: localhost
+
+      #
+      # Port.
+      #
+      port: "22"
+
+      #
+      # User (can be encrypted, use encoder.sh).
+      #
+      user: "<YOUR_USER>"
+
+      #
+      # Password (can be encrypted, use encoder.sh).
+      #
+      password: "<YOUR_PASSWORD>"
+
+      #
+      # Known Hosts file path.
+      #
+      known_hosts: "<PATH_TO>/known_hosts"
+
+      #
+      # Remote target directory.
+      #
+      directory: upload

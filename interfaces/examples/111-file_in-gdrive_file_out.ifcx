@@ -1,0 +1,93 @@
+###############################################################################
+#
+#  Title: 
+#  Version: 1.0
+#
+#  Notes:
+#   -
+#
+#------------------------------------------------------------------------------
+#
+#  Author: 
+#  Date: Sat Oct 31 18:48:38 CET 2026
+#
+###############################################################################
+
+formatVersion: 1
+
+general: {}
+
+sourceInterface: file_in
+
+destinationInterfaces:
+  - gdrive_file_out
+
+# In this case, you define one pseudo entity, that defines in which
+# directory files should be read and processed as source entities
+# for the 'file_in'-reader
+processSourceEntities:
+  - "files:/Volumes/Fastdrive/autumo/docs/GOOGLE"
+
+sources: []
+
+destinations:
+  - name: gdrive_file_out
+
+    params:
+
+      #
+      # Application name that is connected through OAuth 2.0.
+      #
+      application_name: ifacex-test
+
+      #
+      # Project ID.
+      #
+      project_id: ifacex
+
+      #
+      # Client ID (can be encrypted, use encoder.sh).
+      #
+      # The subsequent parameters can be take out of
+      # 'credentials.json' from Google.
+      #
+      client_id: "<YOUR_CLIENT_ID>"
+
+      #
+      # Your client secret (can be encrypted, use encoder.sh).
+      #
+      client_secret: "<YOUR_CLIENT_SECRET>"
+
+      #
+      # Authentication URI.
+      #
+      auth_uri: "https://accounts.google.com/o/oauth2/auth"
+
+      #
+      # Token URI.
+      #
+      token_uri: "https://oauth2.googleapis.com/token"
+
+      #
+      # Certification URL.
+      #
+      auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs"
+
+      #
+      # Redirect URIs, comma-separated list or leave empty.
+      #
+      redirect_uris: ""
+
+      #
+      # Folder to create and where the file are uploaded.
+      # Can be left empty.
+      #
+      folder: docs
+
+      #
+      # If known, the parent ID of an existing folder where the folder
+      # above is created or if the folder above isn't specified the
+      # parent ID of an existing folder where the files are uploaded.
+      # Can be left empty too.
+      #
+      folder_id_parent: ""

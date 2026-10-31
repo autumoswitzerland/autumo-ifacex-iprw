@@ -1,0 +1,67 @@
+###############################################################################
+#
+#  Title: 
+#  Version: 1.0
+#
+#  Notes:
+#   -
+#
+#------------------------------------------------------------------------------
+#
+#  Author: 
+#  Date: Sat Oct 31 18:48:38 CET 2026
+#
+###############################################################################
+
+formatVersion: 1
+
+general: {}
+
+sourceInterface: gstorage_file_in
+
+destinationInterfaces:
+  - file_out
+
+# For the 'gstorage_file_in' reader, define a bucket-list as source entities!
+processSourceEntities:
+  - ifacex_bucket
+
+sources:
+  - name: gstorage_file_in
+
+    params:
+
+      #
+      # Google storage credentials file, refers to a specific project.
+      # Type: Service Account
+      #
+      credentials_file: "<YOUR_PATH_TO_GOOGLE_JSON_CREDENTIALS>"
+
+      #
+      # Project ID.
+      #
+      project_id: ifacex
+
+      #
+      # Temporary directory for files read from Google Storage.
+      #
+      temp_out_path: /Volumes/Fastdrive/tmp/ifacex
+
+    entities:
+      ifacex_bucket: {}
+
+destinations:
+  - name: file_out
+
+    params:
+
+      #
+      # Output directory.
+      #
+      path: /Volumes/Fastdrive/tmp/fromgoogle
+
+      #
+      # Delete source files after copying?
+      # Values: yes|no
+      #
+      delete_files_after_processing: "yes"

@@ -1,0 +1,78 @@
+###############################################################################
+#
+#  Title: 
+#  Version: 1.0
+#
+#  Notes:
+#   -
+#
+#------------------------------------------------------------------------------
+#
+#  Author: 
+#  Date: Sat Oct 31 18:48:38 CET 2026
+#
+###############################################################################
+
+formatVersion: 1
+
+general: {}
+
+sourceInterface: webdav_file_in
+
+destinationInterfaces:
+  - file_out
+
+# For the 'webdav_file_in' reader, define entities that serve as URI paths
+# after the base URL (can have slashes in it).
+processSourceEntities:
+  - files
+
+sources:
+  - name: webdav_file_in
+
+    params:
+
+      #
+      # Base URL with port.
+      #
+      url: "https://192.168.0.14:5000"
+
+      #
+      # Secure SSL/TLS?
+      # Values: yes|no
+      #
+      ssl: "yes"
+
+      #
+      # User (can be encrypted, use encoder.sh).
+      #
+      user: autumo
+
+      #
+      # Password (can be encrypted, use encoder.sh).
+      #
+      password: autumo
+
+      #
+      # Temporary directory for files read from Web DAV.
+      #
+      temp_out_path: /Volumes/Fastdrive/tmp/ifacex
+
+    entities:
+      files: {}
+
+destinations:
+  - name: file_out
+
+    params:
+
+      #
+      # Output directory.
+      #
+      path: /Volumes/Fastdrive/tmp/fromdav
+
+      #
+      # Delete source files after copying?
+      # Values: yes|no
+      #
+      delete_files_after_processing: "yes"

@@ -1,0 +1,125 @@
+###############################################################################
+#
+#  Title: 
+#  Version: 1.0
+#
+#  Notes:
+#   -
+#
+#------------------------------------------------------------------------------
+#
+#  Author: 
+#  Date: Sat Oct 31 18:48:38 CET 2026
+#
+###############################################################################
+
+formatVersion: 1
+
+general: {}
+
+sourceInterface: gdrive_file_in
+
+destinationInterfaces:
+  - file_out
+
+# For the 'gdrive_file_in' reader, define a spaces-list as source entities or
+# use 'NULL' if you want to access the default google drive space.
+processSourceEntities:
+  - "NULL"
+
+sources:
+  - name: gdrive_file_in
+
+    params:
+
+      #
+      # Application name that is connected through OAuth 2.0.
+      #
+      application_name: ifacex-test
+
+      #
+      # Project ID.
+      #
+      project_id: ifacex
+
+      #
+      # Client ID (can be encrypted, use encoder.sh).
+      #
+      # The subsequent parameters can be take out of
+      # 'credentials.json' from Google.
+      #
+      client_id: "<YOUR_CLIENT_ID>"
+
+      #
+      # Your client secret (can be encrypted, use encoder.sh).
+      #
+      client_secret: "<YOUR_CLIENT_SECRET>"
+
+      #
+      # Authentication URI.
+      #
+      auth_uri: "https://accounts.google.com/o/oauth2/auth"
+
+      #
+      # Token URI.
+      #
+      token_uri: "https://oauth2.googleapis.com/token"
+
+      #
+      # Certification URL.
+      #
+      auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs"
+
+      #
+      # Redirect URIs, comma-separated list or leave empty.
+      #
+      redirect_uris: ""
+
+      #
+      # Corpora; Groupings of files to which the query applies.
+      # No value specified is allowed.
+      #
+      # Possible Values:
+      # - 'user':     : Files created by, opened by, or shared directly with the user
+      # - 'drive'     : Files in the specified shared drive as indicated by the 'driveId')
+      # - 'domain'    : Files shared to the user's domain
+      # - 'allDrives' : A combination of 'user' and 'drive' for all drives where the user is a member
+      # When able, use 'user' or 'drive', instead of 'allDrives', for efficiency.
+      #
+      corpora: ""
+
+      #
+      # Necessary if above value is set to 'drive',
+      # otherwise unused.
+      #
+      drive_id: ""
+
+      #
+      # Folder from where files are read.
+      # Can be left empty.
+      #
+      folder: test_docs11
+
+      #
+      # Temporary directory for files read from Google Drive.
+      #
+      temp_out_path: /Volumes/Fastdrive/tmp/ifacex
+
+    entities:
+      NULL: {}
+
+destinations:
+  - name: file_out
+
+    params:
+
+      #
+      # Output directory.
+      #
+      path: /Volumes/Fastdrive/tmp/fromgoogle
+
+      #
+      # Delete source files after copying?
+      # Values: yes|no
+      #
+      delete_files_after_processing: "yes"

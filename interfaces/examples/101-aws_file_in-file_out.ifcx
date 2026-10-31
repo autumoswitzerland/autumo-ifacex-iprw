@@ -1,0 +1,79 @@
+###############################################################################
+#
+#  Title: 
+#  Version: 1.0
+#
+#  Notes:
+#   -
+#
+#------------------------------------------------------------------------------
+#
+#  Author: 
+#  Date: Sat Oct 31 18:48:38 CET 2026
+#
+###############################################################################
+
+formatVersion: 1
+
+general: {}
+
+sourceInterface: aws_file_in
+
+destinationInterfaces:
+  - file_out
+
+# For the 'aws_file_in' reader, define a bucket-list as source entities!
+processSourceEntities:
+  - filebucket
+
+sources:
+  - name: aws_file_in
+
+    params:
+
+      #
+      # AWS access key (can be encrypted, use encoder.sh).
+      #
+      access_key: "<YOUR_ACCESS_KEY>"
+
+      #
+      # AWS secret key (can be encrypted, use encoder.sh).
+      #
+      secret_key: "<YOUR_SECRET>"
+
+      #
+      # URL end-point - can be empty; provide for faster access.
+      #
+      url_endpoint: "http://localhost:8001"
+
+      #
+      # Region - can be empty; provide for faster access.
+      #
+      # See here:
+      #   https://github.com/aws/aws-sdk-java/blob/master/aws-java-sdk-core/src/main/java/com/amazonaws/regions/Regions.java
+      #
+      region: eu-central-2
+
+      #
+      # Temporary directory for files read from the AWS.
+      #
+      temp_out_path: /Volumes/Fastdrive/tmp/ifacex
+
+    entities:
+      filebucket: {}
+
+destinations:
+  - name: file_out
+
+    params:
+
+      #
+      # Output directory.
+      #
+      path: /Volumes/Fastdrive/tmp/fromaws
+
+      #
+      # Delete source files after copying?
+      # Values: yes|no
+      #
+      delete_files_after_processing: "no"

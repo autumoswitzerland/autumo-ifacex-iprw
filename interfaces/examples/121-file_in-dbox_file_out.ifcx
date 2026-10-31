@@ -1,0 +1,59 @@
+###############################################################################
+#
+#  Title: 
+#  Version: 1.0
+#
+#  Notes:
+#   -
+#
+#------------------------------------------------------------------------------
+#
+#  Author: 
+#  Date: Sat Oct 31 18:48:38 CET 2026
+#
+###############################################################################
+
+formatVersion: 1
+
+general: {}
+
+sourceInterface: file_in
+
+destinationInterfaces:
+  - dbox_file_out
+
+# In this case, you define one pseudo entity, that defines in which
+# directory files should be read and processed as source entities
+# for the 'file_in'-reader
+processSourceEntities:
+  - "files:/Volumes/Fastdrive/autumo/docs/DROPBOX"
+
+sources: []
+
+destinations:
+  - name: dbox_file_out
+
+    params:
+
+      #
+      # App name you could provide.
+      # Can be left empty.
+      #
+      app_name: ""
+
+      #
+      # App version you could provide.
+      # Can be left empty.
+      #
+      app_version: ""
+
+      #
+      # Dropbox OAuth 2.0 access token.
+      #
+      oauth_access_token: "<YOUR_ACCESS_TOKEN>"
+
+      #
+      # To what path should be written?
+      # '/' is the root directory, but it is unsupported!
+      #
+      path: /test/test3
