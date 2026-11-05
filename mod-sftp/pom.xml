@@ -14,7 +14,7 @@
 	
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	
-		<version.sshj>0.38.0</version.sshj>
+		<version.sshj>0.41.2</version.sshj>
 		
 	</properties>
 	

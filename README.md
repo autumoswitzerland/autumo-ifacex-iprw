@@ -26,6 +26,8 @@ in your own project and IDE.
 
 ### Build
 
+Java 21 or newer is required.
+
 1.	You can Import the project in eclipse or in any other development IDE.
 
 2.	Copy the following libraries from the ifaceX Installation directory'
@@ -54,6 +56,7 @@ in your own project and IDE.
 - OpenStack (Swift ObjectStorage, Keystone V2 and V3) : Read and write files via blops.
 - Microsoft Azure (Blob Storage) : Read and write files via blops.
 - BackBlaze B2 Storage : Read and write files.
+- Apache NiFi (Site-to-Site) : Read and write FlowFiles.
 
 #### ifaceX Core Readers | Writers
 

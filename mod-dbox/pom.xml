@@ -14,7 +14,7 @@
 	
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	
-		<version.dropbox.core.sdk>7.0.0</version.dropbox.core.sdk>
+		<version.dropbox.core.sdk>8.0.2</version.dropbox.core.sdk>
 		
 	</properties>
 	

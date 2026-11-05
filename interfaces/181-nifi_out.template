@@ -1,0 +1,243 @@
+###############################################################################
+#
+#  Title: Apache NiFi Site-to-Site reader configuration
+#  Version: 1.0
+#
+#  Notes:
+#   -
+#
+#------------------------------------------------------------------------------
+#
+#  Author: 
+#  Date: Thu Nov 05 2026
+#
+###############################################################################
+
+formatVersion: 1
+
+general: {}
+
+sourceInterface: csv_in
+
+destinationInterfaces:
+  - nifi_out
+
+# For the 'nifi_in' reader, define the source entities as they are configured
+# in the NiFi output port; one entity is read after the other.
+processSourceEntities:
+  - articles
+
+sources:
+  - name: csv_in
+
+    params:
+
+      # Header size, 0 = no header
+      # If there are more than one header, it is assumed that field name are in the last header line!
+      header_size: "1"
+
+      # Delete CSV files after reading ?
+      # Values: Yes or No
+      delete_files_after_processing: "no"
+
+      # Read the output files from writer 'csv_out';
+      # If the value would be 'csv_out', then 'csv_out_<entity>.csv' are read!
+      read_from_writer: ""
+
+      # Read from custom folder; only when above 'csv_in_read_from_writer'
+      # isn't defined. Files must be named '<entity>.csv'.
+      # If the above parameter and this one isn't defined, then the default
+      # folder is used; see 'ifacex.cfg', parameter 'files_folder'.
+      read_from_folder: ""
+
+    entities:
+      articles:
+        fields:
+          - id
+          - title
+          - author
+
+destinations:
+  - name: nifi_out
+
+    params:
+
+      #
+      # URL of the NiFi instance, including the context path.
+      #
+      url: "https://localhost:8443/nifi"
+
+      #
+      # Site-to-Site transport protocol.
+      #
+      # HTTP works through the NiFi web port; RAW requires the separate
+      # Site-to-Site port to be opened in the NiFi properties.
+      #
+      # Values: HTTP|RAW
+      #
+      transport_protocol: HTTP
+
+      #
+      # Secure SSL/TLS?
+      # If not configured, it is derived from the URL scheme.
+      #
+      # Values: yes|no
+      #
+      ssl: "yes"
+
+      #
+      # Client key store; only needed when NiFi requires a client certificate.
+      # If not configured, the key store of 'cfg/ifacex.cfg' is used.
+      # Passwords can be encrypted, use encoder.sh.
+      #
+      keystore_file: ssl/ifacex.jks
+      keystore_password: ifacex
+      keystore_type: PKCS12
+
+      #
+      # Trust store; only needed if the NiFi certificate is not trusted by
+      # the default trust store or the ifaceX key store.
+      # Passwords can be encrypted, use encoder.sh.
+      #
+      truststore_file: ssl/ifacex.jks
+      truststore_password: ifacex
+      truststore_type: PKCS12
+
+      #
+      # Communication timeout in seconds.
+      #
+      timeout: "30"
+
+      #
+      # Compress the transferred FlowFiles?
+      #
+      # Values: yes|no
+      #
+      use_compression: "no"
+
+      #
+      # File that caches known cluster nodes; leave empty for a standalone
+      # NiFi instance.
+      #
+      peer_persistence_file: ""
+      mode: batch
+      attributes: ""
+
+      #
+      # Verify the server certificate.
+      #
+      ssl_verify: "yes"
+
+      #
+      # Preferred amount of FlowFiles, bytes and milliseconds per receive
+      # transaction. A batch duration of 0 means no time limit.
+      #
+      batch_count: "100"
+      batch_size: "1048576"
+      batch_duration: "0"
+
+      #
+      # FlowFile content format.
+      #
+      # json - the content is a JSON object or JSON array and is converted
+      #        to records according to the source fields.
+      # file - the content is written to 'temp_out_path' and the absolute
+      #        file path is passed on as source field 'filepath'.
+      #
+      # Values: json|file
+      #
+      content_format: json
+
+      #
+      # Directory for FlowFiles when 'content_format' is 'file'.
+      #
+      temp_out_path: ""
+
+      #
+      # Merge the FlowFile attributes into the JSON records? Existing JSON
+      # values take precedence.
+      #
+      # Values: yes|no
+      #
+      include_attributes: "no"
+
+      #
+      # Stop reading after this amount of FlowFiles; 0 means no limit.
+      # The current transaction is always completed.
+      #
+      flowfile_limit: "0"
+
+    defaults:
+
+      #
+      # Amount of records per ifaceX batch.
+      #
+      fetchSize: "100"
+
+      #
+      # The JSON path to access the JSON array of records, usually it's the
+      # root; use an empty value or dot '.' in this case.
+      # '*' instead of source entity name means it is valid for every entity.
+      #
+      data_path: ""
+
+      #
+      # The JSON sub path is only used when a single JSON object in the array
+      # contains an intermediate path that accesses the record values as
+      # specified by the source fields; otherwise leave empty (in most cases).
+      # '*' instead of source entity name means it is valid for every entity.
+      #
+      sub_path: ""
+
+      #
+      # If you activate path access, source fields are handled as JSON path to
+      # access a value. A dot '.' is used as path separator.
+      #
+      # Values: yes|no
+      #
+      field_path_access: "no"
+
+      #
+      # Allow absent fields in source entities, even if they are configured as
+      # source fields.
+      #
+      # Values: yes|no
+      #
+      allow_absent_fields: "no"
+
+      #
+      # Value used for absent fields; an empty value is possible.
+      #
+      absent_field_placeholder: ""
+
+    entities:
+      articles:
+
+        # Custom data mappers - needs programming and implementation
+        # of interface 'DataMapper'
+        data_mapper_class: ""
+        mapping_entity: address
+
+        # Unique ID field of the target database for updates; if a record is found based
+        # on the filter fields, the unique ID is used for that update, therefore the target
+        # ID field must be defined.
+        # '*' instead of source entity name means it is valid for every entity.
+        dest_unique_id_field: id
+
+        # Comma-separated filter key fields in target DB table to determine,
+        # if the source data record already exists (Update) or not (Create).
+        # The source values of the source fields that are assigned to the
+        # corresponding target fields in the mapping will be used for filtering!
+        # '*' instead of source entity name means it is valid for every entity.
+        dest_filter_fields: email
+
+        mapping:
+          - field: id
+            formula: "{id}"
+            insert: false
+          - field: title
+            formula: "{title}"
+            insert: false
+          - field: author
+            formula: "{author}"
+            insert: false

@@ -1,0 +1,36 @@
+services:
+  nifi:
+    image: apache/nifi:latest
+    container_name: nifi
+    hostname: nifi
+    ports:
+      - "8443:8443"
+      - "10000:10000"
+    environment:
+      NIFI_WEB_HTTPS_HOST: 0.0.0.0
+      NIFI_WEB_HTTPS_PORT: 8443
+      NIFI_WEB_PROXY_HOST: localhost:8443
+      NIFI_REMOTE_INPUT_HOST: localhost
+      NIFI_REMOTE_INPUT_SOCKET_PORT: 10000
+
+      SINGLE_USER_CREDENTIALS_USERNAME: admin
+      SINGLE_USER_CREDENTIALS_PASSWORD: ChangeThisPassword123!
+
+      NIFI_JVM_HEAP_INIT: 512m
+      NIFI_JVM_HEAP_MAX: 1g
+
+    volumes:
+      - nifi_data:/opt/nifi/nifi-current/conf
+      - nifi_database:/opt/nifi/nifi-current/database_repository
+      - nifi_flowfile:/opt/nifi/nifi-current/flowfile_repository
+      - nifi_content:/opt/nifi/nifi-current/content_repository
+      - nifi_provenance:/opt/nifi/nifi-current/provenance_repository
+
+    restart: unless-stopped
+
+volumes:
+  nifi_data:
+  nifi_database:
+  nifi_flowfile:
+  nifi_content:
+  nifi_provenance:

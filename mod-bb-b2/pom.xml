@@ -14,8 +14,8 @@
 	
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	
-		<version.b2.sdk.core>6.2.1</version.b2.sdk.core>
-		<version.b2.sdk.httpclient>6.2.1</version.b2.sdk.httpclient>
+		<version.b2.sdk.core>6.5.0</version.b2.sdk.core>
+		<version.b2.sdk.httpclient>6.5.0</version.b2.sdk.httpclient>
 		
 	</properties>
 	

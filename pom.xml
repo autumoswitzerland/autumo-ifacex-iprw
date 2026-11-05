@@ -18,32 +18,32 @@
 	
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	
-		<version.maven.antrun.plugin>3.1.0</version.maven.antrun.plugin>
-		<version.maven.compiler.plugin>3.13.0</version.maven.compiler.plugin>
-		<version.maven.jar.plugin>3.4.2</version.maven.jar.plugin>
-		<version.maven.resources.plugin>3.3.1</version.maven.resources.plugin>
+		<version.maven.antrun.plugin>3.2.0</version.maven.antrun.plugin>
+		<version.maven.compiler.plugin>3.16.0</version.maven.compiler.plugin>
+		<version.maven.jar.plugin>3.5.1</version.maven.jar.plugin>
+		<version.maven.resources.plugin>3.5.0</version.maven.resources.plugin>
 		
-		<version.autumo.beetroot>3.3.0</version.autumo.beetroot>
+		<version.autumo.beetroot>3.4.0</version.autumo.beetroot>
 		<version.autumo.commons>1.2.0</version.autumo.commons>
 		<version.autumo.ifacex>3.0.0</version.autumo.ifacex>
 		
 		<version.commons.io>2.22.0</version.commons.io>
 		<version.json>20260814</version.json>
-		<version.junit.jupiter.api>5.10.2</version.junit.jupiter.api>
-		<version.mockito.core>5.11.0</version.mockito.core>
-		<version.slf4j.api>2.0.17</version.slf4j.api>
+		<version.junit.jupiter.api>6.1.3</version.junit.jupiter.api>
+		<version.mockito.core>5.24.0</version.mockito.core>
+		<version.slf4j.api>2.0.20</version.slf4j.api>
 
-		<version.checker.qual>3.47.0</version.checker.qual>
-		<version.gson>2.11.0</version.gson>
-		<version.error_prone_annotations>2.51.0</version.error_prone_annotations>
+		<version.checker.qual>4.4.0</version.checker.qual>
+		<version.gson>2.15.0</version.gson>
+		<version.error_prone_annotations>2.52.0</version.error_prone_annotations>
 
-		<version.jackson.annotations>2.22</version.jackson.annotations>
-		<version.jackson.core>2.22.0</version.jackson.core>
-		<version.jackson.databind>2.22.0</version.jackson.databind>
-		<version.jackson.dataformat.cbor>2.22.0</version.jackson.dataformat.cbor>
-		<version.jackson.dataformat.xml>2.22.0</version.jackson.dataformat.xml>
-		<version.jackson.datatype.jsr310>2.22.0</version.jackson.datatype.jsr310>
-		<version.jackson.dataformat.yaml>2.22.0</version.jackson.dataformat.yaml>
+		<version.jackson.annotations>3.0-rc5</version.jackson.annotations>
+		<version.jackson.core>2.22.4</version.jackson.core>
+		<version.jackson.databind>2.22.4</version.jackson.databind>
+		<version.jackson.dataformat.cbor>2.22.4</version.jackson.dataformat.cbor>
+		<version.jackson.dataformat.xml>2.22.4</version.jackson.dataformat.xml>
+		<version.jackson.datatype.jsr310>2.22.4</version.jackson.datatype.jsr310>
+		<version.jackson.dataformat.yaml>2.22.4</version.jackson.dataformat.yaml>
 				
 	</properties>
 
@@ -56,6 +56,7 @@
 	    <module>mod-google-storage</module>
 	    <module>mod-ms-azure</module>
 	    <module>mod-ms-graph</module>
+	    <module>mod-nifi</module>
 	    <module>mod-os</module>
 	    <module>mod-sftp</module>
 	    <module>mod-webdav</module>
@@ -87,7 +88,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${version.maven.compiler.plugin}</version>
 				<configuration>
-					<release>17</release>
+					<release>21</release>
 				</configuration>
 			</plugin>
 			<plugin>

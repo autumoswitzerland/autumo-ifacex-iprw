@@ -14,7 +14,7 @@
 	
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	
-		<version.commons.net>3.11.1</version.commons.net>
+		<version.commons.net>3.13.0</version.commons.net>
 		<version.mockftpserver>3.2.0</version.mockftpserver>
 		
 	</properties>

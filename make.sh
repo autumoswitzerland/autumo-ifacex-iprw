@@ -159,6 +159,10 @@ then
 	cp ../../mod-ms-graph/lib/*.jar lib/
 
 	
+	# Module 'mod-nifi'
+	cp ../../mod-nifi/lib/*.jar lib/
+
+	
 	# Module 'mod-os'
 	cp ../../mod-os/lib/*.jar lib/
 
@@ -190,6 +194,7 @@ then
 	rm lib/jackson-dataformat-xml*
 	rm lib/jackson-datatype-jsr310*
 	rm lib/jakarta.activation-api-*
+	rm lib/jakarta.xml.bind-api-4.0.2*
 	rm lib/jna-*
 	rm lib/json-20*
 	rm lib/jsr305*

@@ -14,14 +14,14 @@
 	
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	
-		<version.commons.codec>1.17.1</version.commons.codec>
-		<version.google.api.client>2.7.0</version.google.api.client>
-		<version.google.api.services.drive>v3-rev20240809-2.0.0</version.google.api.services.drive>
-		<version.google.http.client>1.45.0</version.google.http.client>
-		<version.google.http.client.apache.v2>1.45.0</version.google.http.client.apache.v2>
-		<version.google.http.client.gson>1.45.0</version.google.http.client.gson>
-		<version.google.oauth.client.jetty>1.36.0</version.google.oauth.client.jetty>
-		<version.grpc.context>1.66.0</version.grpc.context>
+		<version.commons.codec>1.23.0</version.commons.codec>
+		<version.google.api.client>2.9.2</version.google.api.client>
+		<version.google.api.services.drive>v3-rev20261023-2.9.2</version.google.api.services.drive>
+		<version.google.http.client>2.2.0</version.google.http.client>
+		<version.google.http.client.apache.v2>2.2.0</version.google.http.client.apache.v2>
+		<version.google.http.client.gson>2.2.0</version.google.http.client.gson>
+		<version.google.oauth.client.jetty>1.39.0</version.google.oauth.client.jetty>
+		<version.grpc.context>1.85.1</version.grpc.context>
 		
 	</properties>
 	
