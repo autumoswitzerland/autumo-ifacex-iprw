@@ -49,6 +49,13 @@ public abstract class AbstractDropbox implements Generic {
 	private static String SOFTWARE_VERSION = BeetRootConfigurationManager.getAppVersion();
 	
 	private DbxClientV2 client= null;
+	private boolean clientInjected = false;
+	
+	/** Test hook: inject a (mock) Dropbox client; skips creation in initialize(). */
+	public void setClient(DbxClientV2 client) {
+		this.client = client;
+		this.clientInjected = true;
+	}
 	
 	private String oAuthAccessToken = null;
 	
@@ -75,8 +82,10 @@ public abstract class AbstractDropbox implements Generic {
 				path = config.getReaderConfig().getConfig("_path");
 			}
 			
-			final DbxRequestConfig dbconfig = DbxRequestConfig.newBuilder(softwareName + "/" + softwareVersion).build();
-			client = new DbxClientV2(dbconfig, oAuthAccessToken);
+			if (!clientInjected) {
+				final DbxRequestConfig dbconfig = DbxRequestConfig.newBuilder(softwareName + "/" + softwareVersion).build();
+				client = new DbxClientV2(dbconfig, oAuthAccessToken);
+			}
 
 	    } catch (Exception e) {
 	    	throw new IfaceXException("Cannot create google drive service!", e);
@@ -89,16 +98,17 @@ public abstract class AbstractDropbox implements Generic {
 	    	path = "/";
 	    }
 	    
-		FullAccount account = null;
-		String accountName = null;
-		try {
-			account = client.users().getCurrentAccount();
-			accountName = account.getName().getDisplayName();
-		} catch (Exception e) {
-			throw new IfaceXException("Couldn't access Dropbox API!", e);
+		if (!clientInjected) {
+			FullAccount account = null;
+			String accountName = null;
+			try {
+				account = client.users().getCurrentAccount();
+				accountName = account.getName().getDisplayName();
+			} catch (Exception e) {
+				throw new IfaceXException("Couldn't access Dropbox API!", e);
+			}
+		    LOG.info("Connected to account '" + accountName + ".");
 		}
-		
-	    LOG.info("Connected to account '" + accountName + ".");
 	}
 
 	@Override

@@ -49,6 +49,13 @@ public abstract class AbstractAzureBlobStorage implements Generic {
 	private String connection_string = null;
 	
 	private BlobServiceClient client = null;
+	private boolean clientInjected = false;
+	
+	/** Test hook: inject a (mock) BlobServiceClient; skips creation in initialize(). */
+	public void setClient(BlobServiceClient client) {
+		this.client = client;
+		this.clientInjected = true;
+	}
 	
 	
 	@Override
@@ -66,21 +73,23 @@ public abstract class AbstractAzureBlobStorage implements Generic {
 			throw new IfaceXException("Couldn't read connection string!", e);
 		}
 		
-		// Azure connection string from access keys; not recommended - test purposes only
-		if (connection_string != null && connection_string.trim().length() > 24 ) {
+		if (!clientInjected) {
+			// Azure connection string from access keys; not recommended - test purposes only
+			if (connection_string != null && connection_string.trim().length() > 24 ) {
+				
+				client = new BlobServiceClientBuilder()
+					    .connectionString(connection_string)
+					    .buildClient();
 			
-			client = new BlobServiceClientBuilder()
-				    .connectionString(connection_string)
-				    .buildClient();
-		
-		// Default and secure authentication chain
-		} else {
-			
-			final DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
-			client = new BlobServiceClientBuilder()
-					.endpoint("https://" + account + ".blob.core.windows.net/")
-					.credential(defaultCredential)
-					.buildClient();
+			// Default and secure authentication chain
+			} else {
+				
+				final DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
+				client = new BlobServiceClientBuilder()
+						.endpoint("https://" + account + ".blob.core.windows.net/")
+						.credential(defaultCredential)
+						.buildClient();
+			}
 		}
 		
 	    LOG.info("Connected to Azure account '" + account + "'.");

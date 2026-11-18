@@ -47,6 +47,13 @@ public abstract class AbstractFTP implements Generic {
 	public static final int DEFAULT_PORT = 21; 
 	
 	private FTPClient client = null;
+	private boolean clientInjected = false;
+	
+	/** Test hook: inject a (mock) FTP client; skips creation/connect in initialize(). */
+	public void setClient(FTPClient client) {
+		this.client = client;
+		this.clientInjected = true;
+	}
 	
 	private String host = null;
 	private int port = -1;
@@ -90,32 +97,40 @@ public abstract class AbstractFTP implements Generic {
 		}
 		
 		try {
-			if (ssl) {
-				// Necessary for the SSLUtils!
-				BeetRootConfigurationManager.getInstance().initialize("cfg/ifacex-server.cfg");
-				if (reusableSsl)
-					client = new CustomFTPSClient(SSL.makeSSLContext(), reusableSsl);
-				else
-					client = new FTPSClient(SSL.makeSSLContext());
-			} else {
-				client = new FTPClient();
+			if (client == null) {
+				if (ssl) {
+					// Necessary for the SSLUtils!
+					BeetRootConfigurationManager.getInstance().initialize("cfg/ifacex-server.cfg");
+					if (reusableSsl)
+						client = new CustomFTPSClient(SSL.makeSSLContext(), reusableSsl);
+					else
+						client = new FTPSClient(SSL.makeSSLContext());
+				} else {
+					client = new FTPClient();
+				}
 			}
 		} catch (Exception e) {
 			throw new IfaceXException("Couldn't create SSL context!", e);
 		}
 			
-		try {
-			client.connect(host.trim(), port);
-			client.setKeepAlive(true);
-			if (ssl) {
-				final FTPSClient s_client = ((FTPSClient) client);
-				s_client.login(user, pass);
-				s_client.execPROT(prot);
-			} else {
-				client.login(user, pass);
+		if (client == null) {
+			throw new IfaceXException("FTP client is null!");
+		}
+
+		if (!clientInjected) {
+			try {
+				client.connect(host.trim(), port);
+				client.setKeepAlive(true);
+				if (ssl) {
+					final FTPSClient s_client = ((FTPSClient) client);
+					s_client.login(user, pass);
+					s_client.execPROT(prot);
+				} else {
+					client.login(user, pass);
+				}
+			} catch (Exception e) {
+				throw new IfaceXException("Couldn't create FTP client!", e);
 			}
-		} catch (Exception e) {
-			throw new IfaceXException("Couldn't create FTP client!", e);
 		}
 		
 	    LOG.info("Connected to '" + host + ":" + port + "'.");

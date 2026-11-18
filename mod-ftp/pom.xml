@@ -16,6 +16,7 @@
 	
 		<version.commons.net>3.13.0</version.commons.net>
 		<version.mockftpserver>3.2.0</version.mockftpserver>
+		<version.byte-buddy-agent>1.17.7</version.byte-buddy-agent>
 		
 	</properties>
 	
@@ -31,6 +32,34 @@
 		<!-- Testing -->
 
 		<dependency>
+			<groupId>net.bytebuddy</groupId>
+			<artifactId>byte-buddy-agent</artifactId>
+			<version>${version.byte-buddy-agent}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.yaml</groupId>
+			<artifactId>snakeyaml</artifactId>
+			<version>2.7</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>bson</artifactId>
+			<version>5.14.0</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongodb-driver-sync</artifactId>
+			<version>5.14.0</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>org.mockftpserver</groupId>
 			<artifactId>MockFtpServer</artifactId>
 			<version>${version.mockftpserver}</version>
@@ -38,5 +67,19 @@
 		</dependency>		
 		
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.5.4</version>
+				<configuration>
+					<workingDirectory>${project.basedir}/..</workingDirectory>
+					<argLine>-javaagent:${settings.localRepository}/net/bytebuddy/byte-buddy-agent/${version.byte-buddy-agent}/byte-buddy-agent-${version.byte-buddy-agent}.jar</argLine>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 	
 </project>

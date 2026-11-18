@@ -48,6 +48,13 @@ public abstract class AbstractB2Storage implements Generic {
 	private String app_key = null;
 
 	private B2StorageClient client = null;
+	private boolean clientInjected = false;
+	
+	/** Test hook: inject a (mock) B2 client; skips creation in initialize(). */
+	public void setClient(B2StorageClient client) {
+		this.client = client;
+		this.clientInjected = true;
+	}
 
 	
 	@Override
@@ -66,12 +73,15 @@ public abstract class AbstractB2Storage implements Generic {
 	    	throw new IfaceXException("Couldn't read OpenStack credentials!", e);
 	    }		
 		
-		client = B2StorageClientFactory
-	             .createDefaultFactory()
-	             .create(app_key_id, app_key, USER_AGENT);
+		if (!clientInjected) {
+			client = B2StorageClientFactory
+		             .createDefaultFactory()
+		             .create(app_key_id, app_key, USER_AGENT);
+		}
 		
 	    try {
-			LOG.info("Connected to B2 at end-point '"+client.getAccountAuthorization().getApiUrl()+"'.");
+			if (!clientInjected && client != null)
+				LOG.info("Connected to B2 at end-point '"+client.getAccountAuthorization().getApiUrl()+"'.");
 		} catch (B2Exception e) {
 			LOG.info("Connected to B2.");
 		}

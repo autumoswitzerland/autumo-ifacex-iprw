@@ -48,6 +48,13 @@ public abstract class AbstractSFTP implements Generic {
 	
 	private SSHClient client = null;
 	private StatefulSFTPClient sftpClient = null;
+	private boolean clientInjected = false;
+	
+	/** Test hook: inject a (mock) SFTP client; skips creation in initialize(). */
+	public void setClient(StatefulSFTPClient sftpClient) {
+		this.sftpClient = sftpClient;
+		this.clientInjected = true;
+	}
 	
 	private String known_hosts = null;
 	private String host = null;
@@ -77,23 +84,25 @@ public abstract class AbstractSFTP implements Generic {
 			throw new IfaceXException("Couldn't read credentials!", e);
 		}
 		
-		client = new SSHClient();
-		client.getTransport().setTimeoutMs(DEFAULT_TRANSPORT_TIMEOUT);
-		
-	    try {
-			//client.addHostKeyVerifier(new PromiscuousVerifier());
-	    	if (known_hosts == null || known_hosts.trim().length() == 0)
-				client.loadKnownHosts();
-	    	else
-	    		client.loadKnownHosts(new File(known_hosts));
+		if (!clientInjected) {
+			client = new SSHClient();
+			client.getTransport().setTimeoutMs(DEFAULT_TRANSPORT_TIMEOUT);
+			
+		    try {
+				//client.addHostKeyVerifier(new PromiscuousVerifier());
+		    	if (known_hosts == null || known_hosts.trim().length() == 0)
+					client.loadKnownHosts();
+		    	else
+		    		client.loadKnownHosts(new File(known_hosts));
 
-	        client.connect(host);
-			// the SFTP (OS) user in the target system
-		    client.authPassword(user, pass);
-		    sftpClient = (StatefulSFTPClient) client.newStatefulSFTPClient();
-		    
-		} catch (Exception e) {
-			throw new IfaceXException("Couldn't create SFTP client!", e);
+		        client.connect(host);
+				// the SFTP (OS) user in the target system
+			    client.authPassword(user, pass);
+			    sftpClient = (StatefulSFTPClient) client.newStatefulSFTPClient();
+			    
+			} catch (Exception e) {
+				throw new IfaceXException("Couldn't create SFTP client!", e);
+			}
 		}
 	    
 	    LOG.info("Connected to '" + host + ":" + port + "'.");

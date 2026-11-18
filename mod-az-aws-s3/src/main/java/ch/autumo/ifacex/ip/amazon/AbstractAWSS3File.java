@@ -50,6 +50,13 @@ public abstract class AbstractAWSS3File implements Generic {
 	private String urlEndpoint = null;
 	private String region = null;
 	private String keyPrefix = null;
+	private boolean clientInjected = false;
+	
+	/** Test hook: inject a (mock) S3 client; skips creation in initialize(). */
+	public void setClient(AmazonS3 client) {
+		this.s3client = client;
+		this.clientInjected = true;
+	}
 	
 	@Override
 	public void initialize(String rwName, IPC config, Processor processor) throws IfaceXException {
@@ -94,20 +101,22 @@ public abstract class AbstractAWSS3File implements Generic {
 				endpoint = new EndpointConfiguration(urlEndpoint, Regions.getCurrentRegion().getName()); // "http://localhost:8001", "?"
 		}
 	    
-	    if (endpoint != null)
-			s3client = AmazonS3ClientBuilder
-			  .standard()
-		      .withPathStyleAccessEnabled(true)  
-		      .withEndpointConfiguration(endpoint)
-			  .withCredentials(new AWSStaticCredentialsProvider(credentials))
-			  .build();	
-	    else
-			s3client = AmazonS3ClientBuilder
-			  .standard()
-		      .withPathStyleAccessEnabled(true)  
-			  .withCredentials(new AWSStaticCredentialsProvider(credentials))
-			  .withRegion(Regions.EU_CENTRAL_2)
-			  .build();	
+	    if (!clientInjected && s3client == null) {
+		    if (endpoint != null)
+				s3client = AmazonS3ClientBuilder
+				  .standard()
+			      .withPathStyleAccessEnabled(true)  
+			      .withEndpointConfiguration(endpoint)
+				  .withCredentials(new AWSStaticCredentialsProvider(credentials))
+				  .build();	
+		    else
+				s3client = AmazonS3ClientBuilder
+				  .standard()
+			      .withPathStyleAccessEnabled(true)  
+				  .withCredentials(new AWSStaticCredentialsProvider(credentials))
+				  .withRegion(Regions.EU_CENTRAL_2)
+				  .build();	
+	    }
 
 	    LOG.info("Connected to endpoint '" + urlEndpoint + "' and region '" + region + "'.");
 	}

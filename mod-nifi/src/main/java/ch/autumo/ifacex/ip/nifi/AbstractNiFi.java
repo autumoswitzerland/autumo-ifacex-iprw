@@ -78,6 +78,14 @@ public abstract class AbstractNiFi implements Generic {
     private static final long DEFAULT_BATCH_SIZE_BYTES = 1024L * 1024L;
 
     private SiteToSiteClient client = null;
+    private SiteToSiteClient injectedClient = null;
+    private boolean clientInjected = false;
+
+    /** Test hook: inject a (mock) Site-to-Site client; skips creation in initializeEntityClient(). */
+    public void setClient(SiteToSiteClient client) {
+        this.injectedClient = client;
+        this.clientInjected = true;
+    }
 
     @Override
     public void initialize(String rwName, IPC config, Processor processor) throws IfaceXException {
@@ -104,6 +112,11 @@ public abstract class AbstractNiFi implements Generic {
             throws IfaceXException {
 
         closeClient(readerName);
+
+        if (clientInjected) {
+            this.client = injectedClient;
+            return;
+        }
 
         this.client = createClient(readerName, rwc, entityName, null);
     }

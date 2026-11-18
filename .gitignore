@@ -5,7 +5,8 @@
 /lic/
 /data/
 /log/
-/TODO.txt
+/.env
+/bin/.env
 /ssl/
 /distribute.sh
 **/pom.xml.versionsBackup

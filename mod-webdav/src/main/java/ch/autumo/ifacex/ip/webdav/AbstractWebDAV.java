@@ -51,6 +51,13 @@ public abstract class AbstractWebDAV implements Generic {
 	private final static Logger LOG = LoggerFactory.getLogger(AbstractWebDAV.class.getName());
 	
 	private Sardine webdav = null;
+	private boolean webdavInjected = false;
+	
+	/** Test hook: inject a (mock) Sardine client; skips creation in initialize(). */
+	public void setWebdav(Sardine webdav) {
+		this.webdav = webdav;
+		this.webdavInjected = true;
+	}
 	
 	private SSLSocketFactory socketFactory = null;
 
@@ -84,54 +91,56 @@ public abstract class AbstractWebDAV implements Generic {
 		if (url.endsWith("/"))
 			url = url.substring(0, url.length() - 1);
 		
-		if (ssl) {
-			
-			try {
-				// Necessary for the SSLUtils!
-				BeetRootConfigurationManager.getInstance().initialize("cfg/ifacex-server.cfg");
-				final SecureSocketFactory factory = new SecureSocketFactory(SSL.makeSSLSocketFactory(), null);
-				socketFactory = factory.getBaseSocketFactory();
-			} catch (Exception e) {
-				throw new IfaceXException("Couldn't create SSL socket factory!", e);
-			}
-			
-			
-			webdav = new SardineImpl(user, pass) {
-				@Override
-				protected ConnectionSocketFactory createDefaultSecureSocketFactory() {
-					return new ConnectionSocketFactory() {
-						@Override
-						public Socket createSocket(HttpContext context) throws IOException {
-							return socketFactory.createSocket();
-						}
-						@Override
-						public Socket connectSocket(int connectTimeout,
-													Socket socket, HttpHost host,
-													InetSocketAddress remoteAddress, InetSocketAddress localAddress,
-													HttpContext context)
-													throws IOException {
-							
-							final Socket sock = socket != null ? socket : createSocket(context);
-					        if (localAddress != null) {
-					            sock.bind(localAddress);
-					        }
-					        try {
-					            sock.connect(remoteAddress, connectTimeout);
-					        } catch (final IOException ex) {
-					            try {
-					                sock.close();
-					            } catch (final IOException ignore) {
-					            }
-					            throw ex;
-					        }
-					        return sock;
-						}
-					};
-				}			
-			};	
+		if (!webdavInjected) {
+			if (ssl) {
+				
+				try {
+					// Necessary for the SSLUtils!
+					BeetRootConfigurationManager.getInstance().initialize("cfg/ifacex-server.cfg");
+					final SecureSocketFactory factory = new SecureSocketFactory(SSL.makeSSLSocketFactory(), null);
+					socketFactory = factory.getBaseSocketFactory();
+				} catch (Exception e) {
+					throw new IfaceXException("Couldn't create SSL socket factory!", e);
+				}
+				
+				
+				webdav = new SardineImpl(user, pass) {
+					@Override
+					protected ConnectionSocketFactory createDefaultSecureSocketFactory() {
+						return new ConnectionSocketFactory() {
+							@Override
+							public Socket createSocket(HttpContext context) throws IOException {
+								return socketFactory.createSocket();
+							}
+							@Override
+							public Socket connectSocket(int connectTimeout,
+														Socket socket, HttpHost host,
+														InetSocketAddress remoteAddress, InetSocketAddress localAddress,
+														HttpContext context)
+														throws IOException {
+								
+								final Socket sock = socket != null ? socket : createSocket(context);
+						        if (localAddress != null) {
+						            sock.bind(localAddress);
+						        }
+						        try {
+						            sock.connect(remoteAddress, connectTimeout);
+						        } catch (final IOException ex) {
+						            try {
+						                sock.close();
+						            } catch (final IOException ignore) {
+						            }
+						            throw ex;
+						        }
+						        return sock;
+							}
+						};
+					}			
+				};	
 
-		} else {
-			webdav = SardineFactory.begin(user, pass);
+			} else {
+				webdav = SardineFactory.begin(user, pass);
+			}
 		}
 		
 	    LOG.info("Connected to '" + url + "'.");

@@ -44,6 +44,54 @@ Java 21 or newer is required.
 4.	Execute 'make.sh' to create a package that can be deployed into an
 	ifaceX installation directory. 
 
+### Testing
+
+#### Unit Tests (Mocks, offline)
+
+All reader/writer modules have offline regression tests using mocks.
+
+	bin/run-tests.sh            # all modules
+	bin/run-tests.sh mod-ftp    # single module
+
+or directly:
+
+	mvn clean test
+
+#### Integration Tests (real services, optional)
+
+Integration tests run against real services and are skipped unless the
+required environment variables are set.
+
+1. Copy the template and fill in your values:
+
+	cp bin/.env.example bin/.env
+
+2. Run locally (loads bin/.env automatically):
+
+	bin/run-integration-tests.sh            # all modules
+	bin/run-integration-tests.sh mod-ftp    # single module
+
+or directly:
+
+	mvn verify              # runs *IntegrationTest classes via Failsafe
+
+Available variables: FTP_TEST_*, SFTP_TEST_*, WEBDAV_TEST_*, AWS_TEST_*,
+B2_TEST_*, DROPBOX_TEST_TOKEN, GDRIVE_TEST_*, GCS_TEST_*, AZURE_TEST_*,
+OS_TEST_*, NIFI_TEST_* (see bin/.env.example for details).
+
+### GitHub Actions Workflows
+
+- `.github/workflows/build.yml` – full pipeline: unit tests (mvn test) first,
+  then integration tests per module (only where the corresponding secrets are
+  defined), then package creation via make.sh, and an optional GitHub release
+  (workflow input 'create_release') using the version section of CHANGELOG.md
+  as release text and the ZIP from product/ as asset.
+- `.github/workflows/integration-tests.yml` – on-demand/nightly integration
+  tests with a module matrix, gated by per-module secrets.
+
+Secrets must be configured in the repository settings with the same names as
+the environment variables listed in bin/.env.example.
+
 ### Additional Readers | Writers
 
 - Amazon AWS S3 : Read and write files via blops.

@@ -19,7 +19,8 @@
 
 
 # VARS
-IPRW_VERSION=3.0.0
+# Override via environment: IPRW_VERSION=3.0.1 ./make.sh create
+IPRW_VERSION=${IPRW_VERSION:-3.0.0}
 
 
 

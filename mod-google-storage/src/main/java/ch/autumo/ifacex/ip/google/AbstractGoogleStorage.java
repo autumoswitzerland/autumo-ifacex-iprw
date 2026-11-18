@@ -43,6 +43,13 @@ public abstract class AbstractGoogleStorage implements Generic {
 	private final static Logger LOG = LoggerFactory.getLogger(AbstractGoogleStorage.class.getName());
 	
 	private Storage storage = null;
+	private boolean storageInjected = false;
+	
+	/** Test hook: inject a (mock) Storage client; skips creation in initialize(). */
+	public void setStorage(Storage storage) {
+		this.storage = storage;
+		this.storageInjected = true;
+	}
 	
 	private String json_credentials_file = null;
 	private String project_id = null;
@@ -59,15 +66,19 @@ public abstract class AbstractGoogleStorage implements Generic {
 		}
 		
 		Credentials credentials = null;
-		try {
-			final FileInputStream fis = new FileInputStream(json_credentials_file);
-			credentials = GoogleCredentials.fromStream(fis);
-			fis.close();
-		} catch (Exception e) {
-		    LOG.error("Couldn't load credentials '" + json_credentials_file + "'!", e);
+		if (!storageInjected) {
+			try {
+				final FileInputStream fis = new FileInputStream(json_credentials_file);
+				credentials = GoogleCredentials.fromStream(fis);
+				fis.close();
+			} catch (Exception e) {
+			    LOG.error("Couldn't load credentials '" + json_credentials_file + "'!", e);
+			}
 		}
 		
-		storage = StorageOptions.newBuilder().setCredentials(credentials).setProjectId(project_id).build().getService();
+		if (!storageInjected && storage == null) {
+			storage = StorageOptions.newBuilder().setCredentials(credentials).setProjectId(project_id).build().getService();
+		}
 		
 	    LOG.info("Connected to project '" + project_id + "'.");
 	}

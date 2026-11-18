@@ -1,0 +1,116 @@
+name: Integration Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      module:
+        description: 'Module to test (or "all")'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - mod-ftp
+          - mod-sftp
+          - mod-webdav
+          - mod-az-aws-s3
+          - mod-bb-b2
+          - mod-dbox
+          - mod-google-drive
+          - mod-google-storage
+          - mod-ms-azure
+          - mod-nifi
+          - mod-os
+  schedule:
+    - cron: '0 2 * * *'
+
+jobs:
+  select:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.select.outputs.matrix }}
+    steps:
+      - id: select
+        env:
+          MODULE: ${{ inputs.module }}
+        run: |
+          if [ -z "$MODULE" ] || [ "$MODULE" = "all" ]; then
+            echo 'matrix=["mod-ftp","mod-sftp","mod-webdav","mod-az-aws-s3","mod-bb-b2","mod-dbox","mod-google-drive","mod-google-storage","mod-ms-azure","mod-nifi","mod-os"]' >> "$GITHUB_OUTPUT"
+          else
+            echo "matrix=[\"$MODULE\"]" >> "$GITHUB_OUTPUT"
+          fi
+
+  integration:
+    needs: select
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        module: ${{ fromJSON(needs.select.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: maven
+      - name: Run integration tests
+        env:
+          # FTP / SFTP
+          FTP_TEST_HOST: ${{ secrets.FTP_TEST_HOST }}
+          FTP_TEST_PORT: ${{ secrets.FTP_TEST_PORT }}
+          FTP_TEST_USER: ${{ secrets.FTP_TEST_USER }}
+          FTP_TEST_PASSWORD: ${{ secrets.FTP_TEST_PASSWORD }}
+          FTP_TEST_DIR: ${{ secrets.FTP_TEST_DIR }}
+          SFTP_TEST_HOST: ${{ secrets.SFTP_TEST_HOST }}
+          SFTP_TEST_PORT: ${{ secrets.SFTP_TEST_PORT }}
+          SFTP_TEST_USER: ${{ secrets.SFTP_TEST_USER }}
+          SFTP_TEST_PASSWORD: ${{ secrets.SFTP_TEST_PASSWORD }}
+          SFTP_TEST_DIR: ${{ secrets.SFTP_TEST_DIR }}
+          # WebDAV
+          WEBDAV_TEST_URL: ${{ secrets.WEBDAV_TEST_URL }}
+          WEBDAV_TEST_USER: ${{ secrets.WEBDAV_TEST_USER }}
+          WEBDAV_TEST_PASSWORD: ${{ secrets.WEBDAV_TEST_PASSWORD }}
+          # AWS
+          AWS_TEST_ACCESS_KEY: ${{ secrets.AWS_TEST_ACCESS_KEY }}
+          AWS_TEST_SECRET_KEY: ${{ secrets.AWS_TEST_SECRET_KEY }}
+          AWS_TEST_REGION: ${{ secrets.AWS_TEST_REGION }}
+          AWS_TEST_BUCKET: ${{ secrets.AWS_TEST_BUCKET }}
+          # Backblaze B2
+          B2_TEST_KEY_ID: ${{ secrets.B2_TEST_KEY_ID }}
+          B2_TEST_APP_KEY: ${{ secrets.B2_TEST_APP_KEY }}
+          B2_TEST_BUCKET: ${{ secrets.B2_TEST_BUCKET }}
+          # Dropbox
+          DROPBOX_TEST_TOKEN: ${{ secrets.DROPBOX_TEST_TOKEN }}
+          # Google Drive
+          GDRIVE_TEST_CLIENT_ID: ${{ secrets.GDRIVE_TEST_CLIENT_ID }}
+          GDRIVE_TEST_CLIENT_SECRET: ${{ secrets.GDRIVE_TEST_CLIENT_SECRET }}
+          GDRIVE_TEST_REFRESH_TOKEN: ${{ secrets.GDRIVE_TEST_REFRESH_TOKEN }}
+          GDRIVE_TEST_FOLDER: ${{ secrets.GDRIVE_TEST_FOLDER }}
+          # Google Cloud Storage
+          GCS_TEST_PROJECT_ID: ${{ secrets.GCS_TEST_PROJECT_ID }}
+          GCS_TEST_CREDENTIALS_JSON: ${{ secrets.GCS_TEST_CREDENTIALS_JSON }}
+          GCS_TEST_BUCKET: ${{ secrets.GCS_TEST_BUCKET }}
+          # Azure
+          AZURE_TEST_CONNECTION_STRING: ${{ secrets.AZURE_TEST_CONNECTION_STRING }}
+          AZURE_TEST_CONTAINER: ${{ secrets.AZURE_TEST_CONTAINER }}
+          # OpenStack
+          OS_TEST_URL: ${{ secrets.OS_TEST_URL }}
+          OS_TEST_USER: ${{ secrets.OS_TEST_USER }}
+          OS_TEST_PASSWORD: ${{ secrets.OS_TEST_PASSWORD }}
+          OS_TEST_PROJECT: ${{ secrets.OS_TEST_PROJECT }}
+          OS_TEST_DOMAIN: ${{ secrets.OS_TEST_DOMAIN }}
+          OS_TEST_CONTAINER: ${{ secrets.OS_TEST_CONTAINER }}
+          # NiFi
+          NIFI_TEST_URL: ${{ secrets.NIFI_TEST_URL }}
+          NIFI_TEST_PORT_NAME: ${{ secrets.NIFI_TEST_PORT_NAME }}
+          JAVA_TOOL_OPTIONS: -Djava.io.tmpdir=${{ runner.temp }}
+        run: mvn -pl ${{ matrix.module }} -am verify --no-transfer-progress --batch-mode -Denforcer.skip
+      - name: Publish Test Report
+        if: ${{ always() }}
+        uses: dorny/test-reporter@v1
+        with:
+          name: Integration Test Report (${{ matrix.module }})
+          path: '**/target/failsafe-reports/*.xml'
+          reporter: java-junit

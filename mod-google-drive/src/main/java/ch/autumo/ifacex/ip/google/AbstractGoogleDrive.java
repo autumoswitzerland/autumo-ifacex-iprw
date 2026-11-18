@@ -34,7 +34,6 @@ import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInsta
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
@@ -79,6 +78,13 @@ public abstract class AbstractGoogleDrive implements Generic {
 
 	private LocalServerReceiver receiver = null;
 	private Drive service = null;
+	private boolean serviceInjected = false;
+	
+	/** Test hook: inject a (mock) Drive service; skips creation in initialize(). */
+	public void setService(Drive service) {
+		this.service = service;
+		this.serviceInjected = true;
+	}
 
 	private String client_id = null;
 	private String project_id = null;
@@ -117,10 +123,12 @@ public abstract class AbstractGoogleDrive implements Generic {
 			}
 		
 			// Build a new authorized API client service.
-		    final NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-		    service = new Drive.Builder(httpTransport, JSON_FACTORY, this.getCredentials(httpTransport))
-		    		.setApplicationName(appName)
-		    		.build();
+			if (!serviceInjected) {
+			    final NetHttpTransport httpTransport = new NetHttpTransport();
+			    service = new Drive.Builder(httpTransport, JSON_FACTORY, this.getCredentials(httpTransport))
+			    		.setApplicationName(appName)
+			    		.build();
+			}
 	
 		    LOG.info("Connected to app '" + appName + "' and project '" + project_id + "'.");
 		    

@@ -53,6 +53,13 @@ public abstract class AbstractOpenStack implements Generic {
 	public static int CONNECTION_TIMEOUT = 3000;
 	
 	private OSClient<?> client = null;
+	private boolean clientInjected = false;
+	
+	/** Test hook: inject a (mock) OS client; skips creation in initialize(). */
+	public void setClient(OSClient<?> client) {
+		this.client = client;
+		this.clientInjected = true;
+	}
 	
 	private String user = null;
 	private String user_id = null;
@@ -114,6 +121,7 @@ public abstract class AbstractOpenStack implements Generic {
 		}
 		final Identifier domainIdentifier = Identifier.byName(domain);
 		
+		if (!clientInjected) {
 		// KeyStone V3
 		if (version == 3) {
 			
@@ -202,6 +210,7 @@ public abstract class AbstractOpenStack implements Generic {
 			
 		}
 		
+		}
 	    LOG.info("Connected to end-point '" + url_endpoint + "'.");
 	}
 
