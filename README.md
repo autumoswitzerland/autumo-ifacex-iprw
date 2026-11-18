@@ -79,19 +79,6 @@ Available variables: FTP_TEST_*, SFTP_TEST_*, WEBDAV_TEST_*, AWS_TEST_*,
 B2_TEST_*, DROPBOX_TEST_TOKEN, GDRIVE_TEST_*, GCS_TEST_*, AZURE_TEST_*,
 OS_TEST_*, NIFI_TEST_* (see bin/.env.example for details).
 
-### GitHub Actions Workflows
-
-- `.github/workflows/build.yml` – full pipeline: unit tests (mvn test) first,
-  then integration tests per module (only where the corresponding secrets are
-  defined), then package creation via make.sh, and an optional GitHub release
-  (workflow input 'create_release') using the version section of CHANGELOG.md
-  as release text and the ZIP from product/ as asset.
-- `.github/workflows/integration-tests.yml` – on-demand/nightly integration
-  tests with a module matrix, gated by per-module secrets.
-
-Secrets must be configured in the repository settings with the same names as
-the environment variables listed in bin/.env.example.
-
 ### Additional Readers | Writers
 
 - Amazon AWS S3 : Read and write files via blops.
