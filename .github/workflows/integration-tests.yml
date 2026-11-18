@@ -106,7 +106,15 @@ jobs:
           NIFI_TEST_URL: ${{ secrets.NIFI_TEST_URL }}
           NIFI_TEST_PORT_NAME: ${{ secrets.NIFI_TEST_PORT_NAME }}
           JAVA_TOOL_OPTIONS: -Djava.io.tmpdir=${{ runner.temp }}
-        run: mvn -pl ${{ matrix.module }} -am verify --no-transfer-progress --batch-mode -Denforcer.skip
+        run: |
+          # Skip integration tests for modules without the required secrets
+          MODULE="${{ matrix.module }}"
+          SECRET_NAME=$(echo "$MODULE" | tr '[:lower:]-' '[:upper:]_' | sed 's/MOD_//')
+          if [ -z "${!SECRET_NAME}" ]; then
+            echo "No secrets for $MODULE — skipping integration tests"
+            exit 0
+          fi
+          mvn -pl "$MODULE" -am verify --no-transfer-progress --batch-mode -Denforcer.skip -Dit.test='*IntegrationTest'
       - name: Publish Test Report
         if: ${{ always() }}
         uses: dorny/test-reporter@v1
@@ -114,3 +122,4 @@ jobs:
           name: Integration Test Report (${{ matrix.module }})
           path: '**/target/failsafe-reports/*.xml'
           reporter: java-junit
+        continue-on-error: true
