@@ -15,9 +15,6 @@ on:
         description: 'Override version (leave empty to use make.sh default)'
         required: false
         default: ''
-  push:
-    branches:
-      - main
 
 jobs:
   unit-tests:
