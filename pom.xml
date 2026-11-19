@@ -37,7 +37,7 @@
 		<version.gson>2.15.0</version.gson>
 		<version.error_prone_annotations>2.52.0</version.error_prone_annotations>
 
-		<version.jackson.annotations>3.0-rc5</version.jackson.annotations>
+		<version.jackson.annotations>2.22</version.jackson.annotations>
 		<version.jackson.core>2.22.4</version.jackson.core>
 		<version.jackson.databind>2.22.4</version.jackson.databind>
 		<version.jackson.dataformat.cbor>2.22.4</version.jackson.dataformat.cbor>

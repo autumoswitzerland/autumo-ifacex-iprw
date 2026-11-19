@@ -4,9 +4,13 @@
  */
 package ch.autumo.ifacex;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,41 +20,31 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import software.amazon.awssdk.core.ResponseInputStream;
+import software.amazon.awssdk.http.AbortableInputStream;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
+import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
+import software.amazon.awssdk.services.s3.model.ListObjectsV2Response;
+import software.amazon.awssdk.services.s3.model.S3Object;
 
 import ch.autumo.ifacex.batch.BatchProcessor;
 import ch.autumo.ifacex.ip.amazon.AWSS3FileReader;
 import ch.autumo.ifacex.utils.Helper;
-import io.findify.s3mock.S3Mock;
 
 /**
- * Functional regression test for the AWS S3 reader against S3Mock.
+ * Functional regression test for the AWS S3 reader using a mocked S3 client
+ * (no network, no credentials).
  */
 class AWSS3ReaderRegressionTest {
 
-    private S3Mock s3mock;
-    private int port = 8001;
     private Path tempOut;
     private Path ipcFile;
-    private AmazonS3 seedClient;
 
     @BeforeEach
     void setUp() throws Exception {
-        s3mock = new S3Mock.Builder().withPort(port).withInMemoryBackend().build();
-        s3mock.start();
-
-        // seed bucket + object
-        seedClient = AmazonS3ClientBuilder.standard()
-                .withPathStyleAccessEnabled(true)
-                .withEndpointConfiguration(new EndpointConfiguration("http://localhost:" + port, "us-east-1"))
-                .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials("foo", "bar")))
-                .build();
-        if (!seedClient.doesBucketExistV2("testbucket")) seedClient.createBucket("testbucket");
-        seedClient.putObject("testbucket", "foobar.txt", "hello s3");
+        ch.autumo.ifacex.InterfaceFactory.initialize("./", ch.autumo.ifacex.App.MODE_STANDALONE, 0);
 
         tempOut = Files.createTempDirectory("s3-out");
 
@@ -64,7 +58,7 @@ class AWSS3ReaderRegressionTest {
                 + "    params:\n"
                 + "      access_key: foo\n"
                 + "      secret_key: bar\n"
-                + "      url_endpoint: http://localhost:" + port + "\n"
+                + "      url_endpoint: http://localhost:8001\n"
                 + "      region: us-east-1\n"
                 + "      temp_out_path: " + tempOut.toString() + "\n"
                 + "    entities:\n"
@@ -75,8 +69,6 @@ class AWSS3ReaderRegressionTest {
 
     @AfterEach
     void tearDown() throws Exception {
-        if (seedClient != null) seedClient.shutdown();
-        if (s3mock != null) s3mock.shutdown();
         if (tempOut != null) {
             try (var s = Files.walk(tempOut)) {
                 s.sorted((a, b) -> b.compareTo(a)).forEach(p -> {
@@ -88,15 +80,26 @@ class AWSS3ReaderRegressionTest {
     }
 
     @Test
-    void readerDownloadsFileFromMockServer() throws Exception {
-        ch.autumo.ifacex.InterfaceFactory.initialize("./", ch.autumo.ifacex.App.MODE_STANDALONE, 0);
+    void readerDownloadsFileFromMockClient() throws Exception {
         final Properties procProps = Helper.loadConfiguration(ipcFile.toString());
         final Properties generalProps = Helper.loadConfiguration("cfg/ifacex.cfg");
         final Configuration config = new Configuration(null, generalProps, procProps, ipcFile.toString());
 
+        final S3Client client = mock(S3Client.class);
+        when(client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(
+                ListObjectsV2Response.builder()
+                        .contents(S3Object.builder().key("foobar.txt").build())
+                        .isTruncated(false)
+                        .build());
+        when(client.getObject(any(GetObjectRequest.class))).thenReturn(
+                new ResponseInputStream<>(
+                        GetObjectResponse.builder().build(),
+                        AbortableInputStream.create(new ByteArrayInputStream("hello s3".getBytes()))));
+
         final BatchProcessor batchProcessor = mock(BatchProcessor.class);
 
         final AWSS3FileReader reader = new AWSS3FileReader();
+        reader.setClient(client);
         reader.initialize("aws_file_in", config, null);
 
         final SourceEntity entity = new SourceEntity(config, "testbucket", null);
@@ -105,5 +108,7 @@ class AWSS3ReaderRegressionTest {
 
         assertTrue(Files.exists(tempOut.resolve("foobar.txt")),
                 "Downloaded file should exist in temp output path");
+        assertEquals("hello s3", Files.readString(tempOut.resolve("foobar.txt")),
+                "Downloaded content should match");
     }
 }

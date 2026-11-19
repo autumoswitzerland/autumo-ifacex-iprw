@@ -23,6 +23,12 @@ import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.s3.model.CreateBucketRequest;
+import software.amazon.awssdk.services.s3.model.HeadBucketRequest;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.S3Exception;
+
 import ch.autumo.ifacex.IPC;
 import ch.autumo.ifacex.IfaceXException;
 import ch.autumo.ifacex.Processor;
@@ -36,7 +42,7 @@ import ch.autumo.ifacex.writer.Writer;
  * 
  * Writes files into a bucket and creates the bucket first, if it
  * doesn't exist. Existing files are overwritten!
- * 
+ *
  * Uses path-style access and puts the 'aws_file_out_key_prefix'
  * in front of the file name, separated by a '/' in any case.
  * URL end-point and region should be provided for faster access!
@@ -44,7 +50,7 @@ import ch.autumo.ifacex.writer.Writer;
  */
 public class AWSS3FileWriter extends AbstractAWSS3File implements Writer {
 
-	private final static Logger LOG = LoggerFactory.getLogger(AWSS3FileReader.class.getName());
+	private final static Logger LOG = LoggerFactory.getLogger(AWSS3FileWriter.class.getName());
 
 	private String bucketName = null;
 
@@ -57,8 +63,8 @@ public class AWSS3FileWriter extends AbstractAWSS3File implements Writer {
 		super.initialize(writerName, config, processor);
 		
 	    // Only create bucket if it doesn't exists
-		if (!client().doesBucketExistV2(bucketName)) {
-			client().createBucket(bucketName);
+		if (!bucketExists(bucketName)) {
+			client().createBucket(CreateBucketRequest.builder().bucket(bucketName).build());
 			LOG.info("AWS bucket '"+bucketName+"' created!");
 		}
 	}
@@ -81,7 +87,29 @@ public class AWSS3FileWriter extends AbstractAWSS3File implements Writer {
 			
 			LOG.info("Processing (bucket: '" + bucketName + "'): " + getKeyPrefix() + curr.getName());
 			
-			client().putObject(bucketName, getKeyPrefix() + curr.getName(), curr);
+			client().putObject(
+					PutObjectRequest.builder()
+						.bucket(bucketName)
+						.key(getKeyPrefix() + curr.getName())
+						.build(),
+					RequestBody.fromFile(curr));
+		}
+	}
+	
+	/**
+	 * Check whether a bucket exists.
+	 * 
+	 * @param name bucket name
+	 * @return true if it exists
+	 */
+	private boolean bucketExists(String name) {
+		try {
+			client().headBucket(HeadBucketRequest.builder().bucket(name).build());
+			return true;
+		} catch (S3Exception e) {
+			if (e.statusCode() == 404)
+				return false;
+			throw e;
 		}
 	}
 	

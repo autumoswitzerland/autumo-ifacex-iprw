@@ -79,6 +79,25 @@ Available variables: FTP_TEST_*, SFTP_TEST_*, WEBDAV_TEST_*, AWS_TEST_*,
 B2_TEST_*, DROPBOX_TEST_TOKEN, GDRIVE_TEST_*, GCS_TEST_*, AZURE_TEST_*,
 OS_TEST_*, NIFI_TEST_* (see bin/.env.example for details).
 
+#### Local emulators (no cloud account/credit card needed)
+
+AWS S3 (Adobe S3Mock) and Azure Blob Storage (Azurite) can be tested against local
+Docker emulators:
+
+	mod-az-aws-s3/test/docker.sh start    # S3Mock, endpoint http://localhost:9090
+	mod-ms-azure/test/docker.sh start     # Azurite, endpoint http://127.0.0.1:10000
+
+Then set in bin/.env:
+
+	AWS_TEST_EMULATOR=1
+	AZURE_TEST_EMULATOR=1
+
+and run:
+
+	bin/run-integration-tests.sh mod-az-aws-s3 mod-ms-azure
+
+Stop the emulators with `docker.sh stop`.
+
 ### Additional Readers | Writers
 
 - Amazon AWS S3 : Read and write files via blops.

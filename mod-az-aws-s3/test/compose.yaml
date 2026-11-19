@@ -1,0 +1,8 @@
+services:
+  s3mock:
+    image: adobe/s3mock:latest
+    container_name: ifacex-s3mock
+    ports:
+      - "9090:9090"
+    environment:
+      COM_ADOBE_TESTING_S3MOCK_STORE_REGION: us-east-1

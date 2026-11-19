@@ -50,15 +50,15 @@ class DependencyCompatibilityTest {
         assertInstanceOf(Writer.class, c.getDeclaredConstructor().newInstance());
     }
 
-    /** com.amazonaws.services.s3.AmazonS3ClientBuilder must still be available in the declared library version. */
+    /** software.amazon.awssdk.services.s3.S3Client must still be available in the declared library version. */
     @Test
-    void libraryClassExistsAmazonS3ClientBuilder() throws Exception {
-        assertNotNull(Class.forName("com.amazonaws.services.s3.AmazonS3ClientBuilder"));
+    void libraryClassExistsS3Client() throws Exception {
+        assertNotNull(Class.forName("software.amazon.awssdk.services.s3.S3Client"));
     }
 
-    /** com.amazonaws.services.s3.model.S3ObjectSummary must still be available in the declared library version. */
+    /** software.amazon.awssdk.services.s3.model.S3Object must still be available in the declared library version. */
     @Test
-    void libraryClassExistsS3ObjectSummary() throws Exception {
-        assertNotNull(Class.forName("com.amazonaws.services.s3.model.S3ObjectSummary"));
+    void libraryClassExistsS3Object() throws Exception {
+        assertNotNull(Class.forName("software.amazon.awssdk.services.s3.model.S3Object"));
     }
 }

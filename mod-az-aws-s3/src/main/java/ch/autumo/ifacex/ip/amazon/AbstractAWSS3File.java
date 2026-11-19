@@ -18,16 +18,16 @@
  */
 package ch.autumo.ifacex.ip.amazon;
 
+import java.net.URI;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.S3ClientBuilder;
 
 import ch.autumo.commons.utils.UtilsException;
 import ch.autumo.ifacex.IPC;
@@ -39,21 +39,23 @@ import ch.autumo.ifacex.writer.Writer;
 
 /**
  * Abstract Amazon AWS S3 file.
+ * 
+ * Uses the AWS SDK for Java 2.x.
  */
 public abstract class AbstractAWSS3File implements Generic {
 	
 	private final static Logger LOG = LoggerFactory.getLogger(AbstractAWSS3File.class.getName());
 	
-	private AmazonS3 s3client = null;
-	private AWSCredentials credentials = null;
-	private EndpointConfiguration endpoint = null;
+	public static final String DEFAULT_REGION = "eu-central-2";
+	
+	private S3Client s3client = null;
 	private String urlEndpoint = null;
 	private String region = null;
 	private String keyPrefix = null;
 	private boolean clientInjected = false;
 	
 	/** Test hook: inject a (mock) S3 client; skips creation in initialize(). */
-	public void setClient(AmazonS3 client) {
+	public void setClient(S3Client client) {
 		this.s3client = client;
 		this.clientInjected = true;
 	}
@@ -75,7 +77,7 @@ public abstract class AbstractAWSS3File implements Generic {
 			throw new IfaceXException("Couldn't read credentials!", e);
 		}
 		
-		credentials = new BasicAWSCredentials(accessKey, secretKey);
+		final AwsBasicCredentials credentials = AwsBasicCredentials.create(accessKey, secretKey);
 		
 		if (this instanceof Writer) {
 			keyPrefix = config.getWriterConfig(rwName).getConfig("_key_prefix");
@@ -93,29 +95,20 @@ public abstract class AbstractAWSS3File implements Generic {
 			keyPrefix = "";
 		}
 		
-		
-		if (urlEndpoint != null && urlEndpoint.length() > 0) {
-			if (region != null && region.length() > 0)
-				endpoint = new EndpointConfiguration(urlEndpoint, region); // "http://localhost:8001", e.g., "eu-central-2"
-			else
-				endpoint = new EndpointConfiguration(urlEndpoint, Regions.getCurrentRegion().getName()); // "http://localhost:8001", "?"
-		}
+		if (region == null || region.trim().length() == 0)
+			region = DEFAULT_REGION;
 	    
 	    if (!clientInjected && s3client == null) {
-		    if (endpoint != null)
-				s3client = AmazonS3ClientBuilder
-				  .standard()
-			      .withPathStyleAccessEnabled(true)  
-			      .withEndpointConfiguration(endpoint)
-				  .withCredentials(new AWSStaticCredentialsProvider(credentials))
-				  .build();	
-		    else
-				s3client = AmazonS3ClientBuilder
-				  .standard()
-			      .withPathStyleAccessEnabled(true)  
-				  .withCredentials(new AWSStaticCredentialsProvider(credentials))
-				  .withRegion(Regions.EU_CENTRAL_2)
-				  .build();	
+	    	
+	    	final S3ClientBuilder builder = S3Client.builder()
+	    			.forcePathStyle(true)
+	    			.region(Region.of(region))
+	    			.credentialsProvider(StaticCredentialsProvider.create(credentials));
+	    	
+	    	if (urlEndpoint != null && urlEndpoint.length() > 0)
+	    		builder.endpointOverride(URI.create(urlEndpoint));
+	    	
+	    	s3client = builder.build();
 	    }
 
 	    LOG.info("Connected to endpoint '" + urlEndpoint + "' and region '" + region + "'.");
@@ -124,7 +117,7 @@ public abstract class AbstractAWSS3File implements Generic {
 	@Override
 	public void close(String rwName) throws IfaceXException {
 		if (s3client != null) {
-			s3client.shutdown();
+			s3client.close();
 		}
 	}
 
@@ -132,7 +125,7 @@ public abstract class AbstractAWSS3File implements Generic {
 	 * Get S3 client.
 	 * @return client
 	 */
-	protected AmazonS3 client() {
+	protected S3Client client() {
 		return s3client;
 	}
 

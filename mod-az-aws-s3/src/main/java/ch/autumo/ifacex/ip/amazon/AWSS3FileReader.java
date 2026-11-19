@@ -27,10 +27,12 @@ import java.nio.file.StandardCopyOption;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.amazonaws.services.s3.model.ObjectListing;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
-import com.amazonaws.services.s3.model.S3ObjectSummary;
+import software.amazon.awssdk.core.ResponseInputStream;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
+import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
+import software.amazon.awssdk.services.s3.model.ListObjectsV2Response;
+import software.amazon.awssdk.services.s3.model.S3Object;
 
 import ch.autumo.commons.utils.system.OSUtils;
 import ch.autumo.ifacex.ExclusionFilter;
@@ -58,7 +60,7 @@ public class AWSS3FileReader extends AbstractAWSS3File implements Reader {
 	
 	private String tempOutputPath = null;
 	
-	private ObjectListing objectListing = null;
+	private ListObjectsV2Response objectListing = null;
 	private int amount = 0;
 	private int totalEntityFileCounter = 0;
 
@@ -86,9 +88,12 @@ public class AWSS3FileReader extends AbstractAWSS3File implements Reader {
 			throws ReaderException, IfaceXException {
 
 		// Source entity names are bucket names here!
-		objectListing = client().listObjects(entity.getEntity());
+		objectListing = client().listObjectsV2(
+				ListObjectsV2Request.builder()
+					.bucket(entity.getEntity())
+					.build());
 
-		amount = objectListing.getObjectSummaries().size();
+		amount = objectListing.contents().size();
 		totalEntityFileCounter = 0;
 	}
 
@@ -101,12 +106,12 @@ public class AWSS3FileReader extends AbstractAWSS3File implements Reader {
 		
 		int batchFileCounter = 0;
 		
-		for (S3ObjectSummary os : objectListing.getObjectSummaries()) {
+		for (S3Object os : objectListing.contents()) {
 
 			if (batchFileCounter == 0)
 				currBatch = new BatchData(config);
 			
-			final String key = os.getKey();
+			final String key = os.key();
 			LOG.info("Processing (bucket: '" + entity.getEntity() + "'): " + key);
 			
 			/* Using key as directory: Only creates problems when deleting temporary directories */
@@ -118,8 +123,11 @@ public class AWSS3FileReader extends AbstractAWSS3File implements Reader {
 				fileName = parts[parts.length - 1];
 			}
 			
-			final S3Object s3object = client().getObject(entity.getEntity(), key);
-			final S3ObjectInputStream inputStream = s3object.getObjectContent();
+			final ResponseInputStream<GetObjectResponse> inputStream = client().getObject(
+					GetObjectRequest.builder()
+						.bucket(entity.getEntity())
+						.key(key)
+						.build());
 			File file = null;
 			try {
 				
@@ -127,7 +135,7 @@ public class AWSS3FileReader extends AbstractAWSS3File implements Reader {
 
 				// NOPE: make directories from AWS key-prefix
 				//file.mkdirs();
-				
+
 				final Path path = file.toPath();
 				Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING);
 				

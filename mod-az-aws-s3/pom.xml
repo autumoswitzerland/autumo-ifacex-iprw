@@ -14,28 +14,25 @@
 	
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	
-		<version.aws.java.sdk.bundle>1.12.797</version.aws.java.sdk.bundle>
-		<version.s3mock_2.13>0.2.6</version.s3mock_2.13>
+		<version.aws.java.sdk.v2>2.59.4</version.aws.java.sdk.v2>
 		
 	</properties>
 	
 	<dependencies>
 		
 		<dependency>
-			<groupId>com.amazonaws</groupId>
-			<artifactId>aws-java-sdk-bundle</artifactId>
-		    <version>${version.aws.java.sdk.bundle}</version>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>s3</artifactId>
+		    <version>${version.aws.java.sdk.v2}</version>
 		    <scope>provided</scope>
 		</dependency>
 
-		<!--
 		<dependency>
-		    <groupId>com.amazonaws</groupId>
-		    <artifactId>aws-java-sdk</artifactId>
-		    <version>1.12.416</version>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>url-connection-client</artifactId>
+		    <version>${version.aws.java.sdk.v2}</version>
 		    <scope>provided</scope>
 		</dependency>
-		-->
 
   	<!-- Overwrites (Newer versions) -->
 
@@ -76,13 +73,6 @@
 
 	<!-- Testing -->
 
-		 <dependency>
-	        <groupId>io.findify</groupId>
-	        <artifactId>s3mock_2.13</artifactId>
-	        <version>${version.s3mock_2.13}</version>
-	        <scope>test</scope>
-	    </dependency>
-
 		<dependency>
 			<groupId>org.yaml</groupId>
 			<artifactId>snakeyaml</artifactId>
@@ -121,7 +111,7 @@
 				<version>3.5.4</version>
 				<configuration>
 					<workingDirectory>${project.basedir}/..</workingDirectory>
-					<argLine>-javaagent:${settings.localRepository}/net/bytebuddy/byte-buddy-agent/1.17.7/byte-buddy-agent-1.17.7.jar -Daws.java.v1.disableDeprecationAnnouncement=true --add-opens java.base/sun.misc=ALL-UNNAMED --enable-final-field-mutation=ALL-UNNAMED</argLine>
+					<argLine>-javaagent:${settings.localRepository}/net/bytebuddy/byte-buddy-agent/1.17.7/byte-buddy-agent-1.17.7.jar --add-opens java.base/sun.misc=ALL-UNNAMED --enable-final-field-mutation=ALL-UNNAMED</argLine>
 				</configuration>
 			</plugin>
 		</plugins>
