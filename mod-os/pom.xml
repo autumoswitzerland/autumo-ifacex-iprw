@@ -14,9 +14,6 @@
 	
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	
-		<version.commons.codec>1.23.0</version.commons.codec>
-		<version.httpclient>4.5.14</version.httpclient>
-		<version.httpcore>4.4.16</version.httpcore>
 		<version.jackson.coreutils>1.8</version.jackson.coreutils>
 		<version.jcip.annotations>1.0-1</version.jcip.annotations>
 		<version.jsr305>3.0.2</version.jsr305>

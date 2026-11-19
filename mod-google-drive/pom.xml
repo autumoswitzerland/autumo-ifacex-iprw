@@ -14,14 +14,7 @@
 	
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	
-		<version.commons.codec>1.23.0</version.commons.codec>
-		<version.google.api.client>2.9.2</version.google.api.client>
 		<version.google.api.services.drive>v3-rev20261023-2.9.2</version.google.api.services.drive>
-		<version.google.http.client>2.2.0</version.google.http.client>
-		<version.google.http.client.apache.v2>2.2.0</version.google.http.client.apache.v2>
-		<version.google.http.client.gson>2.2.0</version.google.http.client.gson>
-		<version.google.oauth.client.jetty>1.39.0</version.google.oauth.client.jetty>
-		<version.grpc.context>1.85.1</version.grpc.context>
 		
 	</properties>
 	
@@ -37,7 +30,7 @@
 		<dependency>
 		    <groupId>com.google.oauth-client</groupId>
 		    <artifactId>google-oauth-client-jetty</artifactId>
-		    <version>${version.google.oauth.client.jetty}</version>
+		    <version>${version.google.oauth.client}</version>
 		    <scope>provided</scope>
 		</dependency>
 		
@@ -74,14 +67,14 @@
 		<dependency>
 		    <groupId>com.google.http-client</groupId>
 		    <artifactId>google-http-client-apache-v2</artifactId>
-		    <version>${version.google.http.client.apache.v2}</version>
+		    <version>${version.google.http.client}</version>
 		    <scope>provided</scope>
 		</dependency>
 
 		<dependency>
 		    <groupId>com.google.http-client</groupId>
 		    <artifactId>google-http-client-gson</artifactId>
-		    <version>${version.google.http.client.gson}</version>
+		    <version>${version.google.http.client}</version>
 		    <scope>provided</scope>
 		</dependency>
 
@@ -95,7 +88,7 @@
 		<dependency>
     		<groupId>io.grpc</groupId>
     		<artifactId>grpc-context</artifactId>
-    		<version>${version.grpc.context}</version>
+    		<version>${version.grpc}</version>
 		    <scope>provided</scope>
 		</dependency>
 		
