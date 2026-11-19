@@ -54,7 +54,7 @@ public class GoogleDriveReader extends AbstractGoogleDrive implements Reader {
 	private final static Logger LOG = LoggerFactory.getLogger(GoogleDriveReader.class.getName());
 	
 	/** Google drive fields that are requested. */
-	private static final String DRIVE_FIELDS = "nextPageToken,files(id,name,capabilities)";
+	private static final String DRIVE_FIELDS = "nextPageToken,files(id,name,mimeType,capabilities)";
 	
 	private String folder = null;
 	
@@ -121,7 +121,7 @@ public class GoogleDriveReader extends AbstractGoogleDrive implements Reader {
 			    		workingSet = this.setAddons(workingSet, entity);
 		    		} else {
 		    			
-			    		final String folderQuery = "mimeType='application/vnd.google-apps.folder' and name='test_docs11' and trashed=false";
+			    		final String folderQuery = "mimeType='application/vnd.google-apps.folder' and name='" + folder + "' and trashed=false";
 			    		workingSet = service().files().list();
 			    		workingSet = workingSet.setQ(folderQuery);
 			    		workingSet = this.setAddons(workingSet, entity);
@@ -180,7 +180,13 @@ public class GoogleDriveReader extends AbstractGoogleDrive implements Reader {
 					final String filePath = tempOutputPath + file.getName();
 					final java.io.File f = new java.io.File(filePath);
 					
-					if (!isFolder) {
+					// Google Docs/Sheets/Slides have no binary content and cannot be downloaded via alt=media
+					final String mimeType = file.getMimeType();
+					final boolean isGoogleNative = mimeType != null && mimeType.startsWith("application/vnd.google-apps.");
+					
+					if (!isFolder && isGoogleNative) {
+						LOG.info("Skipping Google Docs/Sheets/Slides file (no binary content): " + file.getName());
+					} else if (!isFolder) {
 						
 						FileOutputStream fos = null;
 						try {
